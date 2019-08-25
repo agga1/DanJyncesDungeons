@@ -1,4 +1,5 @@
 import pygame
+from character import Character
 
 pygame.init()
 
@@ -22,6 +23,10 @@ terrain_border_image = pygame.image.load("../resources/terrain_border.png")
 # POINTS
 character_start_point = (300, 300)
 
+# MAIN CHARACTER
+character = Character.Character(character_start_point)
+character_speed = 7
+
 
 # ----- FUNCTIONS -----
 def wall_display():
@@ -37,16 +42,37 @@ def wall_display():
 # ----- MAIN LOOP -----
 while True:
 
-    clock.tick(90)
+    clock.tick(60)
 
     # TERRAIN
     screen.fill((255, 255, 255))
-    screen.blit(character_image, character_start_point)
+    screen.blit(character_image, (character.position_x, character.position_y))
     wall_display()
 
-    # QUIT GAME
+    # KEYS MANAGEMENT & QUIT GAME
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             exit(1)
+        if e.type == pygame.KEYDOWN:
+            if e.key == pygame.K_w:
+                character.change_velocity("up", 1, character_speed)
+            if e.key == pygame.K_s:
+                character.change_velocity("down", 1, character_speed)
+            if e.key == pygame.K_a:
+                character.change_velocity("left", 1, character_speed)
+            if e.key == pygame.K_d:
+                character.change_velocity("right", 1, character_speed)
 
+        if e.type == pygame.KEYUP:
+            if e.key == pygame.K_w:
+                character.change_velocity("up", -1, character_speed)
+            if e.key == pygame.K_s:
+                character.change_velocity("down", -1, character_speed)
+            if e.key == pygame.K_a:
+                character.change_velocity("left", -1, character_speed)
+            if e.key == pygame.K_d:
+                character.change_velocity("right", -1, character_speed)
+
+    character.move()
+    
     pygame.display.flip()
