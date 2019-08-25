@@ -12,6 +12,12 @@ screen_height = 600
 screen = pygame.display.set_mode([screen_width, screen_height])
 pygame.display.set_caption("Dan Jynce's Dungeons")
 
+# COLOURS
+BROWN = (150, 75, 0)
+RED = (255, 0, 0)
+WHITE = (255, 255, 255)
+YELLOW = (255, 255, 0)
+
 # TIME
 clock = pygame.time.Clock()
 
@@ -19,24 +25,33 @@ clock = pygame.time.Clock()
 character_image = pygame.image.load("../resources/main_character.png")
 item_image = pygame.image.load("../resources/item.png")
 enemy_image = pygame.image.load("../resources/enemy.png")
+terrain_image = pygame.image.load("../resources/terrain.png")
 terrain_border_image = pygame.image.load("../resources/terrain_border.png")
 
-# COLOURS
-WHITE = (255, 255, 255)
-BROWN = (150, 75, 0)
-
-# POINTS
-character_start_point = (300, 300)
-
 # MAIN CHARACTER
+character_start_point = (300, 300)
 character = Character.Character(character_start_point)
 character_speed = 7
 
 # INVENTORY
 inventory = Inventory()
 
+# HEALTH
+health_start_point = (15, 15)
+
+# MONEY
+money = 0
+money_start_point = (500, 15)
+font = pygame.font.Font('freesansbold.ttf', 25)
+
 
 # ----- FUNCTIONS -----
+def terrain_display():
+    for i in range(0, 10):
+        for j in range(0, 10):
+            screen.blit(terrain_image, (50 + 50 * i, 50 + 50 * j))
+
+
 def wall_display():
     for i in range(0, 12):
         screen.blit(terrain_border_image, (50 * i, 0))
@@ -45,6 +60,15 @@ def wall_display():
     for i in range(0, 11):
         screen.blit(terrain_border_image, (0, 50 + 50 * i))
         screen.blit(terrain_border_image, (550, 50 + 50 * i))
+
+
+def health_display():
+    pygame.draw.rect(screen, RED, (health_start_point[0], health_start_point[1], 100, 20))
+
+
+def money_display():
+    money_text = font.render(str(money), True, YELLOW)
+    screen.blit(money_text, money_start_point)
 
 
 # ----- MAIN LOOP -----
@@ -57,8 +81,11 @@ while True:
     else:
         # TERRAIN
         screen.fill(WHITE)
-        screen.blit(character_image, (character.position_x, character.position_y))
+        terrain_display()
         wall_display()
+        health_display()
+        money_display()
+        screen.blit(character_image, (character.position_x, character.position_y))
 
     # KEYS MANAGEMENT & QUIT GAME
     for e in pygame.event.get():
