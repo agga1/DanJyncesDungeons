@@ -1,6 +1,7 @@
 import pygame
-from character import Character
+from character.Character import Character
 from core.Inventory import Inventory
+from enemies.Enemy import Enemy
 
 pygame.init()
 
@@ -29,7 +30,7 @@ terrain_border_image = pygame.image.load("../resources/terrain_border.png")
 
 # MAIN CHARACTER
 character_start_point = (300, 300)
-character = Character.Character(character_start_point)
+character = Character(character_start_point)
 
 # INVENTORY
 inventory = Inventory()
@@ -41,6 +42,10 @@ health_start_point = (15, 15)
 money = 0
 money_start_point = (500, 15)
 font = pygame.font.Font('freesansbold.ttf', 25)
+
+# ENEMIES
+enemy_start_point = [50, 50]
+enemy = Enemy(enemy_start_point)
 
 
 # ----- FUNCTIONS -----
@@ -82,6 +87,7 @@ while True:
         health_display()
         money_display()
         screen.blit(character_image, (character.position_x, character.position_y))
+        screen.blit(enemy_image, enemy.position)
 
     # KEYS MANAGEMENT & QUIT GAME
     for e in pygame.event.get():
@@ -119,5 +125,6 @@ while True:
                     character.change_velocity("right", -1 * character.speed)
 
     character.move()
+    enemy.move()
 
     pygame.display.flip()

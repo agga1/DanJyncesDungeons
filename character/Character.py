@@ -33,3 +33,6 @@ class Character:
     def move(self):
         self.position_x += self.velocity_x
         self.position_y += self.velocity_y
+
+    def get_position(self):
+        return [self.position_x, self.position_y]
