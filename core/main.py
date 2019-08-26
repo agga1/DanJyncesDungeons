@@ -44,7 +44,7 @@ money_start_point = (500, 15)
 font = pygame.font.Font('freesansbold.ttf', 25)
 
 # ENEMIES
-enemy_start_point = [50, 50]
+enemy_start_point = [550, 550]
 enemy = Enemy(enemy_start_point)
 
 
