@@ -3,8 +3,10 @@ import pygame
 enemy_speed = 3
 
 
-class Enemy:
-    def __init__(self, start_point):
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self, start_point, *groups):
+        super().__init__(*groups)
+
         self.position = start_point
 
         self.speed = enemy_speed
