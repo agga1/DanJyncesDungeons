@@ -4,13 +4,13 @@ start_health = 5
 
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self, start_point, *groups):
+    def __init__(self, start_point, image, *groups):
         super().__init__(*groups)
 
-        self.position = start_point
-
-        self.image = pygame.image.load("../resources/main_character.png")
+        self.image = image
         self.rect = self.image.get_rect()
+        self.rect.x = start_point[0]
+        self.rect.y = start_point[1]
 
         self.health = start_health
         self.money = 0
@@ -27,9 +27,9 @@ class Character(pygame.sprite.Sprite):
         self.velocity = [0, 0]
 
     def move(self):
-        self.position[0] += self.velocity[0]
-        self.position[1] += self.velocity[1]
+        self.rect.x += self.velocity[0]
+        self.rect.y += self.velocity[1]
 
     def get_position(self):
-        return self.position
+        return [self.rect.x, self.rect.y]
 

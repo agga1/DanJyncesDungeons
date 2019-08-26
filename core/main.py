@@ -2,6 +2,7 @@ import pygame
 from character.Character import Character
 from core.Inventory import Inventory
 from enemies.Enemy import Enemy
+from obstacles.Wall import Wall
 
 pygame.init()
 
@@ -30,7 +31,24 @@ terrain_border_image = pygame.image.load("../resources/terrain_border.png")
 
 # MAIN CHARACTER
 character_start_point = [300, 300]
-character = Character(character_start_point)
+
+character = pygame.sprite.Group()
+character.add(Character(character_start_point, character_image))
+
+# ENEMIES
+enemy_start_point = [550, 550]
+
+enemies = pygame.sprite.Group()
+enemies.add(Enemy(enemy_start_point, enemy_image))
+
+# WALLS
+walls = pygame.sprite.Group()
+for i in range(0, 12):      # it will be in room class in the future
+    walls.add(Wall([50 * i, 0], terrain_border_image))
+    walls.add(Wall([50 * i, 550], terrain_border_image))
+for i in range(0, 11):
+    walls.add(Wall([0, 50 + 50 * i], terrain_border_image))
+    walls.add(Wall([550, 50 + 50 * i], terrain_border_image))
 
 # INVENTORY
 inventory = Inventory()
@@ -43,10 +61,6 @@ money = 0
 money_start_point = (500, 15)
 font = pygame.font.Font('freesansbold.ttf', 25)
 
-# ENEMIES
-enemy_start_point = [550, 550]
-enemy = Enemy(enemy_start_point)
-
 
 # ----- FUNCTIONS -----
 def terrain_display():
@@ -54,13 +68,15 @@ def terrain_display():
 
 
 def wall_display():
-    for i in range(0, 12):
-        screen.blit(terrain_border_image, (50 * i, 0))
-        screen.blit(terrain_border_image, (50 * i, 550))
+    walls.draw(screen)
 
-    for i in range(0, 11):
-        screen.blit(terrain_border_image, (0, 50 + 50 * i))
-        screen.blit(terrain_border_image, (550, 50 + 50 * i))
+
+def character_display():
+    character.draw(screen)
+
+
+def enemy_display():
+    enemies.draw(screen)
 
 
 def health_display():
@@ -86,42 +102,46 @@ while True:
         wall_display()
         health_display()
         money_display()
-        screen.blit(character_image, character.get_position())
-        screen.blit(enemy_image, enemy.position)
+        character_display()
+        enemy_display()
 
-    # KEYS MANAGEMENT & QUIT GAME
-    for e in pygame.event.get():
-        if e.type == pygame.QUIT:
-            exit(1)
-        if e.type == pygame.KEYDOWN:
-            # movement
-            if e.key == pygame.K_w:
-                character.change_velocity([0, -1])
-            if e.key == pygame.K_s:
-                character.change_velocity([0, 1])
-            if e.key == pygame.K_a:
-                character.change_velocity([-1, 0])
-            if e.key == pygame.K_d:
-                character.change_velocity([1, 0])
+    for main_character in character.sprites():
+        # KEYS MANAGEMENT & QUIT GAME
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                exit(1)
+            if e.type == pygame.KEYDOWN:
+                # movement
+                if e.key == pygame.K_w:
+                    main_character.change_velocity([0, -1])
+                if e.key == pygame.K_s:
+                    main_character.change_velocity([0, 1])
+                if e.key == pygame.K_a:
+                    main_character.change_velocity([-1, 0])
+                if e.key == pygame.K_d:
+                    main_character.change_velocity([1, 0])
 
-            # inventory
-            if e.key == pygame.K_i and not inventory.active:
-                inventory.activate()
-            elif e.key == pygame.K_i and inventory.active:
-                inventory.deactivate()
+                # inventory
+                if e.key == pygame.K_i and not inventory.active:
+                    inventory.activate()
+                elif e.key == pygame.K_i and inventory.active:
+                    inventory.deactivate()
 
-        if e.type == pygame.KEYUP:
-            if e.key == pygame.K_w:
-                character.change_velocity([0, 1])
-            if e.key == pygame.K_s:
-                character.change_velocity([0, -1])
-            if e.key == pygame.K_a:
-                character.change_velocity([1, 0])
-            if e.key == pygame.K_d:
-                character.change_velocity([-1, 0])
+            if e.type == pygame.KEYUP:
+                if e.key == pygame.K_w:
+                    main_character.change_velocity([0, 1])
+                if e.key == pygame.K_s:
+                    main_character.change_velocity([0, -1])
+                if e.key == pygame.K_a:
+                    main_character.change_velocity([1, 0])
+                if e.key == pygame.K_d:
+                    main_character.change_velocity([-1, 0])
 
     if not inventory.active:
-        character.move()
-        enemy.move()
+        for main_character in character.sprites():
+            main_character.move()
+
+        for enemy in enemies.sprites():
+            enemy.move()
 
     pygame.display.flip()
