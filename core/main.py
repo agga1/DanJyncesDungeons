@@ -103,6 +103,14 @@ while True:
                 character.change_velocity([-1, 0])
             if e.key == pygame.K_d:
                 character.change_velocity([1, 0])
+            if e.key == pygame.K_UP:
+                character.change_velocity([0, -1])
+            if e.key == pygame.K_DOWN:
+                character.change_velocity([0, 1])
+            if e.key == pygame.K_LEFT:
+                character.change_velocity([-1, 0])
+            if e.key == pygame.K_RIGHT:
+                character.change_velocity([1, 0])
 
             # inventory
             if e.key == pygame.K_i and not inventory.active:
@@ -118,6 +126,14 @@ while True:
             if e.key == pygame.K_a:
                 character.change_velocity([1, 0])
             if e.key == pygame.K_d:
+                character.change_velocity([-1, 0])
+            if e.key == pygame.K_UP:
+                character.change_velocity([0, 1])
+            if e.key == pygame.K_DOWN:
+                character.change_velocity([0, -1])
+            if e.key == pygame.K_LEFT:
+                character.change_velocity([1, 0])
+            if e.key == pygame.K_RIGHT:
                 character.change_velocity([-1, 0])
 
     if not inventory.active:
