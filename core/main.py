@@ -28,6 +28,8 @@ item_image = pygame.image.load("../resources/item.png")
 enemy_image = pygame.image.load("../resources/enemy.png")
 terrain_image = pygame.image.load("../resources/terrain.png")
 terrain_border_image = pygame.image.load("../resources/terrain_border.png")
+heart_image = pygame.image.load("../resources/heart.png")
+coin_image = pygame.image.load("../resources/coin.png")
 
 # MAIN CHARACTER
 character_start_point = [300, 300]
@@ -54,11 +56,11 @@ for i in range(0, 11):
 inventory = Inventory()
 
 # HEALTH
-health_start_point = (15, 15)
+health_start_point = (10, 5)
 
 # MONEY
 money = 0
-money_start_point = (500, 15)
+money_start_point = (510, 15)
 font = pygame.font.Font('freesansbold.ttf', 25)
 
 
@@ -80,12 +82,14 @@ def enemy_display():
 
 
 def health_display():
-    pygame.draw.rect(screen, RED, (health_start_point[0], health_start_point[1], 100, 20))
+    screen.blit(heart_image, health_start_point)
+    pygame.draw.rect(screen, RED, (health_start_point[0] + 35, health_start_point[1], 120, 20))
 
 
 def money_display():
     money_text = font.render(str(money), True, YELLOW)
-    screen.blit(money_text, money_start_point)
+    screen.blit(coin_image, money_start_point)
+    screen.blit(money_text, [money_start_point[0] + 25, money_start_point[1]])
 
 
 # ----- MAIN LOOP -----
