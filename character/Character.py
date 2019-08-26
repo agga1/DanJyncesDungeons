@@ -26,10 +26,15 @@ class Character(pygame.sprite.Sprite):
     def stop(self):
         self.velocity = [0, 0]
 
-    def move(self):
+    def move(self, walls):
+        curr_position = [self.rect.x, self.rect.y]
         self.rect.x += self.velocity[0]
         self.rect.y += self.velocity[1]
 
+        # checking collision
+        if pygame.sprite.spritecollide(self, walls, False):
+            self.rect.x = curr_position[0]
+            self.rect.y = curr_position[1]
+
     def get_position(self):
         return [self.rect.x, self.rect.y]
-

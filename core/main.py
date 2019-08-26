@@ -139,7 +139,7 @@ while True:
 
     if not inventory.active:
         for main_character in character.sprites():
-            main_character.move()
+            main_character.move(walls)  # move if not colliding with walls
 
         for enemy in enemies.sprites():
             enemy.move()
