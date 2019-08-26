@@ -13,7 +13,6 @@ screen = pygame.display.set_mode([screen_width, screen_height])
 pygame.display.set_caption("Dan Jynce's Dungeons")
 
 # COLOURS
-BROWN = (150, 75, 0)
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
@@ -31,7 +30,6 @@ terrain_border_image = pygame.image.load("../resources/terrain_border.png")
 # MAIN CHARACTER
 character_start_point = (300, 300)
 character = Character.Character(character_start_point)
-character_speed = 7
 
 # INVENTORY
 inventory = Inventory()
@@ -75,7 +73,7 @@ while True:
     clock.tick(60)
 
     if inventory.active:
-        screen.fill(BROWN)
+        inventory.draw()
     else:
         # TERRAIN
         screen.fill(WHITE)
@@ -93,30 +91,32 @@ while True:
             # movement
             if not inventory.active:
                 if e.key == pygame.K_w:
-                    character.change_velocity("up", 1, character_speed)
+                    character.change_velocity("up", character.speed)
                 if e.key == pygame.K_s:
-                    character.change_velocity("down", 1, character_speed)
+                    character.change_velocity("down", character.speed)
                 if e.key == pygame.K_a:
-                    character.change_velocity("left", 1, character_speed)
+                    character.change_velocity("left", character.speed)
                 if e.key == pygame.K_d:
-                    character.change_velocity("right", 1, character_speed)
+                    character.change_velocity("right", character.speed)
 
             # inventory
             if e.key == pygame.K_i and not inventory.active:
                 inventory.activate()
+                character.stop()
             elif e.key == pygame.K_i and inventory.active:
                 inventory.deactivate()
+                character.stop()
 
         if e.type == pygame.KEYUP:
             if not inventory.active:
                 if e.key == pygame.K_w:
-                    character.change_velocity("up", -1, character_speed)
+                    character.change_velocity("up", -1 * character.speed)
                 if e.key == pygame.K_s:
-                    character.change_velocity("down", -1, character_speed)
+                    character.change_velocity("down", -1 * character.speed)
                 if e.key == pygame.K_a:
-                    character.change_velocity("left", -1, character_speed)
+                    character.change_velocity("left", -1 * character.speed)
                 if e.key == pygame.K_d:
-                    character.change_velocity("right", -1, character_speed)
+                    character.change_velocity("right", -1 * character.speed)
 
     character.move()
 
