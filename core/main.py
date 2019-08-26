@@ -47,9 +47,7 @@ font = pygame.font.Font('freesansbold.ttf', 25)
 
 # ----- FUNCTIONS -----
 def terrain_display():
-    for i in range(0, 10):
-        for j in range(0, 10):
-            screen.blit(terrain_image, (50 + 50 * i, 50 + 50 * j))
+    screen.blit(terrain_image, (50, 50))
 
 
 def wall_display():
