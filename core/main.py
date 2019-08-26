@@ -30,7 +30,7 @@ terrain_border_image = pygame.image.load("../resources/terrain_border.png")
 
 # MAIN CHARACTER
 character_start_point = [300, 300]
-character = Character(character_start_point)
+character = Character(character_start_point, character_image)
 
 # INVENTORY
 inventory = Inventory()
@@ -86,7 +86,7 @@ while True:
         wall_display()
         health_display()
         money_display()
-        screen.blit(character_image, character.get_position())
+        character.draw(screen)
         screen.blit(enemy_image, enemy.position)
 
     # KEYS MANAGEMENT & QUIT GAME
