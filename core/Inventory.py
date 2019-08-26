@@ -13,6 +13,7 @@ class Inventory:
     def deactivate(self):
         self.active = False
 
-    def draw(self):
+    @staticmethod
+    def draw():
         from core.main import screen
         screen.fill(BROWN)

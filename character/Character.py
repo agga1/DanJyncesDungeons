@@ -13,23 +13,15 @@ class Character:
 
         self.speed = 7
 
-        self.velocity_x = 0
-        self.velocity_y = 0
+        self.velocity = [0, 0]
 
-    def change_velocity(self, direction, value):
-            if direction == "up":
-                self.velocity_y -= value
-            elif direction == "down":
-                self.velocity_y += value
-            elif direction == "left":
-                self.velocity_x -= value
-            elif direction == "right":
-                self.velocity_x += value
+    def change_velocity(self, directions):
+            self.velocity[0] += directions[0]*self.speed
+            self.velocity[1] += directions[1]*self.speed
 
     def stop(self):
-        self.velocity_x = 0
-        self.velocity_y = 0
+        self.velocity = [0, 0]
 
     def move(self):
-        self.position_x += self.velocity_x
-        self.position_y += self.velocity_y
+        self.position_x += self.velocity[0]
+        self.position_y += self.velocity[1]

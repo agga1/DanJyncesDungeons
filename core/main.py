@@ -89,35 +89,32 @@ while True:
             exit(1)
         if e.type == pygame.KEYDOWN:
             # movement
-            if not inventory.active:
-                if e.key == pygame.K_w:
-                    character.change_velocity("up", character.speed)
-                if e.key == pygame.K_s:
-                    character.change_velocity("down", character.speed)
-                if e.key == pygame.K_a:
-                    character.change_velocity("left", character.speed)
-                if e.key == pygame.K_d:
-                    character.change_velocity("right", character.speed)
+            if e.key == pygame.K_w:
+                character.change_velocity([0, -1])
+            if e.key == pygame.K_s:
+                character.change_velocity([0, 1])
+            if e.key == pygame.K_a:
+                character.change_velocity([-1, 0])
+            if e.key == pygame.K_d:
+                character.change_velocity([1, 0])
 
             # inventory
             if e.key == pygame.K_i and not inventory.active:
                 inventory.activate()
-                character.stop()
             elif e.key == pygame.K_i and inventory.active:
                 inventory.deactivate()
-                character.stop()
 
         if e.type == pygame.KEYUP:
-            if not inventory.active:
-                if e.key == pygame.K_w:
-                    character.change_velocity("up", -1 * character.speed)
-                if e.key == pygame.K_s:
-                    character.change_velocity("down", -1 * character.speed)
-                if e.key == pygame.K_a:
-                    character.change_velocity("left", -1 * character.speed)
-                if e.key == pygame.K_d:
-                    character.change_velocity("right", -1 * character.speed)
+            if e.key == pygame.K_w:
+                character.change_velocity([0, 1])
+            if e.key == pygame.K_s:
+                character.change_velocity([0, -1])
+            if e.key == pygame.K_a:
+                character.change_velocity([1, 0])
+            if e.key == pygame.K_d:
+                character.change_velocity([-1, 0])
 
-    character.move()
+    if not inventory.active:
+        character.move()
 
     pygame.display.flip()
