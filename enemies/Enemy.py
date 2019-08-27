@@ -10,7 +10,9 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self, start_point, image, *groups):
         super().__init__(*groups)
 
+        self.original_image = image
         self.image = image
+        self.angle = 0
         self.rect = self.image.get_rect()
 
         self.rect.x = start_point[0]
