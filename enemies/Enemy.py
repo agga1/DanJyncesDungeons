@@ -15,7 +15,9 @@ class Enemy(pygame.sprite.Sprite):
 
         self.rect.x = start_point[0]
         self.rect.y = start_point[1]
-        self.exact_pos = start_point   # rect.x and rec.y must be integers so to make it more precise we need that float
+
+        # rect.x and rec.y must be integers so to make movement more precise we need that float
+        self.exact_pos = start_point
 
         self.speed = enemy_speed
         self.velocity = [0, 0]
