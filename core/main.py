@@ -32,20 +32,20 @@ heart_image = pygame.image.load("../resources/heart.png")
 coin_image = pygame.image.load("../resources/coin.png")
 
 # MAIN CHARACTER
-character_start_point = [300, 300]
+character_start_point = [300, 300]  # it will be in the room class in the future
 
 character = pygame.sprite.Group()
 character.add(Character(character_start_point, character_image))
 
 # ENEMIES
-enemy_start_point = [550, 550]
+enemy_start_point = [450, 450]  # it will be in the room class in the future
 
 enemies = pygame.sprite.Group()
 enemies.add(Enemy(enemy_start_point, enemy_image))
 
 # WALLS
 walls = pygame.sprite.Group()
-for i in range(0, 12):  # it will be in room class in the future
+for i in range(0, 12):  # it will be in the room class in the future
     walls.add(Wall([50 * i, 0], terrain_border_image))
     walls.add(Wall([50 * i, 550], terrain_border_image))
 for i in range(0, 11):
