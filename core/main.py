@@ -21,6 +21,7 @@ YELLOW = (255, 255, 0)
 
 # TIME
 clock = pygame.time.Clock()
+time = 0
 
 # IMAGES
 character_image = pygame.image.load("../resources/main_character.png")
@@ -54,6 +55,12 @@ for i in range(0, 11):
 
 # INVENTORY
 inventory = Inventory()
+
+# ATTACK
+attack_duration = 60
+attack_interval = 60 + attack_duration
+
+last_attack = 0
 
 # HEALTH
 health_start_point = (10, 5)
@@ -106,6 +113,7 @@ def money_display():
 while True:
 
     clock.tick(60)
+    time += 1
 
     if inventory.get_active():
         inventory.draw()
@@ -143,6 +151,13 @@ while True:
                 elif e.key == pygame.K_i and inventory.active:
                     inventory.deactivate()
 
+                # attack
+                if e.key == pygame.K_SPACE and (time - last_attack > attack_interval or last_attack == 0):
+                    last_attack = time
+                    main_character.start_attack()
+                if main_character.get_is_attacking() and time - last_attack >= attack_duration:
+                    main_character.stop_attack()
+
             if e.type == pygame.KEYUP:
                 if e.key == pygame.K_w:
                     main_character.change_velocity([0, 1])
@@ -155,7 +170,8 @@ while True:
 
     if not inventory.active:
         for main_character in character.sprites():
-            main_character.move(walls, enemies)  # move if not colliding with walls
+            main_character.move(walls)  # move if not colliding with walls
+            money += main_character.check_collisions(enemies)
 
         for enemy in enemies.sprites():
             enemy.move()
