@@ -30,8 +30,9 @@ time = 0
 character_rest_image = pygame.image.load("../resources/character_walk/character_walk_0.png")
 character_walk_images = sprites_functions.connect_frames("../resources/character_walk")
 
+bat_images = sprites_functions.connect_frames("../resources/bat")
+
 item_image = pygame.image.load("../resources/item.png")
-enemy_image = pygame.image.load("../resources/enemy.png")
 terrain_image = pygame.image.load("../resources/terrain.png")
 terrain_border_image = pygame.image.load("../resources/terrain_border.png")
 heart_image = pygame.image.load("../resources/heart.png")
@@ -47,7 +48,7 @@ character.add(Character(character_start_point, character_rest_image, character_w
 enemy_start_point = [450, 450]  # it will be in the room class in the future
 
 enemies = pygame.sprite.Group()
-enemies.add(Enemy(enemy_start_point, enemy_image))
+enemies.add(Enemy(enemy_start_point, bat_images))
 
 # WALLS
 walls = pygame.sprite.Group()
@@ -179,6 +180,6 @@ while True:
             money += main_character.check_collisions(enemies)
 
         for enemy in enemies.sprites():
-            enemy.move()
+            enemy.move(time)
 
     pygame.display.flip()

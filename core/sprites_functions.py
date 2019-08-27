@@ -30,7 +30,7 @@ def connect_frames(directory):
     frames.sort()   # To ensure alphabetical order
 
     for frame in frames:
-        next_frame = pygame.image.load("../resources/character_walk/" + frame)
+        next_frame = pygame.image.load(directory + "/" + frame)
         images.append(next_frame)
 
     return images

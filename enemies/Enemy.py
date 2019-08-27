@@ -1,20 +1,26 @@
 import pygame
 import math
 
+from core import sprites_functions
+
 enemy_speed = 3
 enemy_damage = 1
 enemy_knockback = 30
 enemy_reward = 10
+enemy_frame_change_time = 5
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, start_point, image, *groups):
+    def __init__(self, start_point, movement_animation, *groups):
         super().__init__(*groups)
 
-        self.original_image = image
-        self.image = image
+        self.original_image = movement_animation[0]
+        self.image = movement_animation[0]
         self.angle = 0
         self.rect = self.image.get_rect()
+
+        self.animation_start = 0  # time when current animation started
+        self.movement_animation = movement_animation
 
         self.rect.x = start_point[0]
         self.rect.y = start_point[1]
@@ -50,7 +56,7 @@ class Enemy(pygame.sprite.Sprite):
             else:
                 self.velocity = [self.speed * math.cos(angle), self.speed * math.sin(angle)]
 
-    def move(self):
+    def move(self, time):
         # following main character
         self.set_velocity()
 
@@ -60,6 +66,15 @@ class Enemy(pygame.sprite.Sprite):
 
         self.rect.x = self.exact_pos[0]
         self.rect.y = self.exact_pos[1]
+
+        # animation
+        self.original_image = sprites_functions.animate(self.movement_animation, time, self.animation_start,
+                                                        enemy_frame_change_time)
+        self.rot_center(self.angle)
+
+    def rot_center(self, angle):
+        self.image = pygame.transform.rotate(self.original_image, angle)
+        self.rect = self.image.get_rect(center=self.rect.center)
 
     def get_velocity(self):
         return self.velocity

@@ -1,9 +1,10 @@
 import pygame
+
 from core import sprites_functions
 
 start_health = 5
 character_speed = 5
-frame_change_time = 12 / character_speed    # inverse proportion to make it more universal
+frame_change_time = 20 / character_speed    # inverse proportion to make it more universal
 
 
 class Character(pygame.sprite.Sprite):
