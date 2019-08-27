@@ -45,7 +45,7 @@ enemies.add(Enemy(enemy_start_point, enemy_image))
 
 # WALLS
 walls = pygame.sprite.Group()
-for i in range(0, 12):      # it will be in room class in the future
+for i in range(0, 12):  # it will be in room class in the future
     walls.add(Wall([50 * i, 0], terrain_border_image))
     walls.add(Wall([50 * i, 550], terrain_border_image))
 for i in range(0, 11):
@@ -57,6 +57,8 @@ inventory = Inventory()
 
 # HEALTH
 health_start_point = (10, 5)
+health_bar_width = 20
+health_bar_length = 120
 
 # MONEY
 money = 0
@@ -83,7 +85,15 @@ def enemy_display():
 
 def health_display():
     screen.blit(heart_image, health_start_point)
-    pygame.draw.rect(screen, RED, (health_start_point[0] + 35, health_start_point[1], 120, 20))
+
+    for player in character.sprites():
+        health = player.get_health()
+        max_health = player.get_max_health()
+        pygame.draw.rect(screen, RED,
+                         [health_start_point[0] + 35, health_start_point[1], health_bar_length, health_bar_width], 1)
+
+        pygame.draw.rect(screen, RED, [health_start_point[0] + 35, health_start_point[1],
+                                       health * health_bar_length / max_health, health_bar_width])
 
 
 def money_display():
@@ -97,7 +107,7 @@ while True:
 
     clock.tick(60)
 
-    if inventory.active:
+    if inventory.get_active():
         inventory.draw()
     else:
         # TERRAIN
@@ -109,11 +119,13 @@ while True:
         character_display()
         enemy_display()
 
-    for main_character in character.sprites():
-        # KEYS MANAGEMENT & QUIT GAME
-        for e in pygame.event.get():
-            if e.type == pygame.QUIT:
-                exit(1)
+    for e in pygame.event.get():
+        # QUIT GAME
+        if e.type == pygame.QUIT:
+            exit(1)
+
+        # KEYS MANAGEMENT
+        for main_character in character.sprites():
             if e.type == pygame.KEYDOWN:
                 # movement
                 if e.key == pygame.K_w:
@@ -143,7 +155,7 @@ while True:
 
     if not inventory.active:
         for main_character in character.sprites():
-            main_character.move(walls)  # move if not colliding with walls
+            main_character.move(walls, enemies)  # move if not colliding with walls
 
         for enemy in enemies.sprites():
             enemy.move()
