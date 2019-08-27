@@ -23,6 +23,8 @@ class Character(pygame.sprite.Sprite):
         self.velocity = [0, 0]
         self.angle = 0
 
+        self.is_attacking = False
+
     def change_velocity(self, directions):
         self.velocity[0] += directions[0]*self.speed
         self.velocity[1] += directions[1]*self.speed
@@ -30,10 +32,7 @@ class Character(pygame.sprite.Sprite):
             self.angle = self.find_angle(self.velocity)
         self.rot_center(self.angle)
 
-    def stop(self):
-        self.velocity = [0, 0]
-
-    def move(self, walls, enemies):
+    def move(self, walls):
         curr_position = [self.rect.x, self.rect.y]
         self.rect.x += self.velocity[0]
         self.rect.y += self.velocity[1]
@@ -43,10 +42,18 @@ class Character(pygame.sprite.Sprite):
             self.rect.x = curr_position[0]
             self.rect.y = curr_position[1]
 
+    def check_collisions(self, enemies):
         # checking collision with enemies
         attackers = pygame.sprite.spritecollide(self, enemies, False)
         for attacker in attackers:
-            self.hit(attacker)
+            if self.is_attacking:
+                reward = attacker.get_reward()
+                enemies.remove(attacker)
+                return reward
+            else:
+                self.hit(attacker)
+                return 0
+        return 0
 
     def hit(self, attacker):
         self.health -= attacker.get_damage()
@@ -63,6 +70,7 @@ class Character(pygame.sprite.Sprite):
         if self.health <= 0:
             from core.main import character
             character.empty()
+            exit(1)
 
     def rot_center(self, angle):
         """rotate an image while keeping its center"""
@@ -71,6 +79,12 @@ class Character(pygame.sprite.Sprite):
 
     def draw(self, screen):
         screen.blit(self.image, [self.rect.x, self.rect.y])
+
+    def start_attack(self):
+        self.is_attacking = True
+
+    def stop_attack(self):
+        self.is_attacking = False
 
     def find_angle(self, directions):
         if directions == [0, 0]:
@@ -99,3 +113,6 @@ class Character(pygame.sprite.Sprite):
 
     def get_health(self):
         return self.health
+
+    def get_is_attacking(self):
+        return self.is_attacking

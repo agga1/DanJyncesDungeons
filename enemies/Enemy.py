@@ -4,6 +4,7 @@ import math
 enemy_speed = 3
 enemy_damage = 1
 enemy_knockback = 30
+enemy_reward = 10
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -24,6 +25,8 @@ class Enemy(pygame.sprite.Sprite):
 
         self.damage = enemy_damage
         self.knockback = enemy_knockback
+
+        self.reward = enemy_reward
 
     def set_velocity(self):
         from core.main import character
@@ -64,3 +67,6 @@ class Enemy(pygame.sprite.Sprite):
 
     def get_knockback(self):
         return self.knockback
+
+    def get_reward(self):
+        return self.reward
