@@ -1,18 +1,25 @@
 import pygame
 from core import sprites_functions
+
 start_health = 5
+animation_move_speed = 20
 
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self, start_point, image,  *groups):
+    def __init__(self, start_point, staying_image, movement_animation, *groups):
         super().__init__(*groups)
 
         self.position = start_point
 
-        self.original_image = image
-        self.image = image
+        self.original_image = staying_image
+        self.image = staying_image
         self.angle = 0
         self.rect = self.image.get_rect()
+
+        self.staying_image = staying_image  # animation name: "rest"
+        self.movement_animation = movement_animation  # animation name: "move"
+        self.curr_animation = "rest"
+        self.animation_start = 0
 
         self.rect.x = start_point[0]
         self.rect.y = start_point[1]
@@ -28,13 +35,14 @@ class Character(pygame.sprite.Sprite):
         self.is_attacking = False
 
     def change_velocity(self, directions):
-        self.velocity[0] += directions[0]*self.speed
-        self.velocity[1] += directions[1]*self.speed
+        self.velocity[0] += directions[0] * self.speed
+        self.velocity[1] += directions[1] * self.speed
+
         if not (self.velocity[0] == 0 and self.velocity[1] == 0):
             self.angle = sprites_functions.find_angle(self.velocity)
         self.rot_center(self.angle)
 
-    def move(self, walls):
+    def move(self, walls, time):
         curr_position = [self.rect.x, self.rect.y]
         self.rect.x += self.velocity[0]
         self.rect.y += self.velocity[1]
@@ -43,6 +51,22 @@ class Character(pygame.sprite.Sprite):
         if pygame.sprite.spritecollide(self, walls, False):
             self.rect.x = curr_position[0]
             self.rect.y = curr_position[1]
+
+        # changing current animation
+        if self.velocity[0] == 0 and self.velocity[1] == 0:
+            self.curr_animation = "rest"
+            self.animation_start = time
+        else:
+            if not self.curr_animation == "move":
+                self.animation_start = time
+                self.curr_animation = "move"
+
+        # animation
+        if self.curr_animation == "rest":
+            self.original_image = self.staying_image
+        elif self.curr_animation == "move":
+            self.original_image = sprites_functions.animate(self.movement_animation, time, self.animation_start,
+                                                            animation_move_speed)
 
     def check_collisions(self, enemies):
         # checking collision with enemies

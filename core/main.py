@@ -1,8 +1,11 @@
 import pygame
+
 from character.Character import Character
-from core.Inventory import Inventory
 from enemies.Enemy import Enemy
+from core.Inventory import Inventory
+from core import sprites_functions
 from obstacles.Wall import Wall
+
 
 pygame.init()
 
@@ -24,7 +27,9 @@ clock = pygame.time.Clock()
 time = 0
 
 # IMAGES
-character_image = pygame.image.load("../resources/main_character.png")
+character_rest_image = pygame.image.load("../resources/character_walk/character_walk_0.png")
+character_walk_images = sprites_functions.connect_frames("../resources/character_walk")
+
 item_image = pygame.image.load("../resources/item.png")
 enemy_image = pygame.image.load("../resources/enemy.png")
 terrain_image = pygame.image.load("../resources/terrain.png")
@@ -36,7 +41,7 @@ coin_image = pygame.image.load("../resources/coin.png")
 character_start_point = [300, 300]  # it will be in the room class in the future
 
 character = pygame.sprite.Group()
-character.add(Character(character_start_point, character_image))
+character.add(Character(character_start_point, character_rest_image, character_walk_images))
 
 # ENEMIES
 enemy_start_point = [450, 450]  # it will be in the room class in the future
@@ -170,7 +175,7 @@ while True:
 
     if not inventory.active:
         for main_character in character.sprites():
-            main_character.move(walls)  # move if not colliding with walls
+            main_character.move(walls, time)  # move if not colliding with walls
             money += main_character.check_collisions(enemies)
 
         for enemy in enemies.sprites():
