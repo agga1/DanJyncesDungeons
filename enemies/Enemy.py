@@ -56,6 +56,22 @@ class Enemy(pygame.sprite.Sprite):
             else:
                 self.velocity = [self.speed * math.cos(angle), self.speed * math.sin(angle)]
 
+            # rotation
+            if not (self.velocity[0] == 0 and self.velocity[1] == 0):
+                if self.velocity[0] != 0:
+                    self.angle = math.atan(self.velocity[1]/self.velocity[0])
+                elif self.velocity[1] > 0:
+                    self.angle = math.pi/2
+                else:
+                    self.angle = math.pi * 3/2
+
+                if self.velocity[0] < 0:
+                    self.angle = math.degrees(-1 * self.angle + math.pi/2)
+                else:
+                    self.angle = math.degrees(-1 * self.angle - math.pi/2)
+
+            self.rot_center(self.angle)
+
     def move(self, time):
         # following main character
         self.set_velocity()
