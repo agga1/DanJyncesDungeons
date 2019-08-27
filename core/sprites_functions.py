@@ -25,11 +25,18 @@ def find_angle(directions):
 
 def connect_frames(directory):
     images = []
-    for frame in os.listdir(directory):
-        images.append(pygame.image.load(frame))
+
+    frames = os.listdir(directory)
+    frames.sort()   # To ensure alphabetical order
+
+    for frame in frames:
+        next_frame = pygame.image.load("../resources/character_walk/" + frame)
+        images.append(next_frame)
+
+    return images
 
 
-def animate(images, time, start_time, speed):
-    curr_frame = math.floor((time - start_time)/speed) % len(images)
+def animate(images, curr_time, start_time, speed):
+    curr_frame = math.floor((curr_time - start_time)/speed) % len(images)
 
     return images[curr_frame]

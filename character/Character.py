@@ -2,7 +2,8 @@ import pygame
 from core import sprites_functions
 
 start_health = 5
-animation_move_speed = 20
+character_speed = 5
+frame_change_time = 12 / character_speed    # inverse proportion to make it more universal
 
 
 class Character(pygame.sprite.Sprite):
@@ -19,7 +20,7 @@ class Character(pygame.sprite.Sprite):
         self.staying_image = staying_image  # animation name: "rest"
         self.movement_animation = movement_animation  # animation name: "move"
         self.curr_animation = "rest"
-        self.animation_start = 0
+        self.animation_start = 0    # time when current animation started
 
         self.rect.x = start_point[0]
         self.rect.y = start_point[1]
@@ -28,7 +29,7 @@ class Character(pygame.sprite.Sprite):
         self.health = start_health
         self.money = 0
 
-        self.speed = 7
+        self.speed = character_speed
 
         self.velocity = [0, 0]
 
@@ -38,6 +39,7 @@ class Character(pygame.sprite.Sprite):
         self.velocity[0] += directions[0] * self.speed
         self.velocity[1] += directions[1] * self.speed
 
+        # rotation
         if not (self.velocity[0] == 0 and self.velocity[1] == 0):
             self.angle = sprites_functions.find_angle(self.velocity)
         self.rot_center(self.angle)
@@ -66,10 +68,11 @@ class Character(pygame.sprite.Sprite):
             self.original_image = self.staying_image
         elif self.curr_animation == "move":
             self.original_image = sprites_functions.animate(self.movement_animation, time, self.animation_start,
-                                                            animation_move_speed)
+                                                            frame_change_time)
+            self.rot_center(self.angle)
 
     def check_collisions(self, enemies):
-        # checking collision with enemies
+        # checking collision with enemies, function returns money as a reward for killing enemy
         attackers = pygame.sprite.spritecollide(self, enemies, False)
         for attacker in attackers:
             if self.is_attacking:
@@ -82,10 +85,11 @@ class Character(pygame.sprite.Sprite):
         return 0
 
     def hit(self, attacker):
+        # damage and death
         self.health -= attacker.get_damage()
         self.check_death()
 
-        # KNOCKBACK
+        # knockback
         attacker_velocity = attacker.get_velocity()
         attacker_knockback = attacker.get_knockback()
 
@@ -110,25 +114,6 @@ class Character(pygame.sprite.Sprite):
 
     def stop_attack(self):
         self.is_attacking = False
-
-    def find_angle(self, directions):
-        if directions == [0, 0]:
-            return 0
-        if directions[0] == 0:
-            if directions[1] > 0:
-                return 0
-            return 180
-        if directions[1] == 0:
-            if directions[0] > 0:
-                return 90
-            return 270
-        if directions[0] > 0:
-            if directions[1] > 0:
-                return 45
-            return 135
-        if directions[1] > 0:
-            return 315
-        return 225
 
     def get_position(self):
         return [self.rect.x, self.rect.y]
