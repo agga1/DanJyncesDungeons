@@ -19,15 +19,21 @@ font = pygame.font.Font('freesansbold.ttf', 25)
 
 # ----- CLASS -----
 class Room:
-    def __init__(self):
-        # sprite groups
+    def __init__(self, room_size, room_type, room_enemies):
+        # specification of the room
+        self.size = room_size
+        self.type = room_type
+
+        # walls group
         self.walls = pygame.sprite.Group()
-        sprites_functions.add_walls(self.walls)
+        if room_type == "classic":
+            sprites_functions.add_walls(self.walls, room_size)
 
+        # enemies group
         self.enemies = pygame.sprite.Group()
-        self.enemy_start_point = [450, 450]
-        sprites_functions.add_enemies(self.enemies, self.enemy_start_point)
+        sprites_functions.add_enemies(self.enemies, room_enemies)
 
+        # character group
         self.character = pygame.sprite.Group()
         self.character_start_point = [300, 300]
         sprites_functions.add_character(self.character, self.character_start_point)

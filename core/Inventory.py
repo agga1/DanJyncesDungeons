@@ -15,7 +15,7 @@ class Inventory:
 
     @staticmethod
     def draw():
-        from core.main import screen
+        from worlds_management.Room import screen
         screen.fill(BROWN)
 
     def get_active(self):

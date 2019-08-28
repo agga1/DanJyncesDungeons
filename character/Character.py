@@ -99,8 +99,8 @@ class Character(pygame.sprite.Sprite):
 
     def check_death(self):
         if self.health <= 0:
-            from core.main import character
-            character.empty()
+            from core.main import curr_room
+            curr_room.get_character().empty()
             exit(1)
 
     def rot_center(self, angle):

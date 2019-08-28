@@ -1,7 +1,7 @@
 import pygame
 
 from core.Inventory import Inventory
-from worlds_management.Room import Room
+from worlds_management.WorldsManager import WorldsManager
 
 pygame.init()
 
@@ -19,15 +19,22 @@ inventory = Inventory()
 
 # ATTACK
 attack_duration = 60
-attack_interval = 60 + attack_duration
+attack_interval = 120 + attack_duration
 
 last_attack = 0
 
 # MONEY
 money = 0
 
+# WORLDS MANAGER
+worlds_manager = WorldsManager()
+worlds_manager.start_game()
+
+# WORLD
+curr_world = worlds_manager.get_curr_world()
+
 # ROOM
-room = Room()
+curr_room = curr_world.get_curr_room()
 
 # ----- MAIN LOOP -----
 while True:
@@ -37,7 +44,7 @@ while True:
     if inventory.get_active():
         inventory.draw()
     else:
-        room.draw_room()
+        curr_room.draw_room()
 
     for e in pygame.event.get():
         # QUIT GAME
@@ -45,7 +52,7 @@ while True:
             exit(1)
 
         # KEYS MANAGEMENT
-        for main_character in room.get_character().sprites():
+        for main_character in curr_room.get_character().sprites():
             if e.type == pygame.KEYDOWN:
                 # movement
                 if e.key == pygame.K_w:
@@ -63,12 +70,10 @@ while True:
                 elif e.key == pygame.K_i and inventory.active:
                     inventory.deactivate()
 
-                # attack
+                # start attacking
                 if e.key == pygame.K_SPACE and (time - last_attack > attack_interval or last_attack == 0):
                     last_attack = time
                     main_character.start_attack()
-                if main_character.get_is_attacking() and time - last_attack >= attack_duration:
-                    main_character.stop_attack()
 
             if e.type == pygame.KEYUP:
                 if e.key == pygame.K_w:
@@ -80,12 +85,16 @@ while True:
                 if e.key == pygame.K_d:
                     main_character.change_velocity([-1, 0])
 
-    if not inventory.active:
-        for main_character in room.get_character().sprites():
-            main_character.move(room.get_walls(), time)  # move if not colliding with walls
-            money += main_character.check_collisions(room.get_enemies())
+            # stop attacking
+            if main_character.get_is_attacking() and time - last_attack >= attack_duration:
+                main_character.stop_attack()
 
-        for enemy in room.get_enemies().sprites():
+    if not inventory.active:
+        for main_character in curr_room.get_character().sprites():
+            main_character.move(curr_room.get_walls(), time)  # move if not colliding with walls
+            money += main_character.check_collisions(curr_room.get_enemies())
+
+        for enemy in curr_room.get_enemies().sprites():
             enemy.move(time)
 
     pygame.display.flip()

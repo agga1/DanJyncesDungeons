@@ -1,0 +1,14 @@
+in every world folder (e.g. world_1) there should be a file with name: "world.txt" which contains specification of the
+world written in that way:
+
+first line: size of the world - two numbers: x - number of possible rooms from left to right; y - number of possible rooms from top to bottom
+next y lines: in every line there are x numbers: 0 represents lack of room in that position; 1 represents room where that world starts, 2 represents other rooms
+
+example:
+0 2 0
+2 1 0
+2 0 0
+
+room where the world starts is the room with position [1, 1], other rooms: [1, 0], [0, 1], [0, 2]
+
+you can write comments if there is at least one space after last necessary for world building variable in the line
