@@ -18,8 +18,8 @@ time = 0
 inventory = Inventory()
 
 # ATTACK
-attack_duration = 60
-attack_interval = 120 + attack_duration
+attack_duration = 30
+attack_interval = 60 + attack_duration
 
 last_attack = 0
 

@@ -10,11 +10,13 @@ screen_width = 600
 screen_height = 600
 screen = pygame.display.set_mode([screen_width, screen_height])
 
+GREEN = (0, 185, 0)
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
 
-font = pygame.font.Font('freesansbold.ttf', 25)
+money_font = pygame.font.Font('freesansbold.ttf', 25)
+level_font = pygame.font.Font('freesansbold.ttf', 40)
 
 
 # ----- CLASS -----
@@ -42,12 +44,17 @@ class Room:
         self.terrain_image_start_point = [50, 50]
 
         # health
-        self.health_start_point = (10, 5)
+        self.health_start_point = [430, 5]
         self.health_bar_width = 20
         self.health_bar_length = 120
 
         # money
-        self.money_start_point = [510, 15]
+        self.money_start_point = [510, 560]
+
+        # levels
+        self.level_start_point = [10, 5]
+        self.experience_bar_width = 10
+        self.experience_bar_length = 120
 
     def draw_room(self):
         screen.fill(WHITE)
@@ -55,6 +62,7 @@ class Room:
         self.wall_display()
         self.health_display()
         self.money_display()
+        self.level_display()
         self.enemy_display()
         self.character_display()
 
@@ -91,9 +99,24 @@ class Room:
         coin_image = image_manager.get_coin_image()
 
         from core.main import money
-        money_text = font.render(str(money), True, YELLOW)
+        money_number = money_font.render(str(money), True, YELLOW)
         screen.blit(coin_image, self.money_start_point)
-        screen.blit(money_text, [self.money_start_point[0] + 25, self.money_start_point[1]])
+        screen.blit(money_number, [self.money_start_point[0] + 25, self.money_start_point[1]])
+
+    def level_display(self):
+        for main_character in self.character.sprites():
+            level_number = level_font.render(str(main_character.get_level()), True, GREEN)
+            screen.blit(level_number, self.level_start_point)
+
+            exp = main_character.get_curr_exp()
+            max_exp = main_character.get_to_next_level_exp()
+
+            pygame.draw.rect(screen, GREEN,
+                             [self.level_start_point[0] + 35, self.level_start_point[1] + 10, self.experience_bar_length,
+                              self.experience_bar_width], 1)
+
+            pygame.draw.rect(screen, GREEN, [self.level_start_point[0] + 35, self.level_start_point[1] + 10,
+                                             exp * self.experience_bar_length / max_exp, self.experience_bar_width])
 
     def get_walls(self):
         return self.walls

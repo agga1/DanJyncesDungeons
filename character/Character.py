@@ -11,39 +11,45 @@ class Character(pygame.sprite.Sprite):
     def __init__(self, start_point, staying_image, movement_animation, *groups):
         super().__init__(*groups)
 
-        self.position = start_point
-
+        # image
         self.original_image = staying_image
         self.image = staying_image
         self.angle = 0
         self.rect = self.image.get_rect()
 
+        # animations
         self.staying_image = staying_image  # animation name: "rest"
         self.movement_animation = movement_animation  # animation name: "move"
         self.curr_animation = "rest"
         self.animation_start = 0    # time when current animation started
 
+        # position
         self.rect.x = start_point[0]
         self.rect.y = start_point[1]
 
+        # health
         self.max_health = start_health
         self.health = start_health
-        self.money = 0
 
+        # levels
+        self.level = 1
+        self.curr_exp = 0
+        self.to_next_level_exp = 10
+
+        # movement
         self.speed = character_speed
-
         self.velocity = [0, 0]
 
+        # attack
         self.is_attacking = False
 
     def change_velocity(self, directions):
         self.velocity[0] += directions[0] * self.speed
         self.velocity[1] += directions[1] * self.speed
 
-        # rotation
+        # changing angle for rotation
         if not (self.velocity[0] == 0 and self.velocity[1] == 0):
             self.angle = sprites_functions.find_angle(self.velocity)
-        self.rot_center(self.angle)
 
     def move(self, walls, time):
         curr_position = [self.rect.x, self.rect.y]
@@ -70,7 +76,9 @@ class Character(pygame.sprite.Sprite):
         elif self.curr_animation == "move":
             self.original_image = sprites_functions.animate(self.movement_animation, time, self.animation_start,
                                                             frame_change_time)
-            self.rot_center(self.angle)
+
+        # rotation
+        self.rot_center()
 
     def check_collisions(self, enemies):
         # checking collision with enemies, function returns money as a reward for killing enemy
@@ -78,7 +86,13 @@ class Character(pygame.sprite.Sprite):
         for attacker in attackers:
             if self.is_attacking:
                 reward = attacker.get_reward()
+
                 enemies.remove(attacker)
+
+                exp = attacker.get_exp_for_kill()
+                self.curr_exp += exp
+                self.check_level()
+
                 return reward
             else:
                 self.hit(attacker)
@@ -103,8 +117,8 @@ class Character(pygame.sprite.Sprite):
             curr_room.get_character().empty()
             exit(1)
 
-    def rot_center(self, angle):
-        self.image = pygame.transform.rotate(self.original_image, angle)
+    def rot_center(self,):
+        self.image = pygame.transform.rotate(self.original_image, self.angle)
         self.rect = self.image.get_rect(center=self.rect.center)
 
     def draw(self, screen):
@@ -116,6 +130,11 @@ class Character(pygame.sprite.Sprite):
     def stop_attack(self):
         self.is_attacking = False
 
+    def check_level(self):
+        while self.curr_exp >= self.to_next_level_exp:
+            self.level += 1
+            self.curr_exp -= self.to_next_level_exp
+
     def get_position(self):
         return [self.rect.x, self.rect.y]
 
@@ -124,6 +143,15 @@ class Character(pygame.sprite.Sprite):
 
     def get_health(self):
         return self.health
+
+    def get_level(self):
+        return self.level
+
+    def get_curr_exp(self):
+        return self.curr_exp
+
+    def get_to_next_level_exp(self):
+        return self.to_next_level_exp
 
     def get_is_attacking(self):
         return self.is_attacking
