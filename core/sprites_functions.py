@@ -8,7 +8,8 @@ from obstacles.Wall import Wall
 
 # ----- SPRITE GROUPS -----
 def add_walls(walls):
-    wall_image = pygame.image.load("../resources/terrain_border.png")
+    from resources.image_manager import get_wall_image
+    wall_image = get_wall_image()
 
     for i in range(0, 12):
         walls.add(Wall([50 * i, 0], wall_image))
@@ -18,13 +19,17 @@ def add_walls(walls):
         walls.add(Wall([550, 50 + 50 * i], wall_image))
 
 
-def add_enemies(enemies):
-    pass
+def add_enemies(enemies, enemy_start_point):
+    from resources.image_manager import get_bat_images
+    bat_images = get_bat_images()
+
+    enemies.add(Enemy(enemy_start_point, bat_images))
 
 
 def add_character(character, character_start_point):
-    character_rest_image = pygame.image.load("../resources/character_walk/character_walk_0.png")
-    character_walk_images = connect_frames("../resources/character_walk")
+    from resources.image_manager import get_character_rest_image, get_character_walk_images
+    character_rest_image = get_character_rest_image()
+    character_walk_images = get_character_walk_images()
 
     from character.Character import Character
     character.add(Character(character_start_point, character_rest_image, character_walk_images))

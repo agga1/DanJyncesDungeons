@@ -37,8 +37,8 @@ class Enemy(pygame.sprite.Sprite):
         self.reward = enemy_reward
 
     def set_velocity(self):
-        from core.main import character
-        for main_character in character.sprites():
+        from core.main import room
+        for main_character in room.get_character().sprites():
             curr_character_position = main_character.get_position()
             position_difference = [self.rect.x - curr_character_position[0], self.rect.y - curr_character_position[1]]
 
