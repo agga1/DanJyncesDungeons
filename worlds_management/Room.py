@@ -1,6 +1,9 @@
+'''
+Manages actual screen display w all sprites and elements, hardcoded values included
+'''
 import pygame
 
-from core import sprites_functions
+import core.sprites_manager
 from resources import image_manager
 
 pygame.init()
@@ -29,16 +32,16 @@ class Room:
         # walls group
         self.walls = pygame.sprite.Group()
         if room_type == "classic":
-            sprites_functions.add_walls(self.walls, room_size)
+            core.sprites_manager.add_walls(self.walls, room_size)
 
         # enemies group
         self.enemies = pygame.sprite.Group()
-        sprites_functions.add_enemies(self.enemies, room_enemies)
+        core.sprites_manager.add_enemies(self.enemies, room_enemies)
 
         # character group
         self.character = pygame.sprite.Group()
         self.character_start_point = [300, 300]
-        sprites_functions.add_character(self.character, self.character_start_point)
+        core.sprites_manager.add_character(self.character, self.character_start_point)
 
         # terrain
         self.terrain_image_start_point = [50, 50]
@@ -56,15 +59,16 @@ class Room:
         self.experience_bar_width = 10
         self.experience_bar_length = 120
 
-    def draw_room(self):
+    def draw_room(self, money):
         screen.fill(WHITE)
         self.terrain_display()
         self.wall_display()
         self.health_display()
-        self.money_display()
+        self.money_display(money)
         self.level_display()
         self.enemy_display()
         self.character_display()
+
 
     def terrain_display(self):
         terrain_image = image_manager.get_terrain_image()
@@ -95,10 +99,9 @@ class Room:
             pygame.draw.rect(screen, RED, [self.health_start_point[0] + 35, self.health_start_point[1],
                                            health * self.health_bar_length / max_health, self.health_bar_width])
 
-    def money_display(self):
+    def money_display(self, money):
         coin_image = image_manager.get_coin_image()
 
-        from core.main import money
         money_number = money_font.render(str(money), True, YELLOW)
         screen.blit(coin_image, self.money_start_point)
         screen.blit(money_number, [self.money_start_point[0] + 25, self.money_start_point[1]])

@@ -54,7 +54,7 @@ while True:
     if inventory.get_active():
         inventory.draw()
     else:
-        curr_room.draw_room()
+        curr_room.draw_room(money) # quick fix : passing all values to be displayed instead of importing them from main
 
     for e in pygame.event.get():
         # QUIT GAME
@@ -102,10 +102,11 @@ while True:
     if not inventory.active:
         for main_character in curr_room.get_character().sprites():
             main_character.move(curr_room.get_walls(), time)  # move if not colliding with walls
-            money += main_character.check_collisions(curr_room.get_enemies())
+            money += main_character.check_collisions(curr_room)
 
         for enemy in curr_room.get_enemies().sprites():
-            enemy.move(time)
+            enemy.move(curr_room.get_character().sprites(), time)
 
     pygame.display.flip()
-    time += 1
+    time += 1 
+

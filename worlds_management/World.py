@@ -70,7 +70,7 @@ class World:
                     enemy_start_point = [int(curr_enemy_vars[1]),   # point where is the enemy at the beginning
                                          int(curr_enemy_vars[2])]
 
-                    from core.sprites_functions import create_enemy
+                    from core.sprites_manager import create_enemy
                     enemies.append(create_enemy(enemy_type, enemy_start_point))     # creating and adding object: enemy
 
                 room_file.close()
