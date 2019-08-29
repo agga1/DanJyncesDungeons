@@ -60,12 +60,12 @@ class Room:
         self.experience_bar_width = 10
         self.experience_bar_length = 120
 
-    def draw_room(self):
+    def draw_room(self, money):
         screen.fill(WHITE)
         self.terrain_display()
         self.wall_display()
         self.health_display()
-        self.money_display()
+        self.money_display(money)
         self.level_display()
         self.enemy_display()
         self.character_display()
@@ -100,13 +100,12 @@ class Room:
             pygame.draw.rect(screen, RED, [self.health_start_point[0] + 35, self.health_start_point[1],
                                            health * self.health_bar_length / max_health, self.health_bar_width])
 
-    def money_display(self):
+    def money_display(self, money):
         coin_image = image_manager.get_coin_image()
 
-        # from core.main import money
-        #money_number = money_font.render(str(money), True, YELLOW)
-        #screen.blit(coin_image, self.money_start_point)
-        #screen.blit(money_number, [self.money_start_point[0] + 25, self.money_start_point[1]])
+        money_number = money_font.render(str(money), True, YELLOW)
+        screen.blit(coin_image, self.money_start_point)
+        screen.blit(money_number, [self.money_start_point[0] + 25, self.money_start_point[1]])
 
     def level_display(self):
         for main_character in self.character.sprites():

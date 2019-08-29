@@ -44,9 +44,8 @@ class Enemy(pygame.sprite.Sprite):
         self.reward = enemy_reward
         self.exp_for_kill = enemy_exp_for_kill
 
-    def set_velocity(self):
-        from core.main import curr_room
-        for main_character in curr_room.get_character().sprites():
+    def set_velocity(self, characters):
+        for main_character in characters:
             curr_character_position = main_character.get_position()
             position_difference = [self.rect.x - curr_character_position[0], self.rect.y - curr_character_position[1]]
 
@@ -78,9 +77,9 @@ class Enemy(pygame.sprite.Sprite):
                 else:
                     self.angle = math.degrees(-1 * self.angle - math.pi/2)
 
-    def move(self, time):
+    def move(self, characters, time):
         # following main character
-        self.set_velocity()
+        self.set_velocity(characters)
 
         # to improve softness of movement
         self.exact_pos[0] += self.velocity[0]

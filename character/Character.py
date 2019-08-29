@@ -80,14 +80,14 @@ class Character(pygame.sprite.Sprite):
         # rotation
         self.rot_center()
 
-    def check_collisions(self, enemies):
+    def check_collisions(self, curr_room):
         # checking collision with enemies, function returns money as a reward for killing enemy
-        attackers = pygame.sprite.spritecollide(self, enemies, False)
+        attackers = pygame.sprite.spritecollide(self, curr_room.get_enemies(), False)
         for attacker in attackers:
             if self.is_attacking:
                 reward = attacker.get_reward()
 
-                enemies.remove(attacker)
+                curr_room.get_enemies().remove(attacker)
 
                 exp = attacker.get_exp_for_kill()
                 self.curr_exp += exp
@@ -95,14 +95,14 @@ class Character(pygame.sprite.Sprite):
 
                 return reward
             else:
-                self.hit(attacker)
+                self.hit(attacker, curr_room)
                 return 0
         return 0
 
-    def hit(self, attacker):
+    def hit(self, attacker, curr_room):
         # damage and death
         self.health -= attacker.get_damage()
-        self.check_death()
+        self.check_death(curr_room)
 
         # knockback
         attacker_velocity = attacker.get_velocity()
@@ -111,9 +111,8 @@ class Character(pygame.sprite.Sprite):
         self.rect.x += attacker_velocity[0] * attacker_knockback
         self.rect.y += attacker_velocity[1] * attacker_knockback
 
-    def check_death(self):
+    def check_death(self, curr_room):
         if self.health <= 0:
-            from core.main import curr_room
             curr_room.get_character().empty()
             exit(1)
 
