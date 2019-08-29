@@ -9,12 +9,8 @@ pygame.init()
 # database
 
 db = MyDatabase()
-beginning = 1
-if beginning:
-    print(db.insert())
-    beginning = 0
-
-
+# TO DO: show start screen: buttons: new game->db.insert() continue->choose from saved versions
+money = db.get_money()
 # ----- VARIABLES -----
 
 # CAPTION
@@ -34,7 +30,7 @@ attack_interval = 60 + attack_duration
 last_attack = 0
 
 # MONEY
-money = 0
+# money = 0
 
 # WORLDS MANAGER
 worlds_manager = WorldsManager()
@@ -103,10 +99,14 @@ while True:
         for main_character in curr_room.get_character().sprites():
             main_character.move(curr_room.get_walls(), time)  # move if not colliding with walls
             money += main_character.check_collisions(curr_room)
+            db.update_money(money)
 
         for enemy in curr_room.get_enemies().sprites():
             enemy.move(curr_room.get_character().sprites(), time)
 
     pygame.display.flip()
-    time += 1 
+    time += 1
+    if time % 30 == 0:
+        print(db.get_money())
+        print("version ", db.get_version())
 
