@@ -1,24 +1,25 @@
 import sqlite3
 
-db = sqlite3.connect('data/test_db')
-CREATE_TABLE = '''
-    CREATE TABLE stats(id INTEGER AUTOINCREMENT PRIMARY KEY, money INTEGER, health INTEGER, inventory TEXT)
-'''
-cursor = db.cursor()
-cursor.execute(CREATE_TABLE)
-db.commit()
 
+class MyDatabase:
+    def __init__(self):
+        print('evoked constructor ')
+        self.db = sqlite3.connect('test_db')
+        self.cursor = self.db.cursor()
+        self.cursor.execute(''' CREATE TABLE IF NOT EXISTS stats(id INTEGER PRIMARY KEY, 
+        money INTEGER, health INTEGER, inventory TEXT)''')
+        self.db.commit()
 
-def insert(): # create new row with new game instance
-    cursor.execute('''INSERT INTO stats(money, health, inventory)
-    VALUES(?, ?, ?)''', (0, 0, ""))
-    db.commit()
-    return cursor.lastrowid
+    def insert(self): # create new row with new game instance
+        print('evoked insert')
+        self.cursor.execute('''INSERT INTO stats(money, health, inventory)
+        VALUES(?, ?, ?)''', (0, 0, ""))
+        self.db.commit()
+        return self.cursor.lastrowid
 
-
-def update_money(row_id, money):
-    cursor.execute('''UPDATE stats SET money = ? WHERE id = ? ''', (money, row_id))
-    db.commit()
+    def update_money(self, row_id, money):
+        self.cursor.execute('''UPDATE stats SET money = ? WHERE id = ? ''', (money, row_id))
+        self.db.commit()
 
 
 

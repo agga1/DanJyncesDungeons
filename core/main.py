@@ -2,8 +2,18 @@ import pygame
 
 from core.Inventory import Inventory
 from worlds_management.WorldsManager import WorldsManager
+from db.user_database import MyDatabase
 
 pygame.init()
+
+# database
+
+db = MyDatabase()
+beginning = 1
+if beginning:
+    print(db.insert())
+    beginning = 0
+
 
 # ----- VARIABLES -----
 
