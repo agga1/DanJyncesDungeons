@@ -5,7 +5,6 @@ import pygame
 
 import core.sprites_manager
 from resources import image_manager
-print('Room')
 
 pygame.init()
 

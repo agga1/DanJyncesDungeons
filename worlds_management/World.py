@@ -2,7 +2,6 @@ import pygame
 import os
 
 from worlds_management.Room import Room
-print('World')
 
 
 def get_position(room):     # example: "room_1_12.txt", we need pos_x = 1 and pos_y = 12
