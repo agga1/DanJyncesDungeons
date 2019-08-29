@@ -9,6 +9,7 @@ pygame.init()
 # database
 
 db = MyDatabase()
+db.insert()
 # TO DO: show start screen: buttons: new game->db.insert() continue->choose from saved versions
 money = db.get_money()
 # ----- VARIABLES -----

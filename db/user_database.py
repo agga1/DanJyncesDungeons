@@ -1,10 +1,13 @@
 import sqlite3
+import os
 
+db_path = os.path.abspath('..\data')
+db_path += "\\stats_db"
 
 class MyDatabase:
     def __init__(self):
         print('evoked constructor ')
-        self.db = sqlite3.connect('test_db')
+        self.db = sqlite3.connect(db_path)
         self.cursor = self.db.cursor()
         self.cursor.execute(''' CREATE TABLE IF NOT EXISTS stats(id INTEGER PRIMARY KEY, 
         money INTEGER, health INTEGER, inventory TEXT)''')
