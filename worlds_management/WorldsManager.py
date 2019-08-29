@@ -2,6 +2,7 @@ import pygame
 import os
 
 from worlds_management.World import World
+print('WorldsManager')
 
 curr_world = 0
 

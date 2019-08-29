@@ -54,13 +54,13 @@ while True:
     if inventory.get_active():
         inventory.draw()
     else:
-        curr_room.draw_room()
+        curr_room.draw_room() # quick fix : passing all values to be displayed instead of importing them from main
 
     for e in pygame.event.get():
         # QUIT GAME
         if e.type == pygame.QUIT:
             exit(1)
-
+'''
         # KEYS MANAGEMENT
         for main_character in curr_room.get_character().sprites():
             if e.type == pygame.KEYDOWN:
@@ -108,4 +108,5 @@ while True:
             enemy.move(time)
 
     pygame.display.flip()
-    time += 1
+    time += 1 
+'''
