@@ -9,6 +9,7 @@ clock = pygame.time.Clock()
 
 
 def menu_run():
+    game_version = 0
     while True:
 
         clock.tick(60)
@@ -20,7 +21,7 @@ def menu_run():
                 exit(1)
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_SPACE:
-                    return
+                    return game_version
 
         pygame.display.flip()
 
