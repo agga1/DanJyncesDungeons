@@ -11,10 +11,7 @@ class WorldsManager:
         self.worlds_number = 0
         self.worlds_list = []
 
-        self.enter_worlds()
-        self.curr_world = 0
-
-    def enter_worlds(self):
+        # entering worlds
         worlds = os.listdir("../worlds_management/worlds/")
         worlds.sort()   # To ensure alphabetical order
 
@@ -22,6 +19,9 @@ class WorldsManager:
             self.worlds_list.append(World("../worlds_management/worlds/" + world))
 
         self.worlds_number = len(self.worlds_list)
+
+        # ccsndfdsj
+        self.curr_world = 0
 
     def start_game(self):
         self.worlds_list[0].load_world()

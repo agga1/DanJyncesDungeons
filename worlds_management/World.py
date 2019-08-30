@@ -22,11 +22,7 @@ class World:
         self.rooms = []
         self.start_room = [0, 0]
 
-        self.make_world()
-
-        self.curr_room = self.start_room
-
-    def make_world(self):
+        # making world
         world_file = open(self.path + "/world.txt", "r")
 
         world_size = world_file.readline().split()
@@ -43,6 +39,9 @@ class World:
                     self.start_room = [j, i]
 
         world_file.close()
+
+        # dskfdslfj
+        self.curr_room = self.start_room
 
     def load_world(self):
         rooms = os.listdir(self.path)

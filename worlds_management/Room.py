@@ -1,6 +1,5 @@
-'''
-Manages actual screen display w all sprites and elements, hardcoded values included
-'''
+""" Manages actual screen display w all sprites and elements, hardcoded values included """
+
 import pygame
 
 import core.sprites_manager
@@ -68,7 +67,6 @@ class Room:
         self.level_display()
         self.enemy_display()
         self.character_display()
-
 
     def terrain_display(self):
         terrain_image = image_manager.get_terrain_image()

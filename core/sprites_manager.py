@@ -1,6 +1,4 @@
-'''
-Managing creation and addition of new sprites
-'''
+""" Managing creation and addition of new sprites """
 
 from enemies.Enemy import Enemy
 from obstacles.Wall import Wall
