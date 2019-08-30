@@ -2,7 +2,8 @@ import pygame
 
 from core.Inventory import Inventory
 from worlds_management.WorldsManager import WorldsManager
-from db.user_database import MyDatabase
+from db.MyDatabase import MyDatabase
+from core.menu_activity import menu_run
 
 pygame.init()
 
@@ -35,7 +36,9 @@ last_attack = 0
 
 # WORLDS MANAGER
 worlds_manager = WorldsManager()
-worlds_manager.start_game()
+menu_run()
+
+worlds_manager.game_start()
 
 # WORLD
 curr_world = worlds_manager.get_curr_world()
