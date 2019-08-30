@@ -48,15 +48,16 @@ class MyDatabase:
         date = self.cursor.fetchone()
         return date[0]
 
-    def reset_db(self):
-        self.cursor.execute('''DELETE FROM stats''')
-
-    def delete_row(self, row_id):
-        self.cursor.execute('''DELETE FROM stats WHERE id = ?''', (row_id, ))
-
     def get_if_new(self, row_id):
         self.cursor.execute('''SELECT if_new FROM stats WHERE id = ?''', (row_id, ))
         if_new = self.cursor.fetchone()
         return if_new[0]
+
+    def reset_db(self):
+        self.cursor.execute('''DELETE FROM stats''')
+
+    def reset_row(self, row_id):
+        self.cursor.execute('''UPDATE stats SET money = ?, health = ?, inventory = ?, last_saved = ?, if_new = ?''',
+                            (0, 0, "", datetime.now(), 1))
 
 
