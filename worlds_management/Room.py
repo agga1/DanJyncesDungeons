@@ -30,8 +30,7 @@ class Room:
 
         # walls group
         self.walls = pygame.sprite.Group()
-        if room_type == "classic":
-            core.sprites_manager.add_walls(self.walls, room_size)
+        core.sprites_manager.add_walls(self.walls, room_size, room_type)
 
         # enemies group
         self.enemies = pygame.sprite.Group()

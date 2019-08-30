@@ -18,6 +18,7 @@ class World:
     def __init__(self, world_path):
         self.path = world_path
 
+        # world configurations
         self.size = [0, 0]
         self.rooms = []
         self.start_room = [0, 0]
@@ -40,7 +41,7 @@ class World:
 
         world_file.close()
 
-        # dskfdslfj
+        # start room
         self.curr_room = self.start_room
 
     def load_world(self):
@@ -55,7 +56,7 @@ class World:
                 room_size = room_file.readline().split()    # size of the room [from left to right, from top to bottom]
                 room_size = [int(room_size[0]), int(room_size[1])]
 
-                room_type = room_file.readline().split()[0]    # type of the room, default: classic
+                room_type = room_file.readline().split()    # places with doors ("top", "bottom", "left", "right")
 
                 enemies_number = int(room_file.readline().split()[0])   # number of enemies in the room
 
