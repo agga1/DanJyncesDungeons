@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-db_path = os.path.abspath('..\data\stats_db')  # path to database
+db_path = os.path.abspath('../data/stats_db')  # path to database
 
 
 class MyDatabase:
