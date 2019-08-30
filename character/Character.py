@@ -134,14 +134,14 @@ class Character(pygame.sprite.Sprite):
 
                 return reward
             else:
-                self.hit(attacker, curr_room)
+                self.hit(attacker)
                 return 0
         return 0
 
-    def hit(self, attacker, curr_room):
+    def hit(self, attacker):
         # damage and death
         self.health -= attacker.get_damage()
-        self.check_death(curr_room)
+        self.check_death()
 
         # knockback
         attacker_velocity = attacker.get_velocity()
@@ -150,9 +150,9 @@ class Character(pygame.sprite.Sprite):
         self.rect.x += attacker_velocity[0] * attacker_knockback
         self.rect.y += attacker_velocity[1] * attacker_knockback
 
-    def check_death(self, curr_room):
+    def check_death(self):
+        # end of the game
         if self.health <= 0:
-            curr_room.get_character().empty()
             exit(1)
 
     def rot_center(self, ):
@@ -171,7 +171,6 @@ class Character(pygame.sprite.Sprite):
             self.curr_exp -= self.to_next_level_exp
 
     def set_position(self, new_room_direction, new_room_size):
-
         new_position = [0, 0]
 
         if new_room_direction == "top":

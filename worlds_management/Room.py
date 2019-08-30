@@ -3,17 +3,15 @@
 import pygame
 
 import core.sprites_manager
-from resources import image_manager
 from core.configurations import *
+from resources import image_manager
 
 pygame.init()
-
 
 money_font = pygame.font.Font('freesansbold.ttf', 25)
 level_font = pygame.font.Font('freesansbold.ttf', 40)
 
 
-# ----- CLASS -----
 class Room:
     def __init__(self, room_size, room_type, room_enemies):
         # specification of the room
@@ -27,11 +25,6 @@ class Room:
         # enemies group
         self.enemies = pygame.sprite.Group()
         core.sprites_manager.add_enemies(self.enemies, room_enemies)
-
-        # character group
-        self.character = pygame.sprite.Group()
-        self.character_start_point = [300, 300]
-        core.sprites_manager.add_character(self.character, self.character_start_point)
 
     def draw_room(self):
         screen.fill(WHITE)
@@ -54,9 +47,6 @@ class Room:
 
     def get_walls(self):
         return self.walls
-
-    def get_character(self):
-        return self.character
 
     def get_enemies(self):
         return self.enemies

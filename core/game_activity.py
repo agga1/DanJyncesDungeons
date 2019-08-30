@@ -73,6 +73,7 @@ def game_run(db):
                         last_attack = time
                         main_character.start_attack()
 
+                # movement
                 if e.type == pygame.KEYUP:
                     if e.key == pygame.K_w:
                         main_character.change_velocity([0, 1])
@@ -89,18 +90,24 @@ def game_run(db):
 
         if not inventory.active:
             for main_character in worlds_manager.get_character().sprites():
-                main_character.move(worlds_manager.get_curr_world().get_curr_room().get_walls(), time)  # move if not colliding with walls
+                # move if not colliding with walls
+                main_character.move(worlds_manager.get_curr_world().get_curr_room().get_walls(), time)
+
+                # colliding with enemies
                 money += main_character.check_collisions(worlds_manager.get_curr_world().get_curr_room())
+
+                # checking changing room
+                worlds_manager.get_curr_world().check_room(main_character)
+
+                # saving money to database
                 db.update_money(money)
 
-            for enemy in worlds_manager.get_curr_world().get_curr_room().get_enemies().sprites():
-                enemy.move(worlds_manager.get_character().sprites(), time)
-
-            worlds_manager.get_curr_world().check_room(worlds_manager.get_character())
+                for enemy in worlds_manager.get_curr_world().get_curr_room().get_enemies().sprites():
+                    enemy.move(main_character, time)
 
         pygame.display.flip()
         time += 1
+
         if time % 30 == 0:
             print(db.get_money())
             print("version ", db.get_version())
-

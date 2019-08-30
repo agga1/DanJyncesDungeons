@@ -3,7 +3,7 @@ import math
 
 from core import sprites_functions
 
-enemy_speed = 3     # other types of enemies will have different values of these variables
+enemy_speed = 3     # other types of enemies will have different set of these values
 enemy_damage = 1
 enemy_knockback = 30
 enemy_reward = 10
@@ -44,42 +44,41 @@ class Enemy(pygame.sprite.Sprite):
         self.reward = enemy_reward
         self.exp_for_kill = enemy_exp_for_kill
 
-    def set_velocity(self, characters):
-        for main_character in characters:
-            curr_character_position = main_character.get_position()
-            position_difference = [self.rect.x - curr_character_position[0], self.rect.y - curr_character_position[1]]
+    def set_velocity(self, main_character):
+        curr_character_position = main_character.get_position()
+        position_difference = [self.rect.x - curr_character_position[0], self.rect.y - curr_character_position[1]]
 
-            # calculating angle
-            if position_difference[0] != 0:
-                angle = math.atan(position_difference[1]/position_difference[0])
-            elif position_difference[1] > 0:
-                angle = math.pi/2
+        # calculating angle
+        if position_difference[0] != 0:
+            angle = math.atan(position_difference[1]/position_difference[0])
+        elif position_difference[1] > 0:
+            angle = math.pi/2
+        else:
+            angle = math.pi * 3/2
+
+        # setting velocity
+        if position_difference[0] >= 0:
+            self.velocity = [-1 * self.speed * math.cos(angle), -1 * self.speed * math.sin(angle)]
+        else:
+            self.velocity = [self.speed * math.cos(angle), self.speed * math.sin(angle)]
+
+        # changing angle for rotation
+        if not (self.velocity[0] == 0 and self.velocity[1] == 0):
+            if self.velocity[0] != 0:
+                self.angle = math.atan(self.velocity[1]/self.velocity[0])
+            elif self.velocity[1] > 0:
+                self.angle = math.pi/2
             else:
-                angle = math.pi * 3/2
+                self.angle = math.pi * 3/2
 
-            # setting velocity
-            if position_difference[0] >= 0:
-                self.velocity = [-1 * self.speed * math.cos(angle), -1 * self.speed * math.sin(angle)]
+            if self.velocity[0] < 0:
+                self.angle = math.degrees(-1 * self.angle + math.pi/2)
             else:
-                self.velocity = [self.speed * math.cos(angle), self.speed * math.sin(angle)]
+                self.angle = math.degrees(-1 * self.angle - math.pi/2)
 
-            # changing angle for rotation
-            if not (self.velocity[0] == 0 and self.velocity[1] == 0):
-                if self.velocity[0] != 0:
-                    self.angle = math.atan(self.velocity[1]/self.velocity[0])
-                elif self.velocity[1] > 0:
-                    self.angle = math.pi/2
-                else:
-                    self.angle = math.pi * 3/2
-
-                if self.velocity[0] < 0:
-                    self.angle = math.degrees(-1 * self.angle + math.pi/2)
-                else:
-                    self.angle = math.degrees(-1 * self.angle - math.pi/2)
-
-    def move(self, characters, time):
+    def move(self, main_character, time):
         # following main character
-        self.set_velocity(characters)
+        self.set_velocity(main_character)
 
         # to improve softness of movement
         self.exact_pos[0] += self.velocity[0]

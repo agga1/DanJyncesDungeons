@@ -9,10 +9,7 @@ screen = pygame.display.set_mode([screen_width, screen_height])
 
 main_font = 'freesansbold.ttf'
 
-# START GAME
-
-
-# ROMM DISPLAY ----------------------------------------
+# ----- ROOM DISPLAY -----
 
 # terrain
 terrain_image_start_point = [50, 50]
