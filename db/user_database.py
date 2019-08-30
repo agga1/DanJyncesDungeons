@@ -4,6 +4,7 @@ import os
 db_path = os.path.abspath('..\data')
 db_path += "\\stats_db"
 
+
 class MyDatabase:
     def __init__(self):
         print('evoked constructor ')
