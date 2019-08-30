@@ -14,16 +14,22 @@ def create_enemy(enemy_type, enemy_start_point):
     return None
 
 
-def add_walls(walls, room_size, classic=True):      # classic: walls are in the borders of room
+def add_walls(walls, room_size, room_type):      # classic: walls are in the borders of room
     from resources.image_manager import get_wall_image
     wall_image = get_wall_image()
 
-    if classic:
-        for i in range(0, room_size[0]):
+    for i in range(0, room_size[0]):
+        if "top" not in room_type or (i != room_size[0]/2 and i != room_size[0]/2 - 1):
             walls.add(Wall([50 * i, 0], wall_image))
+
+        if "bottom" not in room_type or (i != room_size[0]/2 and i != room_size[0]/2 - 1):
             walls.add(Wall([50 * i, 550], wall_image))
-        for i in range(0, room_size[1] - 2):
+
+    for i in range(0, room_size[1] - 2):
+        if "left" not in room_type or (i != (room_size[1] - 2) / 2 and i != (room_size[1] - 2) / 2 - 1):
             walls.add(Wall([0, 50 + 50 * i], wall_image))
+
+        if "right" not in room_type or (i != (room_size[1] - 2) / 2 and i != (room_size[1] - 2) / 2 - 1):
             walls.add(Wall([550, 50 + 50 * i], wall_image))
 
 
@@ -33,9 +39,16 @@ def add_enemies(enemies_group, enemies_list):
             enemies_group.add(enemy)
 
 
-def add_character(character, character_start_point):
+def add_character(character_group, character_start_point):
     from resources.image_manager import get_character_rest_image, get_character_walk_images
     character_rest_image = get_character_rest_image()
     character_walk_images = get_character_walk_images()
 
-    character.add(Character(character_start_point, character_rest_image, character_walk_images))
+    character_group.add(Character(character_start_point, character_rest_image, character_walk_images))
+
+
+def copy_character(character_group_from, character_group_to):
+    for main_character in character_group_from.sprites():
+        character_group_from.empty()
+        character_group_to.empty()
+        character_group_to.add(main_character)

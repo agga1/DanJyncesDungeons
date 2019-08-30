@@ -134,6 +134,10 @@ class Character(pygame.sprite.Sprite):
             self.level += 1
             self.curr_exp -= self.to_next_level_exp
 
+    def set_position(self, new_position):
+        self.rect.x = new_position[0]
+        self.rect.y = new_position[1]
+
     def get_position(self):
         return [self.rect.x, self.rect.y]
 

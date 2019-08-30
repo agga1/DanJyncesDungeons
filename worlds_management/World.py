@@ -2,6 +2,7 @@ import pygame
 import os
 
 from worlds_management.Room import Room
+from core.sprites_manager import copy_character
 
 
 def get_position(room):     # example: "room_1_12.txt", we need pos_x = 1 and pos_y = 12
@@ -18,6 +19,7 @@ class World:
     def __init__(self, world_path):
         self.path = world_path
 
+        # world configurations
         self.size = [0, 0]
         self.rooms = []
         self.start_room = [0, 0]
@@ -35,12 +37,12 @@ class World:
         for i in range(0, self.size[1]):    # checking rooms in the world (now just checking which is the start one)
             curr_line = world_file.readline().split()
             for j in range(0, self.size[0]):
-                if int(curr_line[j]) == 1:      # no room == 0, start room == 1
+                if int(curr_line[j]) == 1:      # no room == 0, start room == 1, other rooms == 2
                     self.start_room = [j, i]
 
         world_file.close()
 
-        # dskfdslfj
+        # start room
         self.curr_room = self.start_room
 
     def load_world(self):
@@ -55,7 +57,7 @@ class World:
                 room_size = room_file.readline().split()    # size of the room [from left to right, from top to bottom]
                 room_size = [int(room_size[0]), int(room_size[1])]
 
-                room_type = room_file.readline().split()[0]    # type of the room, default: classic
+                room_type = room_file.readline().split()    # places with doors ("top", "bottom", "left", "right")
 
                 enemies_number = int(room_file.readline().split()[0])   # number of enemies in the room
 
@@ -75,6 +77,43 @@ class World:
                 room_file.close()
 
                 self.rooms[position[0]][position[1]] = Room(room_size, room_type, enemies)   # adding room
+
+    def change_room(self, direction):
+        last_room = self.curr_room
+
+        if direction == "top":
+            if self.curr_room[1] > 0 and self.rooms[self.curr_room[0]][self.curr_room[1] - 1]:
+                self.curr_room[1] -= 1
+        elif direction == "bottom":
+            if self.curr_room[1] < self.size[1] - 1 and self.rooms[self.curr_room[0]][self.curr_room[1] + 1]:
+                self.curr_room[1] += 1
+        elif direction == "left":
+            if self.curr_room[0] > 0 and self.rooms[self.curr_room[0] - 1][self.curr_room[1]]:
+                self.curr_room[0] -= 1
+        elif direction == "right":
+            if self.curr_room[0] < self.size[0] - 1 and self.rooms[self.curr_room[0] + 1][self.curr_room[1]]:
+                self.curr_room[0] += 1
+
+        # adding character to new room and erasing from the last one
+        copy_character(self.rooms[last_room[0]][last_room[1]].get_character(),              # from
+                       self.rooms[self.curr_room[0]][self.curr_room[1]].get_character())    # to
+
+        # setting position of the character
+        self.rooms[self.curr_room[0]][self.curr_room[1]].set_character_position(direction)
+
+    def check_room(self):
+        # checking if we are changing room
+        for main_character in self.rooms[self.curr_room[0]][self.curr_room[1]].get_character():
+            main_character_pos = main_character.get_position()
+
+            if main_character_pos[1] < 0:
+                self.change_room("top")
+            elif main_character_pos[1] > self.rooms[self.curr_room[0]][self.curr_room[1]].get_size()[1] * 50:
+                self.change_room("bottom")
+            elif main_character_pos[0] < 0:
+                self.change_room("left")
+            elif main_character_pos[0] > self.rooms[self.curr_room[0]][self.curr_room[1]].get_size()[0] * 50:
+                self.change_room("right")
 
     def get_curr_room(self):
         return self.rooms[self.curr_room[0]][self.curr_room[1]]

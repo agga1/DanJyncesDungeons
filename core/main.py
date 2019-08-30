@@ -108,6 +108,10 @@ while True:
         for enemy in curr_room.get_enemies().sprites():
             enemy.move(curr_room.get_character().sprites(), time)
 
+        curr_world.check_room()
+        #print(curr_world.curr_room)
+        curr_room = curr_world.get_curr_room()
+
     pygame.display.flip()
     time += 1
     if time % 30 == 0:

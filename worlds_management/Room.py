@@ -11,6 +11,13 @@ pygame.init()
 screen = pygame.display.set_mode([screen_width, screen_height])
 
 
+money_font = pygame.font.Font('freesansbold.ttf', 25)
+level_font = pygame.font.Font('freesansbold.ttf', 40)
+
+new_room_distance_from_door = 100
+
+
+# ----- CLASS -----
 class Room:
     def __init__(self, room_size, room_type, room_enemies):
         # specification of the room
@@ -19,8 +26,7 @@ class Room:
 
         # walls group
         self.walls = pygame.sprite.Group()
-        if room_type == "classic":
-            core.sprites_manager.add_walls(self.walls, room_size)
+        core.sprites_manager.add_walls(self.walls, room_size, room_type)
 
         # enemies group
         self.enemies = pygame.sprite.Group()
@@ -91,6 +97,28 @@ class Room:
 
             pygame.draw.rect(screen, GREEN, [level_start_point[0] + 35, level_start_point[1] + 10,
                                              exp * experience_bar_length / max_exp, experience_bar_width])
+
+    def set_character_position(self, new_room_direction):
+        for main_character in self.character.sprites():
+            new_position = [0, 0]
+
+            if new_room_direction == "top":
+                new_position[0] = main_character.get_position()[0]
+                new_position[1] = self.size[1] * 50 - new_room_distance_from_door
+            elif new_room_direction == "bottom":
+                new_position[0] = main_character.get_position()[0]
+                new_position[1] = new_room_distance_from_door
+            elif new_room_direction == "left":
+                new_position[0] = self.size[0] * 50 - new_room_distance_from_door
+                new_position[1] = main_character.get_position()[1]
+            elif new_room_direction == "right":
+                new_position[0] = new_room_distance_from_door
+                new_position[1] = main_character.get_position()[1]
+
+            main_character.set_position(new_position)
+
+    def get_size(self):
+        return self.size
 
     def get_walls(self):
         return self.walls
