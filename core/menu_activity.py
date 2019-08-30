@@ -18,6 +18,9 @@ def menu_run():
             # QUIT GAME
             if e.type == pygame.QUIT:
                 exit(1)
+            if e.type == pygame.KEYDOWN:
+                if e.key == pygame.K_SPACE:
+                    return
 
         pygame.display.flip()
 
