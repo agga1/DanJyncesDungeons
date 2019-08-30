@@ -3,11 +3,11 @@
 from enemies.Enemy import Enemy
 from obstacles.Wall import Wall
 from character.Character import Character
+from resources.image_manager import get_bat_images, get_wall_image, get_character_rest_image, get_character_walk_images
 
 
 def create_enemy(enemy_type, enemy_start_point):
     if enemy_type == "bat":
-        from resources.image_manager import get_bat_images
         bat_images = get_bat_images()
 
         return Enemy(enemy_start_point, bat_images)
@@ -15,10 +15,9 @@ def create_enemy(enemy_type, enemy_start_point):
 
 
 def add_walls(walls, room_size, room_type):      # classic: walls are in the borders of room
-    from resources.image_manager import get_wall_image
     wall_image = get_wall_image()
 
-    for i in range(0, room_size[0]):
+    for i in range(0, room_size[0]):    # ifs are for not displaying walls in the places of doors
         if "top" not in room_type or (i != room_size[0]/2 and i != room_size[0]/2 - 1):
             walls.add(Wall([50 * i, 0], wall_image))
 
@@ -40,15 +39,7 @@ def add_enemies(enemies_group, enemies_list):
 
 
 def add_character(character_group, character_start_point):
-    from resources.image_manager import get_character_rest_image, get_character_walk_images
     character_rest_image = get_character_rest_image()
     character_walk_images = get_character_walk_images()
 
     character_group.add(Character(character_start_point, character_rest_image, character_walk_images))
-
-
-def copy_character(character_group_from, character_group_to):
-    for main_character in character_group_from.sprites():
-        character_group_from.empty()
-        character_group_to.empty()
-        character_group_to.add(main_character)

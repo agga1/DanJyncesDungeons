@@ -3,9 +3,9 @@ import math
 
 from core import sprites_functions
 
-enemy_speed = 3     # other types of enemies will have different values of these variables
+enemy_speed = 3     # other types of enemies will have different set of these values
 enemy_damage = 1
-enemy_knockback = 30
+enemy_knockback_multiplier = 4
 enemy_reward = 10
 enemy_exp_for_kill = 4
 enemy_frame_change_time = 5
@@ -38,55 +38,57 @@ class Enemy(pygame.sprite.Sprite):
 
         # attack
         self.damage = enemy_damage
-        self.knockback = enemy_knockback
+        self.knockback_multiplier = enemy_knockback_multiplier
 
         # after killing
         self.reward = enemy_reward
         self.exp_for_kill = enemy_exp_for_kill
 
-    def set_velocity(self, characters):
-        for main_character in characters:
-            curr_character_position = main_character.get_position()
-            position_difference = [self.rect.x - curr_character_position[0], self.rect.y - curr_character_position[1]]
+    def set_velocity(self, main_character):
+        curr_character_position = main_character.get_position()
+        position_difference = [self.rect.x - curr_character_position[0], self.rect.y - curr_character_position[1]]
 
-            # calculating angle
-            if position_difference[0] != 0:
-                angle = math.atan(position_difference[1]/position_difference[0])
-            elif position_difference[1] > 0:
-                angle = math.pi/2
+        # calculating angle
+        if position_difference[0] != 0:
+            angle = math.atan(position_difference[1]/position_difference[0])
+        elif position_difference[1] > 0:
+            angle = math.pi/2
+        else:
+            angle = math.pi * 3/2
+
+        # setting velocity
+        if position_difference[0] >= 0:
+            self.velocity = [-1 * self.speed * math.cos(angle), -1 * self.speed * math.sin(angle)]
+        else:
+            self.velocity = [self.speed * math.cos(angle), self.speed * math.sin(angle)]
+
+        # changing angle for rotation
+        if not (self.velocity[0] == 0 and self.velocity[1] == 0):
+            if self.velocity[0] != 0:
+                self.angle = math.atan(self.velocity[1]/self.velocity[0])
+            elif self.velocity[1] > 0:
+                self.angle = math.pi/2
             else:
-                angle = math.pi * 3/2
+                self.angle = math.pi * 3/2
 
-            # setting velocity
-            if position_difference[0] >= 0:
-                self.velocity = [-1 * self.speed * math.cos(angle), -1 * self.speed * math.sin(angle)]
+            if self.velocity[0] < 0:
+                self.angle = math.degrees(-1 * self.angle + math.pi/2)
             else:
-                self.velocity = [self.speed * math.cos(angle), self.speed * math.sin(angle)]
+                self.angle = math.degrees(-1 * self.angle - math.pi/2)
 
-            # changing angle for rotation
-            if not (self.velocity[0] == 0 and self.velocity[1] == 0):
-                if self.velocity[0] != 0:
-                    self.angle = math.atan(self.velocity[1]/self.velocity[0])
-                elif self.velocity[1] > 0:
-                    self.angle = math.pi/2
-                else:
-                    self.angle = math.pi * 3/2
+    def move(self, character_group, time):
+        # following main character if not colliding with him
+        for main_character in character_group:
+            if not (pygame.sprite.spritecollide(self, character_group, False) or main_character.get_stunned()):
 
-                if self.velocity[0] < 0:
-                    self.angle = math.degrees(-1 * self.angle + math.pi/2)
-                else:
-                    self.angle = math.degrees(-1 * self.angle - math.pi/2)
+                self.set_velocity(main_character)
 
-    def move(self, characters, time):
-        # following main character
-        self.set_velocity(characters)
+                # to improve softness of movement
+                self.exact_pos[0] += self.velocity[0]
+                self.exact_pos[1] += self.velocity[1]
 
-        # to improve softness of movement
-        self.exact_pos[0] += self.velocity[0]
-        self.exact_pos[1] += self.velocity[1]
-
-        self.rect.x = self.exact_pos[0]
-        self.rect.y = self.exact_pos[1]
+                self.rect.x = self.exact_pos[0]
+                self.rect.y = self.exact_pos[1]
 
         # animation
         self.original_image = sprites_functions.animate(self.movement_animation, time, self.animation_start,
@@ -99,14 +101,17 @@ class Enemy(pygame.sprite.Sprite):
         self.image = pygame.transform.rotate(self.original_image, self.angle)
         self.rect = self.image.get_rect(center=self.rect.center)
 
+    def get_speed(self):
+        return self.speed
+
     def get_velocity(self):
         return self.velocity
 
     def get_damage(self):
         return self.damage
 
-    def get_knockback(self):
-        return self.knockback
+    def get_knockback_multiplier(self):
+        return self.knockback_multiplier
 
     def get_reward(self):
         return self.reward
