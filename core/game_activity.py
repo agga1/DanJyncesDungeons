@@ -35,11 +35,6 @@ def game_run(db):
 
     worlds_manager.game_start()
 
-    # WORLD
-    curr_world = worlds_manager.get_curr_world()
-
-    # ROOM
-    curr_room = curr_world.get_curr_room()
     while True:
 
         clock.tick(60)
@@ -47,7 +42,7 @@ def game_run(db):
         if inventory.get_active():
             inventory.draw()
         else:
-            curr_room.draw_room(money) # quick fix : passing all values to be displayed instead of importing them from main
+            worlds_manager.draw(money)
 
         for e in pygame.event.get():
             # QUIT GAME
@@ -55,7 +50,7 @@ def game_run(db):
                 exit(1)
 
             # KEYS MANAGEMENT
-            for main_character in curr_room.get_character().sprites():
+            for main_character in worlds_manager.get_character().sprites():
                 if e.type == pygame.KEYDOWN:
                     # movement
                     if e.key == pygame.K_w:
@@ -93,17 +88,15 @@ def game_run(db):
                     main_character.stop_attack()
 
         if not inventory.active:
-            for main_character in curr_room.get_character().sprites():
-                main_character.move(curr_room.get_walls(), time)  # move if not colliding with walls
-                money += main_character.check_collisions(curr_room)
+            for main_character in worlds_manager.get_character().sprites():
+                main_character.move(worlds_manager.get_curr_world().get_curr_room().get_walls(), time)  # move if not colliding with walls
+                money += main_character.check_collisions(worlds_manager.get_curr_world().get_curr_room())
                 db.update_money(money)
 
-            for enemy in curr_room.get_enemies().sprites():
-                enemy.move(curr_room.get_character().sprites(), time)
+            for enemy in worlds_manager.get_curr_world().get_curr_room().get_enemies().sprites():
+                enemy.move(worlds_manager.get_character().sprites(), time)
 
-            curr_world.check_room()
-            #print(curr_world.curr_room)
-            curr_room = curr_world.get_curr_room()
+            worlds_manager.get_curr_world().check_room(worlds_manager.get_character())
 
         pygame.display.flip()
         time += 1

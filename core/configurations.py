@@ -5,6 +5,8 @@ pygame.init()
 screen_width = 600
 screen_height = 600
 
+screen = pygame.display.set_mode([screen_width, screen_height])
+
 main_font = 'freesansbold.ttf'
 
 # START GAME
@@ -27,6 +29,9 @@ money_start_point = [510, 560]
 level_start_point = [10, 5]
 experience_bar_width = 10
 experience_bar_length = 120
+
+# changing room
+distance_from_door = 50
 
 # fonts
 

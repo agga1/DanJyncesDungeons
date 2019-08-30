@@ -5,7 +5,7 @@ from worlds_management.Room import Room
 from core.sprites_manager import copy_character
 
 
-def get_position(room):     # example: "room_1_12.txt", we need pos_x = 1 and pos_y = 12
+def get_room_position(room):     # example: "room_1_12.txt", we need pos_x = 1 and pos_y = 12
     room = room.split("_")
     pos_x = int(room[1])
 
@@ -50,7 +50,7 @@ class World:
 
         for room in rooms:
             if room != "world.txt":
-                position = get_position(room)
+                position = get_room_position(room)
 
                 room_file = open(self.path + "/" + room)    # reading specification of the room
 
@@ -78,9 +78,8 @@ class World:
 
                 self.rooms[position[0]][position[1]] = Room(room_size, room_type, enemies)   # adding room
 
-    def change_room(self, direction):
-        last_room = self.curr_room
-
+    def change_room(self, direction, character):
+        # changing room
         if direction == "top":
             if self.curr_room[1] > 0 and self.rooms[self.curr_room[0]][self.curr_room[1] - 1]:
                 self.curr_room[1] -= 1
@@ -94,26 +93,23 @@ class World:
             if self.curr_room[0] < self.size[0] - 1 and self.rooms[self.curr_room[0] + 1][self.curr_room[1]]:
                 self.curr_room[0] += 1
 
-        # adding character to new room and erasing from the last one
-        copy_character(self.rooms[last_room[0]][last_room[1]].get_character(),              # from
-                       self.rooms[self.curr_room[0]][self.curr_room[1]].get_character())    # to
-
         # setting position of the character
-        self.rooms[self.curr_room[0]][self.curr_room[1]].set_character_position(direction)
+        for main_character in character.sprites():
+            main_character.set_position(direction, self.rooms[self.curr_room[0]][self.curr_room[1]].get_size())
 
-    def check_room(self):
+    def check_room(self, character):
         # checking if we are changing room
-        for main_character in self.rooms[self.curr_room[0]][self.curr_room[1]].get_character():
+        for main_character in character.sprites():
             main_character_pos = main_character.get_position()
 
             if main_character_pos[1] < 0:
-                self.change_room("top")
+                self.change_room("top", character)
             elif main_character_pos[1] > self.rooms[self.curr_room[0]][self.curr_room[1]].get_size()[1] * 50:
-                self.change_room("bottom")
+                self.change_room("bottom", character)
             elif main_character_pos[0] < 0:
-                self.change_room("left")
+                self.change_room("left", character)
             elif main_character_pos[0] > self.rooms[self.curr_room[0]][self.curr_room[1]].get_size()[0] * 50:
-                self.change_room("right")
+                self.change_room("right", character)
 
     def get_curr_room(self):
         return self.rooms[self.curr_room[0]][self.curr_room[1]]

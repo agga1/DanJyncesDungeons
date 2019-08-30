@@ -1,10 +1,12 @@
 import pygame
 
 from core import sprites_functions
+from core.configurations import *
+from resources.image_manager import get_coin_image, get_heart_image
 
 start_health = 5
 character_speed = 5
-frame_change_time = 20 / character_speed    # inverse proportion to make it more universal
+frame_change_time = 20 / character_speed  # inverse proportion to make it more universal
 
 
 class Character(pygame.sprite.Sprite):
@@ -21,7 +23,7 @@ class Character(pygame.sprite.Sprite):
         self.staying_image = staying_image  # animation name: "rest"
         self.movement_animation = movement_animation  # animation name: "move"
         self.curr_animation = "rest"
-        self.animation_start = 0    # time when current animation started
+        self.animation_start = 0  # time when current animation started
 
         # position
         self.rect.x = start_point[0]
@@ -42,6 +44,43 @@ class Character(pygame.sprite.Sprite):
 
         # attack
         self.is_attacking = False
+
+    def draw_stats(self, money):
+        self.health_display()
+        self.money_display(money)
+        self.level_display()
+
+    def health_display(self):
+        heart_image = get_heart_image()
+
+        screen.blit(heart_image, health_start_point)
+
+        pygame.draw.rect(screen, RED,
+                         [health_start_point[0] + 35, health_start_point[1], health_bar_length,
+                          health_bar_width], 1)
+
+        pygame.draw.rect(screen, RED, [health_start_point[0] + 35, health_start_point[1],
+                                       self.health * health_bar_length / self.max_health, health_bar_width])
+
+    def money_display(self, money):
+        coin_image = get_coin_image()
+
+        money_number = money_font.render(str(money), True, YELLOW)
+        screen.blit(coin_image, money_start_point)
+        screen.blit(money_number, [money_start_point[0] + 25, money_start_point[1]])
+
+    def level_display(self):
+
+        level_number = level_font.render(str(self.level), True, GREEN)
+        screen.blit(level_number, level_start_point)
+
+        pygame.draw.rect(screen, GREEN,
+                         [level_start_point[0] + 35, level_start_point[1] + 10, experience_bar_length,
+                          experience_bar_width], 1)
+
+        pygame.draw.rect(screen, GREEN, [level_start_point[0] + 35, level_start_point[1] + 10,
+                                         self.curr_exp * experience_bar_length / self.to_next_level_exp,
+                                         experience_bar_width])
 
     def change_velocity(self, directions):
         self.velocity[0] += directions[0] * self.speed
@@ -116,12 +155,9 @@ class Character(pygame.sprite.Sprite):
             curr_room.get_character().empty()
             exit(1)
 
-    def rot_center(self,):
+    def rot_center(self, ):
         self.image = pygame.transform.rotate(self.original_image, self.angle)
         self.rect = self.image.get_rect(center=self.rect.center)
-
-    def draw(self, screen):
-        screen.blit(self.image, [self.rect.x, self.rect.y])
 
     def start_attack(self):
         self.is_attacking = True
@@ -134,27 +170,28 @@ class Character(pygame.sprite.Sprite):
             self.level += 1
             self.curr_exp -= self.to_next_level_exp
 
-    def set_position(self, new_position):
+    def set_position(self, new_room_direction, new_room_size):
+
+        new_position = [0, 0]
+
+        if new_room_direction == "top":
+            new_position[0] = self.rect.x
+            new_position[1] = new_room_size[1] * 50 - distance_from_door
+        elif new_room_direction == "bottom":
+            new_position[0] = self.rect.x
+            new_position[1] = distance_from_door
+        elif new_room_direction == "left":
+            new_position[0] = new_room_size[0] * 50 - distance_from_door
+            new_position[1] = self.rect.y
+        elif new_room_direction == "right":
+            new_position[0] = distance_from_door
+            new_position[1] = self.rect.y
+
         self.rect.x = new_position[0]
         self.rect.y = new_position[1]
 
     def get_position(self):
         return [self.rect.x, self.rect.y]
-
-    def get_max_health(self):
-        return self.max_health
-
-    def get_health(self):
-        return self.health
-
-    def get_level(self):
-        return self.level
-
-    def get_curr_exp(self):
-        return self.curr_exp
-
-    def get_to_next_level_exp(self):
-        return self.to_next_level_exp
 
     def get_is_attacking(self):
         return self.is_attacking
