@@ -1,6 +1,6 @@
-'''
+"""
 Collection of functions shared betweem different sprites
-'''
+"""
 
 import pygame
 import math
