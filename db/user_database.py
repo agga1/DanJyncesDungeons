@@ -1,8 +1,7 @@
 import sqlite3
 import os
 
-db_path = os.path.abspath('..\data')
-db_path += "\\stats_db"
+db_path = os.path.abspath('..\data\stats_db')  # path to database
 
 
 class MyDatabase:
@@ -14,9 +13,10 @@ class MyDatabase:
         money INTEGER, health INTEGER, inventory TEXT)''')
         self.db.commit()
         # information which saved instance of a game is currently played
-        self.row_id = 1
+        self.row_id = 1  # point to last row
+        print(self.row_id)
 
-    def insert(self):  # create new row with new game instance, and automatically set row_id
+    def new_game(self):  # create new row with new game instance, and automatically set row_id
         print('evoked insert')
         self.cursor.execute('''INSERT INTO stats(money, health, inventory)
         VALUES(?, ?, ?)''', (0, 0, ""))
@@ -35,5 +35,6 @@ class MyDatabase:
 
     def get_version(self):
         return self.row_id
+
 
 
