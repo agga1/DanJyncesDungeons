@@ -38,12 +38,19 @@ class Character(pygame.sprite.Sprite):
         self.curr_exp = 0
         self.to_next_level_exp = 10
 
+        # checking if character is moving
+        self.key_clicked = {"top": False, "bottom": False, "left": False, "right": False}
+
         # movement
         self.speed = character_speed
         self.velocity = [0, 0]
 
-        # attack
+        # combat
         self.is_attacking = False
+
+        self.stunned = False
+        self.immune = False
+        self.last_attack_time = 0
 
     def draw_stats(self, money):
         self.health_display()
@@ -82,6 +89,14 @@ class Character(pygame.sprite.Sprite):
                                          self.curr_exp * experience_bar_length / self.to_next_level_exp,
                                          experience_bar_width])
 
+    def set_velocity(self, direction):
+        self.velocity[0] = direction[0] * self.speed
+        self.velocity[1] = direction[1] * self.speed
+
+        # changing angle for rotation
+        if not (self.velocity[0] == 0 and self.velocity[1] == 0):
+            self.angle = sprites_functions.find_angle(self.velocity)
+
     def change_velocity(self, directions):
         self.velocity[0] += directions[0] * self.speed
         self.velocity[1] += directions[1] * self.speed
@@ -90,18 +105,29 @@ class Character(pygame.sprite.Sprite):
         if not (self.velocity[0] == 0 and self.velocity[1] == 0):
             self.angle = sprites_functions.find_angle(self.velocity)
 
+    def stop(self, direction):
+        self.velocity[0] *= direction[0]
+        self.velocity[1] *= direction[1]
+
+        # changing angle for rotation
+        if not (self.velocity[0] == 0 and self.velocity[1] == 0):
+            self.angle = sprites_functions.find_angle(self.velocity)
+
     def move(self, walls, time):
         curr_position = [self.rect.x, self.rect.y]
+
+        # attempt to move
         self.rect.x += self.velocity[0]
         self.rect.y += self.velocity[1]
 
         # checking collision with walls
         if pygame.sprite.spritecollide(self, walls, False):
+            # if collide, do not move
             self.rect.x = curr_position[0]
             self.rect.y = curr_position[1]
 
         # changing current animation
-        if self.velocity[0] == 0 and self.velocity[1] == 0:
+        if (self.velocity[0] == 0 and self.velocity[1] == 0) or self.stunned:
             self.curr_animation = "rest"
             self.animation_start = time
         else:
@@ -119,7 +145,7 @@ class Character(pygame.sprite.Sprite):
         # rotation
         self.rot_center()
 
-    def check_collisions(self, curr_room):
+    def check_collisions(self, curr_room, time):
         # checking collision with enemies, function returns money as a reward for killing enemy
         attackers = pygame.sprite.spritecollide(self, curr_room.get_enemies(), False)
         for attacker in attackers:
@@ -134,21 +160,29 @@ class Character(pygame.sprite.Sprite):
 
                 return reward
             else:
-                self.hit(attacker)
+                self.hit(attacker, time)
                 return 0
         return 0
 
-    def hit(self, attacker):
-        # damage and death
-        self.health -= attacker.get_damage()
-        self.check_death()
+    def hit(self, attacker, time):
+        if not self.immune:
+            # damage and death
+            self.health -= attacker.get_damage()
+            self.check_death()
 
-        # knockback
-        attacker_velocity = attacker.get_velocity()
-        attacker_knockback = attacker.get_knockback()
+            # stun and immunity
+            self.stunned = True
+            self.immune = True
+            self.last_attack_time = time
 
-        self.rect.x += attacker_velocity[0] * attacker_knockback
-        self.rect.y += attacker_velocity[1] * attacker_knockback
+            # knockback
+            self.stop([0, 0])
+            attacker_velocity = attacker.get_velocity()
+            attacker_speed = attacker.get_speed()
+            attacker_knockback = attacker.get_knockback_multiplier()
+
+            self.change_velocity([attacker_velocity[0] * attacker_knockback / (attacker_speed * self.speed),
+                                  attacker_velocity[1] * attacker_knockback / (attacker_speed * self.speed)])
 
     def check_death(self):
         # end of the game
@@ -170,6 +204,13 @@ class Character(pygame.sprite.Sprite):
             self.level += 1
             self.curr_exp -= self.to_next_level_exp
 
+    def check_stun_and_immunity(self, time):
+        if time - self.last_attack_time > knockback_duration and self.stunned:
+            self.stunned = False
+            self.stop([0, 0])
+        if time - self.last_attack_time > immunity_duration and self.immune:
+            self.immune = False
+
     def set_position(self, new_room_direction, new_room_size):
         new_position = [0, 0]
 
@@ -189,8 +230,17 @@ class Character(pygame.sprite.Sprite):
         self.rect.x = new_position[0]
         self.rect.y = new_position[1]
 
+    def set_key_clicked(self, direction, click):  # setting that the movement key is (not) being pressed
+        self.key_clicked[direction] = click
+
     def get_position(self):
         return [self.rect.x, self.rect.y]
+
+    def get_key_clicked(self, direction):
+        return self.key_clicked[direction]
+
+    def get_stunned(self):
+        return self.stunned
 
     def get_is_attacking(self):
         return self.is_attacking

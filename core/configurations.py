@@ -30,13 +30,15 @@ experience_bar_length = 120
 # changing room
 distance_from_door = 50
 
-# fonts
+# combat
+knockback_duration = 15     # also stun duration
+immunity_duration = 30
 
+# fonts
 money_font = pygame.font.Font(main_font, 25)
 level_font = pygame.font.Font(main_font, 40)
 
 # colors
-
 GREEN = (0, 185, 0)
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0)

@@ -6,13 +6,11 @@ from db.MyDatabase import MyDatabase
 from core.menu_activity import menu_run
 
 
-# ----- MAIN LOOP -----
 def game_run(db):
     pygame.init()
 
-    # database
+    # DATABASE
     money = 0
-    # ----- VARIABLES -----
 
     # TIME
     clock = pygame.time.Clock()
@@ -32,7 +30,6 @@ def game_run(db):
 
     # WORLDS MANAGER
     worlds_manager = WorldsManager()
-
     worlds_manager.game_start()
 
     while True:
@@ -45,22 +42,22 @@ def game_run(db):
             worlds_manager.draw(money)
 
         for e in pygame.event.get():
-            # QUIT GAME
+            # quit game
             if e.type == pygame.QUIT:
                 exit(1)
 
-            # KEYS MANAGEMENT
+            # keys management
             for main_character in worlds_manager.get_character().sprites():
                 if e.type == pygame.KEYDOWN:
-                    # movement
+                    # movement (saving information about keys being pressed)
                     if e.key == pygame.K_w:
-                        main_character.change_velocity([0, -1])
+                        main_character.set_key_clicked("top", True)
                     if e.key == pygame.K_s:
-                        main_character.change_velocity([0, 1])
+                        main_character.set_key_clicked("bottom", True)
                     if e.key == pygame.K_a:
-                        main_character.change_velocity([-1, 0])
+                        main_character.set_key_clicked("left", True)
                     if e.key == pygame.K_d:
-                        main_character.change_velocity([1, 0])
+                        main_character.set_key_clicked("right", True)
 
                     # inventory
                     if e.key == pygame.K_i and not inventory.active:
@@ -73,16 +70,16 @@ def game_run(db):
                         last_attack = time
                         main_character.start_attack()
 
-                # movement
+                # movement (velocity is multiplied by the values in the brackets: 0 - stop moving in that direction)
                 if e.type == pygame.KEYUP:
                     if e.key == pygame.K_w:
-                        main_character.change_velocity([0, 1])
+                        main_character.set_key_clicked("top", False)
                     if e.key == pygame.K_s:
-                        main_character.change_velocity([0, -1])
+                        main_character.set_key_clicked("bottom", False)
                     if e.key == pygame.K_a:
-                        main_character.change_velocity([1, 0])
+                        main_character.set_key_clicked("left", False)
                     if e.key == pygame.K_d:
-                        main_character.change_velocity([-1, 0])
+                        main_character.set_key_clicked("right", False)
 
                 # stop attacking
                 if main_character.get_is_attacking() and time - last_attack >= attack_duration:
@@ -90,11 +87,34 @@ def game_run(db):
 
         if not inventory.active:
             for main_character in worlds_manager.get_character().sprites():
+                # set character velocity
+                if not main_character.get_stunned():
+                    vertical_velocity = 0
+                    if main_character.get_key_clicked("top") and main_character.get_key_clicked("bottom"):
+                        vertical_velocity = 0
+                    elif main_character.get_key_clicked("top"):
+                        vertical_velocity = -1
+                    elif main_character.get_key_clicked("bottom"):
+                        vertical_velocity = 1
+
+                    horizontal_velocity = 0
+                    if main_character.get_key_clicked("left") and main_character.get_key_clicked("right"):
+                        horizontal_velocity = 0
+                    elif main_character.get_key_clicked("left"):
+                        horizontal_velocity = -1
+                    elif main_character.get_key_clicked("right"):
+                        horizontal_velocity = 1
+
+                    main_character.set_velocity([horizontal_velocity, vertical_velocity])
+
                 # move if not colliding with walls
                 main_character.move(worlds_manager.get_curr_world().get_curr_room().get_walls(), time)
 
                 # colliding with enemies
-                money += main_character.check_collisions(worlds_manager.get_curr_world().get_curr_room())
+                money += main_character.check_collisions(worlds_manager.get_curr_world().get_curr_room(), time)
+
+                # checking stun and immunity to enemies
+                main_character.check_stun_and_immunity(time)
 
                 # checking changing room
                 worlds_manager.get_curr_world().check_room(main_character)
@@ -102,8 +122,9 @@ def game_run(db):
                 # saving money to database
                 db.update_money(money)
 
-                for enemy in worlds_manager.get_curr_world().get_curr_room().get_enemies().sprites():
-                    enemy.move(main_character, time)
+            # enemies movement
+            for enemy in worlds_manager.get_curr_world().get_curr_room().get_enemies().sprites():
+                enemy.move(worlds_manager.get_character(), time)
 
         pygame.display.flip()
         time += 1
