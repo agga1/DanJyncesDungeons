@@ -1,5 +1,7 @@
 import pygame
 from core.sprites_functions import connect_frames
+# menu
+bg_image = pygame.image.load("../resources/images_and_animations/terrain.png")
 
 # terrain and walls
 terrain_image = pygame.image.load("../resources/images_and_animations/terrain.png")
@@ -20,6 +22,10 @@ coin_image = pygame.image.load("../resources/images_and_animations/coin.png")
 
 # items
 item_image = pygame.image.load("../resources/images_and_animations/item.png")
+
+
+def get_bg():
+    return bg_image
 
 
 def get_terrain_image():

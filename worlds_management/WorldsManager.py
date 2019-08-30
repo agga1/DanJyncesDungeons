@@ -2,6 +2,7 @@ import pygame
 import os
 
 from worlds_management.World import World
+from core import menu_activity
 
 curr_world = 0
 
@@ -23,7 +24,7 @@ class WorldsManager:
         # current world
         self.curr_world = 0
 
-    def start_game(self):
+    def game_start(self):
         self.worlds_list[0].load_world()
 
     def next_world(self):
