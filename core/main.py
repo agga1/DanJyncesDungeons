@@ -16,10 +16,7 @@ db = MyDatabase()
 
 # CAPTION
 pygame.display.set_caption("Dan Jynce's Dungeons")
-
-game_version = menu_run()  # returns which game should be played (new game, or saved A saved B saved C)
-if game_version == 0:  # new game
-    db.new_game()
-    game_run(db)
-else:
-    game_run(db)
+save_status = [db.get_if_new(1), db.get_if_new(2), db.get_if_new(3)]
+game_version = menu_run(save_status)  # returns which game should be played (1=slot a, 2= slot b, 3=slot c)
+game_run(db, game_version)
+# game_run(db, 1)

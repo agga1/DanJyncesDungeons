@@ -7,11 +7,15 @@ from core.menu_activity import menu_run
 
 
 # ----- MAIN LOOP -----
-def game_run(db):
+def game_run(db, game_version):
+    print(game_version)
+    db.update_date(game_version)
+    db.update_if_new(game_version)
+    print(db.get_date(game_version))
     pygame.init()
 
     # database
-    money = 0
+    money = db.get_money(game_version)
     # ----- VARIABLES -----
 
     # TIME
@@ -95,8 +99,10 @@ def game_run(db):
         if not inventory.active:
             for main_character in curr_room.get_character().sprites():
                 main_character.move(curr_room.get_walls(), time)  # move if not colliding with walls
-                money += main_character.check_collisions(curr_room)
-                db.update_money(money)
+                new_money = main_character.check_collisions(curr_room)
+                money += new_money
+                if new_money > 0:
+                    db.update_money(money, game_version)
 
             for enemy in curr_room.get_enemies().sprites():
                 enemy.move(curr_room.get_character().sprites(), time)
@@ -107,7 +113,4 @@ def game_run(db):
 
         pygame.display.flip()
         time += 1
-        if time % 30 == 0:
-            print(db.get_money())
-            print("version ", db.get_version())
 
