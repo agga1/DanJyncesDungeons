@@ -14,6 +14,9 @@ main_font = 'freesansbold.ttf'
 # terrain
 terrain_image_start_point = [50, 50]
 
+# character
+character_start_point = [300, 300]
+
 # health
 health_start_point = [430, 5]
 health_bar_width = 20

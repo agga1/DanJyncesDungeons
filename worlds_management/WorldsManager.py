@@ -3,7 +3,7 @@ import os
 
 from worlds_management.World import World
 from core.sprites_manager import add_character
-from core.configurations import screen
+from core.configurations import screen, character_start_point
 from core import menu_activity
 
 curr_world = 0
@@ -28,8 +28,7 @@ class WorldsManager:
 
         # character group
         self.character = pygame.sprite.Group()
-        self.character_start_point = [300, 300]
-        add_character(self.character, self.character_start_point)
+        add_character(self.character, character_start_point)
 
     def draw(self, money):
         self.worlds_list[self.curr_world].get_curr_room().draw_room()
