@@ -1,19 +1,19 @@
 import pygame
 
 from core.Inventory import Inventory
+from sprites_management.sprites_manager import load_character
 from worlds_management.WorldsManager import WorldsManager
+from management_and_config.object_save import *
 
 
 # ----- MAIN LOOP -----
 def game_run(db, game_version):
-    print(game_version)
+
     db.update_date(game_version)
     db.update_if_new(game_version)
-    print(db.get_date(game_version))
+
     pygame.init()
 
-    # database
-    money = db.get_money(game_version)
     # ----- VARIABLES -----
 
     # TIME
@@ -29,11 +29,11 @@ def game_run(db, game_version):
 
     last_attack = 0
 
-    # MONEY
-    # money = 0
-
     # WORLDS MANAGER
-    worlds_manager = WorldsManager()
+    character = pygame.sprite.Group()
+    main_character = load_character(db, game_version)
+    character.add(main_character)
+    worlds_manager = WorldsManager(character)
     worlds_manager.game_start()
 
     while True:
@@ -43,7 +43,7 @@ def game_run(db, game_version):
         if inventory.get_active():
             inventory.draw()
         else:
-            worlds_manager.draw(money)
+            worlds_manager.draw()
 
         for e in pygame.event.get():
             # quit game
@@ -116,16 +116,12 @@ def game_run(db, game_version):
 
                 # colliding with enemies
                 money_change = main_character.check_collisions(worlds_manager.get_curr_world().get_curr_room(), time)
-                money += money_change
+                main_character.add_money(money_change)
                 # checking stun and immunity to enemies
                 main_character.check_stun_and_immunity(time)
 
                 # checking changing room
                 worlds_manager.get_curr_world().check_room(main_character)
-
-                # saving money to database
-                if money_change != 0:
-                    db.update_money(money, game_version)
 
             # enemies movement
             for enemy in worlds_manager.get_curr_world().get_curr_room().get_enemies().sprites():

@@ -4,6 +4,8 @@ from sprites_management.enemies.Enemy import Enemy
 from sprites_management.obstacles.Wall import Wall
 from sprites_management.character.Character import Character
 from resources.image_manager import get_bat_images, get_wall_image, get_character_rest_image, get_character_walk_images
+from management_and_config.configurations import character_start_point
+
 
 
 def create_enemy(enemy_type, enemy_start_point):
@@ -38,8 +40,11 @@ def add_enemies(enemies_group, enemies_list):
             enemies_group.add(enemy)
 
 
-def add_character(character_group, character_start_point):
+def load_character(db, game_version):
     character_rest_image = get_character_rest_image()
     character_walk_images = get_character_walk_images()
-
-    character_group.add(Character(character_start_point, character_rest_image, character_walk_images))
+    stats = []
+    stats.append(db.get_money(game_version))
+    # health = db.get_health(game_version) ...
+    # exp
+    return Character(character_start_point, character_rest_image, character_walk_images, stats)
