@@ -2,14 +2,13 @@ import pygame
 import os
 
 from worlds_management.World import World
-from sprites_management.sprites_manager import add_character
 from management_and_config.configurations import screen, character_start_point
 
 curr_world = 0
 
 
 class WorldsManager:
-    def __init__(self):
+    def __init__(self, character):  # gets passed character GROUP
         self.worlds_number = 0
         self.worlds_list = []
 
@@ -26,14 +25,13 @@ class WorldsManager:
         self.curr_world = 0
 
         # character group
-        self.character = pygame.sprite.Group()
-        add_character(self.character, character_start_point)
+        self.character = character
 
-    def draw(self, money):
+    def draw(self):
         self.worlds_list[self.curr_world].get_curr_room().draw_room()
 
         for main_character in self.character.sprites():
-            main_character.draw_stats(money)
+            main_character.draw_stats()
 
         self.character.draw(screen)
 

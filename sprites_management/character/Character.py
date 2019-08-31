@@ -4,7 +4,7 @@ from resources.image_manager import get_coin_image, get_heart_image
 
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self, start_point, staying_image, movement_animation, *groups):
+    def __init__(self, start_point, staying_image, movement_animation, stats, *groups):
         super().__init__(*groups)
 
         # image
@@ -25,11 +25,15 @@ class Character(pygame.sprite.Sprite):
 
         # health
         self.max_health = start_health
-        self.health = start_health
+        self.health = start_health  # will be passed in stats
+
+        # money
+
+        self.money = stats[0]
 
         # levels
-        self.level = 1
-        self.exp = 0
+        self.level = 1  # will be passed in stats
+        self.exp = 0  # will be passed in stats
         self.to_next_level_exp = 10
 
         # checking if character is moving
@@ -48,10 +52,11 @@ class Character(pygame.sprite.Sprite):
         self.immune = False
         self.last_attack_time = 0
 
+
     # ----- DRAWING -----
-    def draw_stats(self, money):
+    def draw_stats(self):
         self.health_display()
-        self.money_display(money)
+        self.money_display()
         self.level_display()
 
     def health_display(self):
@@ -66,10 +71,10 @@ class Character(pygame.sprite.Sprite):
         pygame.draw.rect(screen, RED, [health_start_point[0] + 35, health_start_point[1],
                                        self.health * health_bar_length / self.max_health, health_bar_width])
 
-    def money_display(self, money):
+    def money_display(self):
         coin_image = get_coin_image()
 
-        money_number = money_font.render(str(money), True, YELLOW)
+        money_number = money_font.render(str(self.money), True, YELLOW)
         screen.blit(coin_image, money_start_point)
         screen.blit(money_number, [money_start_point[0] + 25, money_start_point[1]])
 
@@ -230,3 +235,12 @@ class Character(pygame.sprite.Sprite):
 
     def get_stunned(self):
         return self.stunned
+
+    def get_money(self):
+        return self.money
+
+    def set_money(self, money):
+        self.money = money
+
+    def add_money(self, amount):
+        self.money += amount
