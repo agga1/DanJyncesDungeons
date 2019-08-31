@@ -2,8 +2,6 @@ import pygame
 
 from core.Inventory import Inventory
 from worlds_management.WorldsManager import WorldsManager
-from db.MyDatabase import MyDatabase
-from core.menu_activity import menu_run
 
 
 # ----- MAIN LOOP -----

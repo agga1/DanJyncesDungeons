@@ -1,14 +1,20 @@
+""" Contains all hardcoded gui values (fonts, colors, coord)"""
 import pygame
 
 pygame.init()
+
+# GENERAL -------------------------------------------------------------------------------
 
 screen_width = 600
 screen_height = 600
 
 screen = pygame.display.set_mode([screen_width, screen_height])
 
+# fonts
 main_font = 'freesansbold.ttf'
+
 font_size_info = 14
+font_size_bar = 12
 
 # colors
 GREEN = (0, 185, 0)
@@ -17,6 +23,8 @@ YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 SHADOW = (95, 95, 95)
+
+
 # ----- ROOM DISPLAY -----
 
 # terrain
@@ -48,4 +56,3 @@ immunity_duration = 30
 # fonts
 money_font = pygame.font.Font(main_font, 25)
 level_font = pygame.font.Font(main_font, 40)
-

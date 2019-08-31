@@ -1,7 +1,6 @@
 """Main menu activity, main file running on startup"""
-import pygame
 from resources import image_manager
-from core.configurations import *
+from management_and_config.configurations import *
 pygame.init()
 
 screen = pygame.display.set_mode([screen_width, screen_height])
@@ -63,13 +62,16 @@ def confirm_delete_draw():  # return 0 - do delete, 1 - dont delete
     text = font.render(text_string, True, BLACK)
     text_rect = text.get_rect()
     text_rect.center = (screen_height/2, screen_width/2)
+    # shadow behind popup
     bg_rect_shadow = pygame.rect.Rect(0, 0, text_rect.width + 10, text_rect.height + 10)
     bg_rect_shadow.center = (screen_height / 2 + 5, screen_width / 2 + 5)
     pygame.draw.rect(screen, SHADOW, bg_rect_shadow)
+    # popup window
     bg_rect = pygame.rect.Rect(0, 0, text_rect.width + 10, text_rect.height + 10)
     bg_rect.center = (screen_height/2, screen_width/2)
     pygame.draw.rect(screen,WHITE, bg_rect)
     screen.blit(text, text_rect)
+
     clock = pygame.time.Clock()
     while True:
         clock.tick(60)

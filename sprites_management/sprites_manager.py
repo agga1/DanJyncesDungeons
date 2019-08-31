@@ -1,8 +1,8 @@
 """ Managing creation and addition of new sprites """
 
-from enemies.Enemy import Enemy
-from obstacles.Wall import Wall
-from character.Character import Character
+from sprites_management.enemies.Enemy import Enemy
+from sprites_management.obstacles.Wall import Wall
+from sprites_management.character.Character import Character
 from resources.image_manager import get_bat_images, get_wall_image, get_character_rest_image, get_character_walk_images
 
 

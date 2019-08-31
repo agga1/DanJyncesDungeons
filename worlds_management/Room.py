@@ -1,9 +1,7 @@
 """ Manages actual screen display w all sprites and elements, hardcoded values included """
 
-import pygame
-
-import core.sprites_manager
-from core.configurations import *
+import sprites_management.sprites_manager
+from management_and_config.configurations import *
 from resources import image_manager
 
 pygame.init()
@@ -20,11 +18,11 @@ class Room:
 
         # walls group
         self.walls = pygame.sprite.Group()
-        core.sprites_manager.add_walls(self.walls, room_size, room_type)
+        sprites_management.sprites_manager.add_walls(self.walls, room_size, room_type)
 
         # enemies group
         self.enemies = pygame.sprite.Group()
-        core.sprites_manager.add_enemies(self.enemies, room_enemies)
+        sprites_management.sprites_manager.add_enemies(self.enemies, room_enemies)
 
     def draw_room(self):
         screen.fill(WHITE)

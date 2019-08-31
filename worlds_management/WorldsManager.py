@@ -2,9 +2,8 @@ import pygame
 import os
 
 from worlds_management.World import World
-from core.sprites_manager import add_character
-from core.configurations import screen, character_start_point
-from core import menu_activity
+from sprites_management.sprites_manager import add_character
+from management_and_config.configurations import screen, character_start_point
 
 curr_world = 0
 

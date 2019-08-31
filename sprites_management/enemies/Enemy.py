@@ -1,7 +1,7 @@
 import pygame
 import math
 
-from core import sprites_functions
+from sprites_management import sprites_functions
 
 enemy_speed = 3     # other types of enemies will have different set of these values
 enemy_damage = 1

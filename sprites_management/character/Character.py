@@ -1,7 +1,5 @@
-import pygame
-
-from core import sprites_functions
-from core.configurations import *
+from sprites_management import sprites_functions
+from management_and_config.configurations import *
 from resources.image_manager import get_coin_image, get_heart_image
 
 start_health = 5

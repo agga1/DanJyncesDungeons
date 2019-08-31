@@ -1,5 +1,5 @@
 import pygame
-from core.sprites_functions import connect_frames
+from sprites_management.sprites_functions import connect_frames
 # menu
 bg_image = pygame.image.load("../resources/images_and_animations/menu_bg.png")
 btn_image = pygame.image.load("../resources/images_and_animations/menu_button.png")

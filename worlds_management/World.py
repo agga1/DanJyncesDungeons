@@ -1,9 +1,8 @@
 """ Manages current world, reading world's and rooms' configuration files, changing rooms, checking room changing"""
-import pygame
 import os
 
 from worlds_management.Room import Room
-from core.sprites_manager import create_enemy
+from sprites_management.sprites_manager import create_enemy
 
 
 def get_room_position(room):     # example: "room_1_12.txt", we need pos_x = 1 and pos_y = 12
