@@ -8,6 +8,7 @@ screen_height = 600
 screen = pygame.display.set_mode([screen_width, screen_height])
 
 main_font = 'freesansbold.ttf'
+font_size_info = 14
 
 # colors
 GREEN = (0, 185, 0)
@@ -15,7 +16,7 @@ RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-SHADOW = (62, 62, 62)
+SHADOW = (95, 95, 95)
 # ----- ROOM DISPLAY -----
 
 # terrain
