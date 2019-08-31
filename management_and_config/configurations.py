@@ -3,7 +3,7 @@ import pygame
 
 pygame.init()
 
-# GENERAL -------------------------------------------------------------------------------
+# ----- GENERAL -----
 
 screen_width = 600
 screen_height = 600
@@ -15,6 +15,13 @@ main_font = 'freesansbold.ttf'
 
 font_size_info = 14
 font_size_bar = 12
+font_size_money = 25
+font_size_level = 40
+font_size_enemy_health = 16
+
+money_font = pygame.font.Font(main_font, font_size_money)
+level_font = pygame.font.Font(main_font, font_size_level)
+enemy_health_font = pygame.font.Font(main_font, font_size_enemy_health)
 
 # colors
 GREEN = (0, 185, 0)
@@ -22,6 +29,7 @@ RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+PINK = (255, 150, 150)
 SHADOW = (95, 95, 95)
 
 
@@ -32,6 +40,23 @@ terrain_image_start_point = [50, 50]
 
 # character
 character_start_point = [300, 300]
+start_health = 5
+character_attack_damage = 1
+character_knockback = 2
+character_speed = 5
+frame_change_time = 20 / character_speed  # inverse proportion to make it more universal
+
+# enemies
+enemy_speed = 3     # other types of enemies will have different set of these values
+enemy_health = 3
+enemy_damage = 1
+enemy_knockback_multiplier = 4
+enemy_reward = 10
+enemy_exp_for_kill = 4
+enemy_frame_change_time = 5
+enemy_health_bar_display_difference = [-2, 0]
+enemy_health_bar_width = 9
+enemy_health_bar_length = 54
 
 # health
 health_start_point = [430, 5]
@@ -52,7 +77,3 @@ distance_from_door = 50
 # combat
 knockback_duration = 15     # also stun duration
 immunity_duration = 30
-
-# fonts
-money_font = pygame.font.Font(main_font, 25)
-level_font = pygame.font.Font(main_font, 40)

@@ -1,10 +1,6 @@
-from sprites_management import sprites_functions
+from sprites_management.sprites_functions import *
 from management_and_config.configurations import *
 from resources.image_manager import get_coin_image, get_heart_image
-
-start_health = 5
-character_speed = 5
-frame_change_time = 20 / character_speed  # inverse proportion to make it more universal
 
 
 class Character(pygame.sprite.Sprite):
@@ -33,7 +29,7 @@ class Character(pygame.sprite.Sprite):
 
         # levels
         self.level = 1
-        self.curr_exp = 0
+        self.exp = 0
         self.to_next_level_exp = 10
 
         # checking if character is moving
@@ -44,12 +40,15 @@ class Character(pygame.sprite.Sprite):
         self.velocity = [0, 0]
 
         # combat
+        self.attack_damage = character_attack_damage
+        self.knockback = character_knockback
         self.is_attacking = False
 
         self.stunned = False
         self.immune = False
         self.last_attack_time = 0
 
+    # ----- DRAWING -----
     def draw_stats(self, money):
         self.health_display()
         self.money_display(money)
@@ -84,32 +83,17 @@ class Character(pygame.sprite.Sprite):
                           experience_bar_width], 1)
 
         pygame.draw.rect(screen, GREEN, [level_start_point[0] + 35, level_start_point[1] + 10,
-                                         self.curr_exp * experience_bar_length / self.to_next_level_exp,
+                                         self.exp * experience_bar_length / self.to_next_level_exp,
                                          experience_bar_width])
 
+    # ----- MOVEMENT -----
     def set_velocity(self, direction):
         self.velocity[0] = direction[0] * self.speed
         self.velocity[1] = direction[1] * self.speed
 
         # changing angle for rotation
         if not (self.velocity[0] == 0 and self.velocity[1] == 0):
-            self.angle = sprites_functions.find_angle(self.velocity)
-
-    def change_velocity(self, directions):
-        self.velocity[0] += directions[0] * self.speed
-        self.velocity[1] += directions[1] * self.speed
-
-        # changing angle for rotation
-        if not (self.velocity[0] == 0 and self.velocity[1] == 0):
-            self.angle = sprites_functions.find_angle(self.velocity)
-
-    def stop(self, direction):
-        self.velocity[0] *= direction[0]
-        self.velocity[1] *= direction[1]
-
-        # changing angle for rotation
-        if not (self.velocity[0] == 0 and self.velocity[1] == 0):
-            self.angle = sprites_functions.find_angle(self.velocity)
+            self.angle = find_character_angle(self.velocity)
 
     def move(self, walls, time):
         curr_position = [self.rect.x, self.rect.y]
@@ -137,30 +121,24 @@ class Character(pygame.sprite.Sprite):
         if self.curr_animation == "rest":
             self.original_image = self.staying_image
         elif self.curr_animation == "move":
-            self.original_image = sprites_functions.animate(self.movement_animation, time, self.animation_start,
-                                                            frame_change_time)
+            self.original_image = animate(self.movement_animation, time, self.animation_start, frame_change_time)
 
         # rotation
         self.rot_center()
 
+    def rot_center(self):
+        self.image = pygame.transform.rotate(self.original_image, self.angle)
+        self.rect = self.image.get_rect(center=self.rect.center)
+
+    # ----- COMBAT -----
     def check_collisions(self, curr_room, time):
-        # checking collision with enemies, function returns money as a reward for killing enemy
+        # checking collision with enemies
         attackers = pygame.sprite.spritecollide(self, curr_room.get_enemies(), False)
         for attacker in attackers:
             if self.is_attacking:
-                reward = attacker.get_reward()
-
-                curr_room.get_enemies().remove(attacker)
-
-                exp = attacker.get_exp_for_kill()
-                self.curr_exp += exp
-                self.check_level()
-
-                return reward
+                attacker.hit(curr_room, self, time)
             else:
                 self.hit(attacker, time)
-                return 0
-        return 0
 
     def hit(self, attacker, time):
         if not self.immune:
@@ -174,22 +152,17 @@ class Character(pygame.sprite.Sprite):
             self.last_attack_time = time
 
             # knockback
-            self.stop([0, 0])
             attacker_velocity = attacker.get_velocity()
             attacker_speed = attacker.get_speed()
             attacker_knockback = attacker.get_knockback_multiplier()
 
-            self.change_velocity([attacker_velocity[0] * attacker_knockback / (attacker_speed * self.speed),
-                                  attacker_velocity[1] * attacker_knockback / (attacker_speed * self.speed)])
+            self.set_velocity([attacker_velocity[0] * attacker_knockback / (attacker_speed * self.speed),
+                               attacker_velocity[1] * attacker_knockback / (attacker_speed * self.speed)])
 
     def check_death(self):
         # end of the game
         if self.health <= 0:
             exit(1)
-
-    def rot_center(self, ):
-        self.image = pygame.transform.rotate(self.original_image, self.angle)
-        self.rect = self.image.get_rect(center=self.rect.center)
 
     def start_attack(self):
         self.is_attacking = True
@@ -197,18 +170,27 @@ class Character(pygame.sprite.Sprite):
     def stop_attack(self):
         self.is_attacking = False
 
-    def check_level(self):
-        while self.curr_exp >= self.to_next_level_exp:
-            self.level += 1
-            self.curr_exp -= self.to_next_level_exp
-
     def check_stun_and_immunity(self, time):
         if time - self.last_attack_time > knockback_duration and self.stunned:
             self.stunned = False
-            self.stop([0, 0])
+            self.set_velocity([0, 0])
         if time - self.last_attack_time > immunity_duration and self.immune:
             self.immune = False
 
+    def add_experience(self, amount):
+        self.exp += amount
+        self.check_level()
+
+    def check_level(self):
+        while self.exp >= self.to_next_level_exp:
+            self.level += 1
+            self.exp -= self.to_next_level_exp
+
+    def add_money(self, amount):
+        # self.money += amount
+        pass
+
+    # ----- GETTERS AND SETTERS -----
     def set_position(self, new_room_direction, new_room_size):
         new_position = [0, 0]
 
@@ -237,8 +219,14 @@ class Character(pygame.sprite.Sprite):
     def get_key_clicked(self, direction):
         return self.key_clicked[direction]
 
-    def get_stunned(self):
-        return self.stunned
+    def get_attack_damage(self):
+        return self.attack_damage
+
+    def get_knockback(self):
+        return self.knockback
 
     def get_is_attacking(self):
         return self.is_attacking
+
+    def get_stunned(self):
+        return self.stunned

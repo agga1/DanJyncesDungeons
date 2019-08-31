@@ -1,14 +1,5 @@
-import pygame
-import math
-
-from sprites_management import sprites_functions
-
-enemy_speed = 3     # other types of enemies will have different set of these values
-enemy_damage = 1
-enemy_knockback_multiplier = 4
-enemy_reward = 10
-enemy_exp_for_kill = 4
-enemy_frame_change_time = 5
+from sprites_management.sprites_functions import *
+from management_and_config.configurations import *
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -36,25 +27,30 @@ class Enemy(pygame.sprite.Sprite):
         self.speed = enemy_speed
         self.velocity = [0, 0]
 
-        # attack
+        # health
+        self.max_health = enemy_health
+        self.health = enemy_health  # it will be changed after hit
+
+        # combat
         self.damage = enemy_damage
         self.knockback_multiplier = enemy_knockback_multiplier
 
-        # after killing
+        self.stunned = False
+        self.immune = False
+        self.last_attack_time = 0
+
+        # after being killed
         self.reward = enemy_reward
         self.exp_for_kill = enemy_exp_for_kill
 
-    def set_velocity(self, main_character):
+    # ----- MOVEMENT -----
+    def set_velocity_to_follow(self, main_character):
+        # main character is a target
         curr_character_position = main_character.get_position()
         position_difference = [self.rect.x - curr_character_position[0], self.rect.y - curr_character_position[1]]
 
         # calculating angle
-        if position_difference[0] != 0:
-            angle = math.atan(position_difference[1]/position_difference[0])
-        elif position_difference[1] > 0:
-            angle = math.pi/2
-        else:
-            angle = math.pi * 3/2
+        angle = calculate_arctan(position_difference)
 
         # setting velocity
         if position_difference[0] >= 0:
@@ -62,14 +58,9 @@ class Enemy(pygame.sprite.Sprite):
         else:
             self.velocity = [self.speed * math.cos(angle), self.speed * math.sin(angle)]
 
-        # changing angle for rotation
+        # changing angle for rotation (it is for animation)
         if not (self.velocity[0] == 0 and self.velocity[1] == 0):
-            if self.velocity[0] != 0:
-                self.angle = math.atan(self.velocity[1]/self.velocity[0])
-            elif self.velocity[1] > 0:
-                self.angle = math.pi/2
-            else:
-                self.angle = math.pi * 3/2
+            self.angle = calculate_arctan(self.velocity)
 
             if self.velocity[0] < 0:
                 self.angle = math.degrees(-1 * self.angle + math.pi/2)
@@ -77,12 +68,18 @@ class Enemy(pygame.sprite.Sprite):
                 self.angle = math.degrees(-1 * self.angle - math.pi/2)
 
     def move(self, character_group, time):
+        # checking if can move and be hit
+        self.check_stun_and_immunity(time)
+
         # following main character if not colliding with him
         for main_character in character_group:
-            if not (pygame.sprite.spritecollide(self, character_group, False) or main_character.get_stunned()):
+            # to not change velocity during stun
+            if not self.stunned:
+                self.set_velocity_to_follow(main_character)
 
-                self.set_velocity(main_character)
+            colliding_with_character = pygame.sprite.spritecollide(self, character_group, False)
 
+            if self.stunned or (not colliding_with_character and not main_character.get_stunned()):
                 # to improve softness of movement
                 self.exact_pos[0] += self.velocity[0]
                 self.exact_pos[1] += self.velocity[1]
@@ -91,8 +88,7 @@ class Enemy(pygame.sprite.Sprite):
                 self.rect.y = self.exact_pos[1]
 
         # animation
-        self.original_image = sprites_functions.animate(self.movement_animation, time, self.animation_start,
-                                                        enemy_frame_change_time)
+        self.original_image = animate(self.movement_animation, time, self.animation_start, enemy_frame_change_time)
 
         # rotation
         self.rot_center()
@@ -101,20 +97,69 @@ class Enemy(pygame.sprite.Sprite):
         self.image = pygame.transform.rotate(self.original_image, self.angle)
         self.rect = self.image.get_rect(center=self.rect.center)
 
+    # ----- COMBAT -----
+    def hit(self, curr_room, main_character, time):
+        if not self.immune:
+            self.health -= main_character.get_attack_damage()
+
+            self.check_death(curr_room, main_character)
+
+            self.knockback(main_character, time)
+
+    def check_death(self, curr_room, main_character):
+        if self.health <= 0:
+            main_character.add_money(self.reward)
+            main_character.add_experience(self.exp_for_kill)
+
+            curr_room.remove_enemy(self)
+
+    def knockback(self, main_character, time):
+        # setting variables
+        self.last_attack_time = time
+        self.immune = True
+        self.stunned = True
+
+        # choosing direction to make the biggest distance between enemy and character
+        character_position = main_character.get_position()
+        knockback_direction = [character_position[0] - self.rect.x, character_position[1] - self.rect.y]
+        knockback = main_character.get_knockback()
+
+        # calculating angle
+        angle = calculate_arctan(knockback_direction)
+
+        # setting velocity
+        if knockback_direction[0] >= 0:
+            self.velocity = [-1 * self.speed * math.cos(angle), -1 * self.speed * math.sin(angle)]
+        else:
+            self.velocity = [self.speed * math.cos(angle), self.speed * math.sin(angle)]
+
+        # multiplying by knockback
+        self.velocity = [self.velocity[0] * knockback, self.velocity[1] * knockback]
+
+    def check_stun_and_immunity(self, time):
+        if time - self.last_attack_time > knockback_duration and self.stunned:
+            self.stunned = False
+        if time - self.last_attack_time > immunity_duration and self.immune:
+            self.immune = False
+
+    # ----- GETTERS AND SETTERS -----
+    def get_position(self):
+        return [self.rect.x, self.rect.y]
+
     def get_speed(self):
         return self.speed
 
     def get_velocity(self):
         return self.velocity
 
+    def get_max_health(self):
+        return self.max_health
+
+    def get_health(self):
+        return self.health
+
     def get_damage(self):
         return self.damage
 
     def get_knockback_multiplier(self):
         return self.knockback_multiplier
-
-    def get_reward(self):
-        return self.reward
-
-    def get_exp_for_kill(self):
-        return self.exp_for_kill

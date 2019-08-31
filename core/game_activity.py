@@ -24,8 +24,8 @@ def game_run(db, game_version):
     inventory = Inventory()
 
     # ATTACK
-    attack_duration = 30
-    attack_interval = 60 + attack_duration
+    attack_duration = 20
+    attack_interval = 50 + attack_duration
 
     last_attack = 0
 
@@ -115,7 +115,8 @@ def game_run(db, game_version):
                 main_character.move(worlds_manager.get_curr_world().get_curr_room().get_walls(), time)
 
                 # colliding with enemies
-                money_change = main_character.check_collisions(worlds_manager.get_curr_world().get_curr_room(), time)
+                main_character.check_collisions(worlds_manager.get_curr_world().get_curr_room(), time)
+                money_change = 0     # temporary
                 money += money_change
                 # checking stun and immunity to enemies
                 main_character.check_stun_and_immunity(time)

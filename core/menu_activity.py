@@ -3,7 +3,6 @@ from resources import image_manager
 from management_and_config.configurations import *
 pygame.init()
 
-screen = pygame.display.set_mode([screen_width, screen_height])
 clock = pygame.time.Clock()
 
 

@@ -6,9 +6,6 @@ from resources import image_manager
 
 pygame.init()
 
-money_font = pygame.font.Font('freesansbold.ttf', 25)
-level_font = pygame.font.Font('freesansbold.ttf', 40)
-
 
 class Room:
     def __init__(self, room_size, room_type, room_enemies):
@@ -39,6 +36,30 @@ class Room:
 
     def enemy_display(self):
         self.enemies.draw(screen)
+
+        # displaying enemies' health
+        for enemy in self.enemies.sprites():
+            health = enemy.get_health()
+            max_health = enemy.get_max_health()
+            if health != max_health:
+                health_bar_start_point = [enemy.get_position()[0] + enemy_health_bar_display_difference[0],
+                                          enemy.get_position()[1] + enemy_health_bar_display_difference[1]]
+
+                pygame.draw.rect(screen, RED, (health_bar_start_point[0],
+                                               health_bar_start_point[1],
+                                               enemy_health_bar_length, enemy_health_bar_width), 1)
+
+                pygame.draw.rect(screen, PINK, (health_bar_start_point[0], health_bar_start_point[1],
+                                                enemy_health_bar_length, enemy_health_bar_width))
+
+                pygame.draw.rect(screen, RED, (health_bar_start_point[0], health_bar_start_point[1],
+                                               enemy_health_bar_length * health / max_health, enemy_health_bar_width))
+
+                health_text = enemy_health_font.render(str(health) + "/" + str(max_health), True, BLACK)
+                screen.blit(health_text, [health_bar_start_point[0] + 15, health_bar_start_point[1] - 2])
+
+    def remove_enemy(self, enemy):
+        self.enemies.remove(enemy)
 
     def get_size(self):
         return self.size

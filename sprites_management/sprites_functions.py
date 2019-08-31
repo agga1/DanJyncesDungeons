@@ -1,15 +1,12 @@
-"""
-Collection of functions shared betweem different sprites
-"""
+""" Collection of functions shared between different sprites """
 
 import pygame
 import math
 import os
 
+
 # ----- ANIMATIONS -----
-
-
-def find_angle(directions):
+def find_character_angle(directions):
     if directions == [0, 0]:
         return 0
     if directions[0] == 0:
@@ -46,3 +43,16 @@ def animate(images, curr_time, start_time, speed):
     curr_frame = math.floor((curr_time - start_time)/speed) % len(images)
 
     return images[curr_frame]
+
+
+# ----- MATHS -----
+def calculate_arctan(values):
+    if values[0] != 0:
+        angle = math.atan(values[1] / values[0])
+    elif values[1] > 0:
+        angle = math.pi / 2
+    else:
+        angle = math.pi * 3 / 2
+
+    return angle
+
