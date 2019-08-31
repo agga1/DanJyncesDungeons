@@ -9,6 +9,13 @@ screen = pygame.display.set_mode([screen_width, screen_height])
 
 main_font = 'freesansbold.ttf'
 
+# colors
+GREEN = (0, 185, 0)
+RED = (255, 0, 0)
+YELLOW = (255, 255, 0)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+SHADOW = (62, 62, 62)
 # ----- ROOM DISPLAY -----
 
 # terrain
@@ -41,8 +48,3 @@ immunity_duration = 30
 money_font = pygame.font.Font(main_font, 25)
 level_font = pygame.font.Font(main_font, 40)
 
-# colors
-GREEN = (0, 185, 0)
-RED = (255, 0, 0)
-YELLOW = (255, 255, 0)
-WHITE = (255, 255, 255)

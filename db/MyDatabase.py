@@ -57,7 +57,7 @@ class MyDatabase:
         self.cursor.execute('''DELETE FROM stats''')
 
     def reset_row(self, row_id):
-        self.cursor.execute('''UPDATE stats SET money = ?, health = ?, inventory = ?, last_saved = ?, if_new = ?''',
-                            (0, 0, "", datetime.now(), 1))
-
+        self.cursor.execute('''UPDATE stats SET money = ?, health = ?, inventory = ?, last_saved = ?, if_new = ? WHERE id = ?''',
+                            (0, 0, "", datetime.now(), 1, row_id))
+        self.db.commit()
 

@@ -8,7 +8,9 @@ screen = pygame.display.set_mode([screen_width, screen_height])
 clock = pygame.time.Clock()
 
 
-def menu_run(save_status):
+def menu_run(db):
+    # info if 1st, 2nd and 3rd slot are new or have been previously saved
+    save_status = [db.get_if_new(1), db.get_if_new(2), db.get_if_new(3)]
     while True:
 
         clock.tick(60)
@@ -31,13 +33,16 @@ def menu_run(save_status):
             if e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
                 if not save_status[0] and buttons[3].collidepoint(e.pos):
                     print('deleting first save...')
-                    break
+                    safe_delete(db, 1)
+                    return menu_run(db)
                 if not save_status[1] and buttons[4].collidepoint(e.pos):
                     print('deleting 2nd save...')
-                    break
+                    safe_delete(db, 2)
+                    return menu_run(db)
                 if not save_status[2] and buttons[5].collidepoint(e.pos):
                     print('deleting 3rd save...')
-                    break
+                    safe_delete(db, 3)
+                    return menu_run(db)
                 if buttons[0].collidepoint(e.pos):
                     return 1
                 if buttons[1].collidepoint(e.pos):
@@ -46,6 +51,21 @@ def menu_run(save_status):
                     return 3
 
         pygame.display.flip()
+
+
+def safe_delete(db, row_id):
+    if confirm_delete():
+        db.reset_row(row_id)
+
+
+def confirm_delete():
+    font = pygame.font.Font(main_font, 16)
+    text_string = "Do you really want to delete this save? (y/n)"
+    text = font.render(text_string, True, BLACK)
+    text_rect = text.get_rect()
+    text_rect.center = (screen_height/2, screen_width/2)
+    screen.blit(text, text_rect)
+    return 1
 
 
 def menu_draw(save_status):  # (?, ?, ?) 1 = new game, 0 = saved game
