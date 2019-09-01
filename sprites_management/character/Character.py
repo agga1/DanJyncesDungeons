@@ -50,8 +50,8 @@ class Character(pygame.sprite.Sprite):
 
         self.stunned = False
         self.immune = False
-        self.last_attack_time = 0
-
+        self.stop_stun_time = 0
+        self.stop_immunity_time = 0
 
     # ----- DRAWING -----
     def draw_stats(self):
@@ -151,10 +151,13 @@ class Character(pygame.sprite.Sprite):
             self.health -= attacker.get_damage()
             self.check_death()
 
-            # stun and immunity
+            # stun
             self.stunned = True
+            self.stop_stun_time = time + knockback_duration
+
+            # immunity to attacks
             self.immune = True
-            self.last_attack_time = time
+            self.stop_immunity_time = time + immunity_duration
 
             # knockback
             attacker_velocity = attacker.get_velocity()
@@ -163,6 +166,9 @@ class Character(pygame.sprite.Sprite):
 
             self.set_velocity([attacker_velocity[0] * attacker_knockback / (attacker_speed * self.speed),
                                attacker_velocity[1] * attacker_knockback / (attacker_speed * self.speed)])
+
+            # stunning enemy for a while
+            attacker.rest_after_attack(time)
 
     def check_death(self):
         # end of the game
@@ -176,10 +182,10 @@ class Character(pygame.sprite.Sprite):
         self.is_attacking = False
 
     def check_stun_and_immunity(self, time):
-        if time - self.last_attack_time > knockback_duration and self.stunned:
+        if time == self.stop_stun_time:
             self.stunned = False
             self.set_velocity([0, 0])
-        if time - self.last_attack_time > immunity_duration and self.immune:
+        if time == self.stop_immunity_time:
             self.immune = False
 
     def add_experience(self, amount):
@@ -192,8 +198,7 @@ class Character(pygame.sprite.Sprite):
             self.exp -= self.to_next_level_exp
 
     def add_money(self, amount):
-        # self.money += amount
-        pass
+        self.money += amount
 
     # ----- GETTERS AND SETTERS -----
     def set_position(self, new_room_direction, new_room_size):
@@ -241,6 +246,3 @@ class Character(pygame.sprite.Sprite):
 
     def set_money(self, money):
         self.money = money
-
-    def add_money(self, amount):
-        self.money += amount

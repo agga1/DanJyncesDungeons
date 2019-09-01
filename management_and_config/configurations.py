@@ -17,7 +17,7 @@ font_size_info = 14
 font_size_bar = 12
 font_size_money = 25
 font_size_level = 40
-font_size_enemy_health = 16
+font_size_enemy_health = 15
 
 money_font = pygame.font.Font(main_font, font_size_money)
 level_font = pygame.font.Font(main_font, font_size_level)
@@ -48,7 +48,7 @@ frame_change_time = 20 / character_speed  # inverse proportion to make it more u
 
 # enemies
 enemy_speed = 3     # other types of enemies will have different set of these values
-enemy_health = 3
+enemy_health = 2
 enemy_damage = 1
 enemy_knockback_multiplier = 4
 enemy_reward = 10
@@ -57,6 +57,7 @@ enemy_frame_change_time = 5
 enemy_health_bar_display_difference = [-2, 0]
 enemy_health_bar_width = 9
 enemy_health_bar_length = 54
+enemy_health_text_center_difference = [28, 7]
 
 # health
 health_start_point = [430, 5]
@@ -77,3 +78,4 @@ distance_from_door = 50
 # combat
 knockback_duration = 15     # also stun duration
 immunity_duration = 30
+rest_duration = 15

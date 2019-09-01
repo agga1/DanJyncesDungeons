@@ -45,18 +45,21 @@ class Room:
                 health_bar_start_point = [enemy.get_position()[0] + enemy_health_bar_display_difference[0],
                                           enemy.get_position()[1] + enemy_health_bar_display_difference[1]]
 
-                pygame.draw.rect(screen, RED, (health_bar_start_point[0],
-                                               health_bar_start_point[1],
-                                               enemy_health_bar_length, enemy_health_bar_width), 1)
+                health_text_center = [health_bar_start_point[0] + enemy_health_text_center_difference[0],
+                                      health_bar_start_point[1] + enemy_health_text_center_difference[1]]
 
+                # health bar
                 pygame.draw.rect(screen, PINK, (health_bar_start_point[0], health_bar_start_point[1],
                                                 enemy_health_bar_length, enemy_health_bar_width))
 
                 pygame.draw.rect(screen, RED, (health_bar_start_point[0], health_bar_start_point[1],
                                                enemy_health_bar_length * health / max_health, enemy_health_bar_width))
 
+                # text: current health / max health in the center of health bar
                 health_text = enemy_health_font.render(str(health) + "/" + str(max_health), True, BLACK)
-                screen.blit(health_text, [health_bar_start_point[0] + 15, health_bar_start_point[1] - 2])
+                health_text_rect = health_text.get_rect()
+                health_text_rect.center = health_text_center
+                screen.blit(health_text, health_text_rect)
 
     def remove_enemy(self, enemy):
         self.enemies.remove(enemy)

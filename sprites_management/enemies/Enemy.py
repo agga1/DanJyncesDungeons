@@ -37,7 +37,8 @@ class Enemy(pygame.sprite.Sprite):
 
         self.stunned = False
         self.immune = False
-        self.last_attack_time = 0
+        self.stop_stun_time = 0
+        self.stop_immunity_time = 0
 
         # after being killed
         self.reward = enemy_reward
@@ -63,9 +64,9 @@ class Enemy(pygame.sprite.Sprite):
             self.angle = calculate_arctan(self.velocity)
 
             if self.velocity[0] < 0:
-                self.angle = math.degrees(-1 * self.angle + math.pi/2)
+                self.angle = math.degrees(-1 * self.angle + math.pi / 2)
             else:
-                self.angle = math.degrees(-1 * self.angle - math.pi/2)
+                self.angle = math.degrees(-1 * self.angle - math.pi / 2)
 
     def move(self, character_group, time):
         # checking if can move and be hit
@@ -79,7 +80,7 @@ class Enemy(pygame.sprite.Sprite):
 
             colliding_with_character = pygame.sprite.spritecollide(self, character_group, False)
 
-            if self.stunned or (not colliding_with_character and not main_character.get_stunned()):
+            if self.stunned or not colliding_with_character:
                 # to improve softness of movement
                 self.exact_pos[0] += self.velocity[0]
                 self.exact_pos[1] += self.velocity[1]
@@ -115,7 +116,8 @@ class Enemy(pygame.sprite.Sprite):
 
     def knockback(self, main_character, time):
         # setting variables
-        self.last_attack_time = time
+        self.stop_stun_time = time + knockback_duration
+        self.stop_immunity_time = time + immunity_duration
         self.immune = True
         self.stunned = True
 
@@ -137,10 +139,16 @@ class Enemy(pygame.sprite.Sprite):
         self.velocity = [self.velocity[0] * knockback, self.velocity[1] * knockback]
 
     def check_stun_and_immunity(self, time):
-        if time - self.last_attack_time > knockback_duration and self.stunned:
+        if time == self.stop_stun_time:
             self.stunned = False
-        if time - self.last_attack_time > immunity_duration and self.immune:
+        if time == self.stop_immunity_time:
             self.immune = False
+
+    def rest_after_attack(self, time):
+        self.stop_stun_time = time + rest_duration
+        self.stunned = True
+
+        self.velocity = [0, 0]
 
     # ----- GETTERS AND SETTERS -----
     def get_position(self):
