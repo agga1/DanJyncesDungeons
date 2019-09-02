@@ -1,6 +1,6 @@
 import pygame
 
-BROWN = (150, 75, 0)
+from management_and_config.configurations import *
 
 
 class Inventory:
@@ -15,7 +15,6 @@ class Inventory:
 
     @staticmethod
     def draw():
-        from worlds_management.Room import screen
         screen.fill(BROWN)
 
     def get_active(self):
