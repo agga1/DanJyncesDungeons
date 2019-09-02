@@ -7,8 +7,9 @@ pygame.init()
 
 screen_width = 600
 screen_height = 600
-
 screen = pygame.display.set_mode([screen_width, screen_height])
+
+clock = pygame.time.Clock()
 
 # fonts
 main_font = 'freesansbold.ttf'
@@ -76,6 +77,9 @@ experience_bar_length = 120
 distance_from_door = 50
 
 # combat
+attack_duration = 20
+attack_interval = 70 + attack_duration
+
 knockback_duration = 15     # also stun duration
 immunity_duration = 30
 rest_duration = 15

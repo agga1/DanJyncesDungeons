@@ -1,6 +1,7 @@
 import pygame
 
 from core.Inventory import Inventory
+from management_and_config.configurations import *
 from sprites_management.sprites_manager import load_character
 from worlds_management.WorldsManager import WorldsManager
 from management_and_config.object_save import *
@@ -17,16 +18,12 @@ def game_run(db, game_version):
     # ----- VARIABLES -----
 
     # TIME
-    clock = pygame.time.Clock()
     time = 0
 
     # INVENTORY
     inventory = Inventory()
 
     # ATTACK
-    attack_duration = 20
-    attack_interval = 50 + attack_duration
-
     last_attack = 0
 
     # WORLDS MANAGER

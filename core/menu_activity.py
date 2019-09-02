@@ -3,8 +3,6 @@ from resources import image_manager
 from management_and_config.configurations import *
 pygame.init()
 
-clock = pygame.time.Clock()
-
 
 def get_save_status(db):
     return [db.get_if_new(1), db.get_if_new(2), db.get_if_new(3)]
