@@ -80,9 +80,9 @@ def game_run(db, memory_slot):
                     if e.key == pygame.K_d:
                         main_character.set_key_clicked("right", False)
 
-                # stop attacking
-                if main_character.get_is_attacking() and time - last_attack >= attack_duration:
-                    main_character.stop_attack()
+            # stop attacking
+            if main_character.get_is_attacking() and time - last_attack >= attack_duration:
+                main_character.stop_attack()
 
         if not inventory.active:
             for main_character in worlds_manager.get_character().sprites():

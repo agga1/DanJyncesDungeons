@@ -49,7 +49,7 @@ character_speed = 5
 frame_change_time = 20 / character_speed  # inverse proportion to make it more universal
 
 # enemies
-enemy_speed = 3     # other types of enemies will have different set of these values
+enemy_speed = 2.5     # other types of enemies will have different set of these values
 enemy_health = 2
 enemy_damage = 1
 enemy_knockback_multiplier = 4
