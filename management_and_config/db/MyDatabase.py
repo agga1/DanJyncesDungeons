@@ -4,7 +4,7 @@ from datetime import datetime
 
 from management_and_config.configurations import start_health, start_lvl
 
-db_path = os.path.abspath('../stats_db')  # path to database
+db_path = os.path.abspath('../data/stats_db')  # path to database
 
 
 class MyDatabase:

@@ -1,3 +1,4 @@
+"""Contains universally used gui features like pop-ups, frame freeze"""
 import pygame
 
 from management_and_config.configurations import main_font, font_size_info, BLACK, screen_height, screen_width, screen, \
