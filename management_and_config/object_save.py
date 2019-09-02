@@ -1,23 +1,22 @@
-import pickle
 import os
+import pickle
 
-from management_and_config.configurations import character_start_point
+
+from management_and_config.configurations import *
+from management_and_config.display_functions import show_popup, freeze_clock
 from resources.image_manager import get_character_rest_image, get_character_walk_images
 from sprites_management.character.Character import Character
 
 location = os.path.abspath('../data/config.character')
 
 
-def save_character(character, db, memory_slot):  # temporary only money
+def save_character(character, db, memory_slot = -1):
     db.update_money(character.get_money())
     db.update_date()
     db.update_health(character.get_health())
     db.update_experience(character.get_exp())
     show_popup('Progress saved!')
-
-
-def show_popup(text):
-    pass
+    freeze_clock(2)
 
 
 def get_character():

@@ -57,7 +57,7 @@ def game_run(db, memory_slot):
                         main_character.set_key_clicked("right", True)
                     # pause game and save
                     if e.key == pygame.K_p:
-                        save_character(main_character, db, memory_slot)
+                        save_character(main_character, db)
                     # inventory
                     if e.key == pygame.K_i and not inventory.active:
                         inventory.activate()
