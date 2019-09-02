@@ -1,18 +1,15 @@
-import pygame
-
 from core.Inventory import Inventory
 from management_and_config.configurations import *
-from sprites_management.sprites_manager import load_character
 from worlds_management.WorldsManager import WorldsManager
 from management_and_config.object_save import *
 
 
 # ----- MAIN LOOP -----
-def game_run(db, game_version):
+def game_run(db, memory_slot):
 
-    db.update_date(game_version)
-    db.update_if_new(game_version)
-
+    db.update_date(memory_slot)
+    db.update_if_new(memory_slot)
+    db.set_row_id(memory_slot)
     pygame.init()
 
     # ----- VARIABLES -----
@@ -28,7 +25,7 @@ def game_run(db, game_version):
 
     # WORLDS MANAGER
     character = pygame.sprite.Group()
-    main_character = load_character(db, game_version)
+    main_character = load_character(db)
     character.add(main_character)
     worlds_manager = WorldsManager(character)
     worlds_manager.game_start()
@@ -46,7 +43,6 @@ def game_run(db, game_version):
             # quit game
             if e.type == pygame.QUIT:
                 exit(1)
-
             # keys management
             for main_character in worlds_manager.get_character().sprites():
                 if e.type == pygame.KEYDOWN:
@@ -59,7 +55,9 @@ def game_run(db, game_version):
                         main_character.set_key_clicked("left", True)
                     if e.key == pygame.K_d:
                         main_character.set_key_clicked("right", True)
-
+                    # pause game and save
+                    if e.key == pygame.K_p:
+                        save_character(main_character, db, memory_slot)
                     # inventory
                     if e.key == pygame.K_i and not inventory.active:
                         inventory.activate()

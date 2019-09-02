@@ -25,15 +25,15 @@ class Character(pygame.sprite.Sprite):
 
         # health
         self.max_health = start_health
-        self.health = start_health  # will be passed in stats
+        self.health = stats["health"]
 
         # money
 
-        self.money = stats[0]
+        self.money = stats["money"]
 
         # levels
         self.level = 1  # will be passed in stats
-        self.exp = 0  # will be passed in stats
+        self.exp = stats["exp"]  # will be passed in stats
         self.to_next_level_exp = 10
 
         # checking if character is moving
@@ -246,3 +246,10 @@ class Character(pygame.sprite.Sprite):
 
     def set_money(self, money):
         self.money = money
+
+    def get_health(self):
+        return self.health
+
+    def get_exp(self):
+        return self.exp
+
