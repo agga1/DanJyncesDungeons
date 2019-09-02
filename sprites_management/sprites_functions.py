@@ -56,3 +56,7 @@ def calculate_arctan(values):
 
     return angle
 
+
+def calculate_to_next_level_exp(level):
+    return 6 + 4*level
+

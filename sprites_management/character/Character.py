@@ -28,13 +28,14 @@ class Character(pygame.sprite.Sprite):
         self.health = stats["health"]
 
         # money
-
         self.money = stats["money"]
 
         # levels
         self.exp = stats["exp"]
         self.level = stats["lvl"]
-        self.to_next_level_exp = 10
+        self.to_next_level_exp = calculate_to_next_level_exp(self.level)
+
+        self.skill_points = 0
 
         # checking if character is moving
         self.key_clicked = {"top": False, "bottom": False, "left": False, "right": False}
@@ -195,7 +196,9 @@ class Character(pygame.sprite.Sprite):
     def check_level(self):
         while self.exp >= self.to_next_level_exp:
             self.level += 1
+            self.skill_points += 1
             self.exp -= self.to_next_level_exp
+            self.to_next_level_exp = calculate_to_next_level_exp(self.level)
 
     def add_money(self, amount):
         self.money += amount
