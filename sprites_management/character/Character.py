@@ -32,8 +32,8 @@ class Character(pygame.sprite.Sprite):
         self.money = stats["money"]
 
         # levels
-        self.level = 1  # will be passed in stats
-        self.exp = stats["exp"]  # will be passed in stats
+        self.exp = stats["exp"]
+        self.level = stats["lvl"]
         self.to_next_level_exp = 10
 
         # checking if character is moving
@@ -252,4 +252,7 @@ class Character(pygame.sprite.Sprite):
 
     def get_exp(self):
         return self.exp
+
+    def get_lvl(self):
+        return self.level
 

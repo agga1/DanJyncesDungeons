@@ -15,8 +15,9 @@ def save_character(character, db, memory_slot = -1):
     db.update_date()
     db.update_health(character.get_health())
     db.update_experience(character.get_exp())
+    db.update_lvl(character.get_lvl())
     show_popup('Progress saved!')
-    freeze_clock(2)
+    freeze_clock(0.5)
 
 
 def get_character():
@@ -35,7 +36,8 @@ def load_character(db, memory_slot = -1):
     stats = {
         "money": db.get_money(),
         "health": db.get_health(),
-        "exp": db.get_experience()
+        "exp": db.get_experience(),
+        "lvl": db.get_lvl()
     }
     # health = db.get_health(game_version) ...
     # exp

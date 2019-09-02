@@ -1,6 +1,9 @@
 import sqlite3
 import os
 from datetime import datetime
+
+from management_and_config.configurations import start_health, start_lvl
+
 db_path = os.path.abspath('../stats_db')  # path to database
 
 
@@ -10,7 +13,7 @@ class MyDatabase:
         self.db = sqlite3.connect(db_path)
         self.cursor = self.db.cursor()
         self.cursor.execute(''' CREATE TABLE IF NOT EXISTS stats(id INTEGER PRIMARY KEY, 
-        money INTEGER, health INTEGER, experience INTEGER, inventory TEXT, last_saved TIMESTAMP, if_new INTEGER)''')
+        money INTEGER, health INTEGER, experience INTEGER, lvl INTEGER, inventory TEXT, last_saved TIMESTAMP, if_new INTEGER)''')
         self.db.commit()
         self.cursor.execute("SELECT COUNT(*) FROM stats")
         rows = self.cursor.fetchone()
@@ -26,8 +29,8 @@ class MyDatabase:
 
     def new_row(self):  # create new row with new game instance, and automatically set row_id
         print('evoked insert')
-        self.cursor.execute('''INSERT INTO stats(money, health, experience, inventory, last_saved, if_new)
-        VALUES(?, ?, ?, ?, ?, ?)''', (0, 0, 0, "", datetime.now(tz=None), 1))
+        self.cursor.execute('''INSERT INTO stats(money, health, experience, lvl, inventory, last_saved, if_new)
+        VALUES(?, ?, ?, ?, ?, ?, ?)''', (0, start_health, 0, start_lvl, "", datetime.now(tz=None), 1))
         self.db.commit()
         return self.cursor.lastrowid
 
@@ -49,6 +52,11 @@ class MyDatabase:
     def update_experience(self, exp, row_id=-1):
         row_id = self.row_id if row_id == -1 else row_id
         self.cursor.execute('''UPDATE stats SET experience = ? WHERE id = ? ''', (exp, row_id))
+        self.db.commit()
+
+    def update_lvl(self, lvl, row_id=-1):
+        row_id = self.row_id if row_id == -1 else row_id
+        self.cursor.execute('''UPDATE stats SET lvl = ? WHERE id = ? ''', (lvl, row_id))
         self.db.commit()
 
     def update_if_new(self, row_id=-1):
@@ -73,6 +81,13 @@ class MyDatabase:
         self.cursor.execute('''SELECT experience FROM stats WHERE id = ?''', (row_id, ))
         exp = self.cursor.fetchone()
         return exp[0]
+
+    def get_lvl(self, row_id=-1):
+        row_id = self.row_id if row_id == -1 else row_id
+        self.cursor.execute('''SELECT lvl FROM stats WHERE id = ?''', (row_id, ))
+        lvl = self.cursor.fetchone()
+        return lvl[0]
+
 
     def get_date(self, row_id=-1):
         row_id = self.row_id if row_id == -1 else row_id
