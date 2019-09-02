@@ -17,11 +17,11 @@ def game_run(db, memory_slot):
     # TIME
     time = 0
 
+    can_attack_time = 0
+    stop_attack_time = 0
+
     # INVENTORY
     inventory = Inventory()
-
-    # ATTACK
-    last_attack = 0
 
     # WORLDS MANAGER
     character = pygame.sprite.Group()
@@ -65,8 +65,9 @@ def game_run(db, memory_slot):
                         inventory.deactivate()
 
                     # start attacking
-                    if e.key == pygame.K_SPACE and (time - last_attack > attack_interval or last_attack == 0):
-                        last_attack = time
+                    if e.key == pygame.K_SPACE and time > can_attack_time:
+                        stop_attack_time = time + attack_duration
+                        can_attack_time = time + attack_interval
                         main_character.start_attack()
 
                 # movement (velocity is multiplied by the values in the brackets: 0 - stop moving in that direction)
@@ -80,9 +81,9 @@ def game_run(db, memory_slot):
                     if e.key == pygame.K_d:
                         main_character.set_key_clicked("right", False)
 
-            # stop attacking
-            if main_character.get_is_attacking() and time - last_attack >= attack_duration:
-                main_character.stop_attack()
+        # stop attacking
+        if main_character.get_is_attacking() and time == stop_attack_time:
+            main_character.stop_attack()
 
         if not inventory.active:
             for main_character in worlds_manager.get_character().sprites():
