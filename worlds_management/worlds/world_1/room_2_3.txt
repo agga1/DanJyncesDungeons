@@ -1,0 +1,4 @@
+12 12
+top bottom right
+1
+bat 250 250

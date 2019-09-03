@@ -1,0 +1,3 @@
+12 12
+top bottom left right
+0

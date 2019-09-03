@@ -1,3 +1,4 @@
 12 12
-top
-0
+top left right
+1
+bat 100 100
