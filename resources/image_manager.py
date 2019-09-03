@@ -1,5 +1,6 @@
 import pygame
 from sprites_management.sprites_functions import connect_frames
+
 # menu
 bg_image = pygame.image.load("../resources/images_and_animations/menu_bg.png")
 btn_image = pygame.image.load("../resources/images_and_animations/menu_button.png")
@@ -13,8 +14,10 @@ wall_image = pygame.image.load("../resources/images_and_animations/terrain_borde
 bat_images = connect_frames("../resources/images_and_animations/bat")
 
 # character
-character_rest_image = pygame.image.load("../resources/images_and_animations/character_walk/character_walk_0.png")
-character_walk_images = connect_frames("../resources/images_and_animations/character_walk")
+character_rest_image = pygame.image.load(
+    "../resources/images_and_animations/character/character_walk/character_walk_0.png")
+character_walk_images = connect_frames("../resources/images_and_animations/character/character_walk")
+character_attack_image = pygame.image.load("../resources/images_and_animations/character/character_attack.png")
 
 # health
 heart_image = pygame.image.load("../resources/images_and_animations/heart.png")
@@ -56,6 +59,10 @@ def get_character_rest_image():
 
 def get_character_walk_images():
     return character_walk_images
+
+
+def get_character_attack_image():
+    return character_attack_image
 
 
 def get_heart_image():

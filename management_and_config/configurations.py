@@ -42,7 +42,7 @@ terrain_image_start_point = [50, 50]
 
 # character
 character_start_point = [300, 300]
-start_health = 5
+start_health = 10
 start_lvl = 1
 character_attack_damage = 1
 character_knockback = 2

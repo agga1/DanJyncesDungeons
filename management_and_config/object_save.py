@@ -4,7 +4,7 @@ import pickle
 
 from management_and_config.configurations import *
 from management_and_config.display_functions import show_popup, freeze_clock
-from resources.image_manager import get_character_rest_image, get_character_walk_images
+from resources.image_manager import get_character_rest_image, get_character_walk_images, get_character_attack_image
 from sprites_management.character.Character import Character
 
 location = os.path.abspath('../data/config.character')
@@ -30,9 +30,11 @@ def get_character():
         return character
 
 
-def load_character(db, memory_slot = -1):
+def load_character(db, memory_slot=-1):
     character_rest_image = get_character_rest_image()
     character_walk_images = get_character_walk_images()
+    character_attack_image = get_character_attack_image()
+
     stats = {
         "money": db.get_money(),
         "health": db.get_health(),
@@ -41,4 +43,4 @@ def load_character(db, memory_slot = -1):
     }
     # health = db.get_health(game_version) ...
     # exp
-    return Character(character_start_point, character_rest_image, character_walk_images, stats)
+    return Character(character_start_point, character_rest_image, character_walk_images, character_attack_image, stats)

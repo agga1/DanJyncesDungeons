@@ -4,7 +4,7 @@ from resources.image_manager import get_coin_image, get_heart_image
 
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self, start_point, staying_image, movement_animation, stats, *groups):
+    def __init__(self, start_point, staying_image, movement_animation, attack_image, stats, *groups):
         super().__init__(*groups)
 
         # image
@@ -16,8 +16,9 @@ class Character(pygame.sprite.Sprite):
         # animations
         self.staying_image = staying_image  # animation name: "rest"
         self.movement_animation = movement_animation  # animation name: "move"
+        self.attack_image = attack_image  # animation name: "attack"
         self.curr_animation = "rest"
-        self.animation_start = 0  # time when current animation started
+        self.animation_start_time = 0  # time when current animation started
 
         # position
         self.rect.x = start_point[0]
@@ -114,20 +115,30 @@ class Character(pygame.sprite.Sprite):
             self.rect.x = curr_position[0]
             self.rect.y = curr_position[1]
 
+        # checking animation and animating
+        self.animation(time)
+
+    # ----- CHARACTER IMAGE -----
+    def animation(self, time):
         # changing current animation
-        if (self.velocity[0] == 0 and self.velocity[1] == 0) or self.stunned:
+        if self.is_attacking:
+            self.curr_animation = "attack"
+            self.animation_start_time = time
+        elif (self.velocity[0] == 0 and self.velocity[1] == 0) or self.stunned:
             self.curr_animation = "rest"
-            self.animation_start = time
+            self.animation_start_time = time
         else:
             if not self.curr_animation == "move":
-                self.animation_start = time
+                self.animation_start_time = time
                 self.curr_animation = "move"
 
         # animation
         if self.curr_animation == "rest":
             self.original_image = self.staying_image
         elif self.curr_animation == "move":
-            self.original_image = animate(self.movement_animation, time, self.animation_start, frame_change_time)
+            self.original_image = animate(self.movement_animation, time, self.animation_start_time, frame_change_time)
+        elif self.curr_animation == "attack":
+            self.original_image = self.attack_image
 
         # rotation
         self.rot_center()
