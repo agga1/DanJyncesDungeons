@@ -88,7 +88,6 @@ class MyDatabase:
         lvl = self.cursor.fetchone()
         return lvl[0]
 
-
     def get_date(self, row_id=-1):
         row_id = self.row_id if row_id == -1 else row_id
         self.cursor.execute('''SELECT last_saved FROM stats WHERE id = ?''', (row_id, ))
@@ -106,7 +105,7 @@ class MyDatabase:
 
     def reset_row(self, row_id=-1):
         row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''UPDATE stats SET money = ?, health = ?, inventory = ?, last_saved = ?, if_new = ? WHERE id = ?''',
-                            (0, 0, "", datetime.now(), 1, row_id))
+        self.cursor.execute('''UPDATE stats SET money = ?, health = ?, experience = ?, lvl = ?, inventory = ?, last_saved = ?, if_new = ? WHERE id = ?''',
+                            (0, start_health, 0, start_lvl, "", datetime.now(), 1, row_id))
         self.db.commit()
 
