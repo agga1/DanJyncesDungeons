@@ -9,14 +9,14 @@ def show_popup(text_string):
     font = pygame.font.Font(main_font, font_size_info)
     text = font.render(text_string, True, BLACK)
     text_rect = text.get_rect()
-    text_rect.center = (screen_height / 2, screen_width / 2)
+    text_rect.center = (screen_width / 2, screen_height / 2)
     # shadow behind popup
     bg_rect_shadow = pygame.rect.Rect(0, 0, text_rect.width + 10, text_rect.height + 10)
-    bg_rect_shadow.center = (screen_height / 2 + 5, screen_width / 2 + 5)
+    bg_rect_shadow.center = (screen_width / 2 + 5, screen_height / 2 + 5)
     pygame.draw.rect(screen, SHADOW, bg_rect_shadow)
     # popup window
     bg_rect = pygame.rect.Rect(0, 0, text_rect.width + 10, text_rect.height + 10)
-    bg_rect.center = (screen_height / 2, screen_width / 2)
+    bg_rect.center = (screen_width / 2, screen_height / 2)
     pygame.draw.rect(screen, WHITE, bg_rect)
     screen.blit(text, text_rect)
     pygame.display.flip()
