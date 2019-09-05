@@ -5,7 +5,7 @@ pygame.init()
 
 # ----- GENERAL -----
 
-screen_width = 600
+screen_width = 800
 screen_height = 600
 screen = pygame.display.set_mode([screen_width, screen_height])
 
@@ -14,7 +14,7 @@ clock = pygame.time.Clock()
 # fonts
 main_font = 'freesansbold.ttf'
 
-font_size_info = 14
+font_size_info = 14 # in pop u p windows
 font_size_bar = 12
 font_size_money = 25
 font_size_level = 40
