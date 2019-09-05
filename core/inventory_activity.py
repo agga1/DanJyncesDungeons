@@ -1,11 +1,13 @@
 import pygame
 
 from management_and_config.configurations import *
+from resources.image_manager import get_inventory_image
 
 
 def inventory_run(character):
 
-    screen.fill(GREY)
+    inventory_image = get_inventory_image()
+    screen.blit(inventory_image, [0, 0])
     pygame.display.flip()
 
     while True:

@@ -6,6 +6,8 @@ bg_image = pygame.image.load("../resources/images_and_animations/menu_bg.png")
 btn_image = pygame.image.load("../resources/images_and_animations/menu_button.png")
 del_image = pygame.image.load("../resources/images_and_animations/delete_button.png")
 
+# inventory
+inventory_image = pygame.image.load("../resources/images_and_animations/inventory.png")
 # terrain
 terrain_image = pygame.image.load("../resources/images_and_animations/terrain.png")
 
@@ -39,6 +41,10 @@ item_image = pygame.image.load("../resources/images_and_animations/item.png")
 
 def get_attack_ready_image():
     return attack_ready_image
+
+
+def get_inventory_image():
+    return inventory_image
 
 
 def get_bg():
