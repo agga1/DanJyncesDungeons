@@ -15,7 +15,7 @@ def save_character(character, db, memory_slot = -1):
     db.update_date()
     db.update_health(character.get_health())
     db.update_experience(character.get_exp())
-    db.update_lvl(character.get_lvl())
+    db.update_lvl(character.get_level())
     show_popup('Progress saved!')
     freeze_clock(0.5)
 

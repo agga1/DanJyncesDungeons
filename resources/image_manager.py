@@ -30,8 +30,15 @@ heart_image = pygame.image.load("../resources/images_and_animations/heart.png")
 # money
 coin_image = pygame.image.load("../resources/images_and_animations/coin.png")
 
+# attack ready diode
+attack_ready_image = pygame.image.load("../resources/images_and_animations/attack_ready.png")
+
 # items
 item_image = pygame.image.load("../resources/images_and_animations/item.png")
+
+
+def get_attack_ready_image():
+    return attack_ready_image
 
 
 def get_bg():

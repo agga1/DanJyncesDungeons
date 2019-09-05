@@ -85,6 +85,7 @@ enemy_health_text_center_difference = [28, 7]
 
 # ----- STATS -----
 
+attack_ready_coord = [5, 5]
 # stats bar
 stats_bar_rect = [600, 0, 300, 600]
 

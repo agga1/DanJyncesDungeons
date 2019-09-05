@@ -1,7 +1,7 @@
 """Contains universally used gui features like pop-ups, frame freeze"""
 
 from management_and_config.configurations import *
-from resources.image_manager import get_heart_image, get_coin_image
+from resources.image_manager import get_heart_image, get_coin_image, get_attack_ready_image
 
 
 def show_popup(text_string):
@@ -138,3 +138,8 @@ def display_skill_tree_stats_bar(character):
     # mana
     mana_text = stats_font.render("mana points: " + str(character.get_max_mana()), True, WHITE)
     screen.blit(mana_text, st_mana_text_start_point)
+
+
+def attack_ready_display():
+    attack_ready_image = get_attack_ready_image()
+    screen.blit(attack_ready_image, attack_ready_coord)

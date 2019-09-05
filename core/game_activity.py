@@ -1,3 +1,4 @@
+from management_and_config.display_functions import attack_ready_display
 from worlds_management.WorldsManager import WorldsManager
 from management_and_config.object_save import *
 from core.inventory_activity import inventory_run
@@ -48,6 +49,8 @@ def game_run(db, memory_slot):
 
         # drawing all elements of the display
         worlds_manager.draw()
+        if time > can_attack_time:
+            attack_ready_display()
 
         for e in pygame.event.get():
             # quit game
