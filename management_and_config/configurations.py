@@ -4,7 +4,7 @@ import pygame
 pygame.init()
 
 # ----- GENERAL -----
-
+square_screen_width = 600
 screen_width = 800
 screen_height = 600
 screen = pygame.display.set_mode([screen_width, screen_height])
@@ -13,7 +13,7 @@ clock = pygame.time.Clock()
 
 # fonts
 main_font = 'freesansbold.ttf'
-
+description_font = '../resources/ARJULIAN.ttf'
 font_size_info = 14  # in pop u p windows
 font_size_bar = 12
 font_size_money = 25
@@ -23,12 +23,12 @@ font_size_st_skill_points = 25
 font_size_st_stats = 18
 font_size_enemy_health = 15
 
-money_font = pygame.font.Font(main_font, font_size_money)
-level_font = pygame.font.Font(main_font, font_size_level)
-st_exp_font = pygame.font.Font(main_font, font_size_st_exp)
-skill_points_font = pygame.font.Font(main_font, font_size_st_skill_points)
-stats_font = pygame.font.Font(main_font, font_size_st_stats)
-enemy_health_font = pygame.font.Font(main_font, font_size_enemy_health)
+money_font = pygame.font.Font(description_font, font_size_money)
+level_font = pygame.font.Font(description_font, font_size_level)
+st_exp_font = pygame.font.Font(description_font, font_size_st_exp)
+skill_points_font = pygame.font.Font(description_font, font_size_st_skill_points)
+stats_font = pygame.font.Font(description_font, font_size_st_stats)
+enemy_health_font = pygame.font.Font(description_font, font_size_enemy_health)
 
 # colors
 RED = (255, 0, 0)
@@ -117,13 +117,14 @@ st_experience_bar_width = 30
 st_experience_bar_length = 160
 exp_text_center = [700, 115]
 
-st_skill_points_text_start_point = [605, 160]
+left_margin = 608
+st_skill_points_text_start_point = [left_margin, 160]
 
-st_attack_damage_text_start_point = [605, 300]
-st_attack_speed_text_start_point = [605, 350]
-st_critical_attack_chance_text_start_point = [605, 400]
-st_health_text_start_point = [605, 450]
-st_mana_text_start_point = [605, 500]
+st_attack_damage_text_start_point = [left_margin, 300]
+st_attack_speed_text_start_point = [left_margin, 350]
+st_critical_attack_chance_text_start_point = [left_margin, 400]
+st_health_text_start_point = [left_margin, 450]
+st_mana_text_start_point = [left_margin, 500]
 
 # ----- COMBAT -----
 

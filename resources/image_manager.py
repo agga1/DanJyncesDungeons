@@ -5,7 +5,8 @@ from sprites_management.sprites_functions import connect_frames
 bg_image = pygame.image.load("../resources/images_and_animations/menu_bg.png")
 btn_image = pygame.image.load("../resources/images_and_animations/menu_button.png")
 del_image = pygame.image.load("../resources/images_and_animations/delete_button.png")
-
+# stats bar
+stats_bar_image = pygame.image.load("../resources/images_and_animations/stats_bar.png")
 # inventory
 inventory_image = pygame.image.load("../resources/images_and_animations/inventory.png")
 # terrain
@@ -34,6 +35,7 @@ coin_image = pygame.image.load("../resources/images_and_animations/coin.png")
 
 # attack ready diode
 attack_ready_image = pygame.image.load("../resources/images_and_animations/attack_ready.png")
+attack_not_ready_image = pygame.image.load("../resources/images_and_animations/attack_not_ready.png")
 
 # items
 item_image = pygame.image.load("../resources/images_and_animations/item.png")
@@ -43,8 +45,16 @@ def get_attack_ready_image():
     return attack_ready_image
 
 
+def get_attack_not_ready_image():
+    return attack_not_ready_image
+
+
 def get_inventory_image():
     return inventory_image
+
+
+def get_stats_bar_image():
+    return stats_bar_image
 
 
 def get_bg():

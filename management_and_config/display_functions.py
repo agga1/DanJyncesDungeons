@@ -1,7 +1,8 @@
 """Contains universally used gui features like pop-ups, frame freeze"""
 
 from management_and_config.configurations import *
-from resources.image_manager import get_heart_image, get_coin_image, get_attack_ready_image
+from resources.image_manager import get_heart_image, get_coin_image, get_attack_ready_image, get_attack_not_ready_image, \
+    get_stats_bar_image
 
 
 def show_popup(text_string):
@@ -80,8 +81,8 @@ def level_display(character):
 
 
 def display_stats_bar(character):
-    pygame.draw.rect(screen, STATS_BAR_COLOR, stats_bar_rect)
-
+    bg_image = get_stats_bar_image()
+    screen.blit(bg_image, [square_screen_width, 0])
     health_display(character)
     mana_display(character)
     money_display(character)
@@ -90,8 +91,8 @@ def display_stats_bar(character):
 
 def display_skill_tree_stats_bar(character):
     # bar color
-    pygame.draw.rect(screen, STATS_BAR_COLOR, stats_bar_rect)
-
+    bg_image = get_stats_bar_image()
+    screen.blit(bg_image, [square_screen_width, 0])
     # level number
     level_text = level_font.render("level " + str(character.get_level()), True, GREEN)
     screen.blit(level_text, st_level_start_point)
@@ -140,6 +141,6 @@ def display_skill_tree_stats_bar(character):
     screen.blit(mana_text, st_mana_text_start_point)
 
 
-def attack_ready_display():
-    attack_ready_image = get_attack_ready_image()
+def attack_ready_display(ready):
+    attack_ready_image = get_attack_ready_image() if ready else get_attack_not_ready_image()
     screen.blit(attack_ready_image, attack_ready_coord)

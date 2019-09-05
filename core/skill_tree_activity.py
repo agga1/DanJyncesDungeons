@@ -6,7 +6,7 @@ from management_and_config.display_functions import display_skill_tree_stats_bar
 
 def skill_tree_run(character):
 
-    screen.fill(PINK)
+    screen.fill(BROWN)
     display_skill_tree_stats_bar(character)
     pygame.display.flip()
 

@@ -50,7 +50,9 @@ def game_run(db, memory_slot):
         # drawing all elements of the display
         worlds_manager.draw()
         if time > can_attack_time:
-            attack_ready_display()
+            attack_ready_display(True)
+        else:
+            attack_ready_display(False)
 
         for e in pygame.event.get():
             # quit game
