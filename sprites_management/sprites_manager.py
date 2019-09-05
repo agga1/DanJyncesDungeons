@@ -1,8 +1,11 @@
 """ Managing creation and addition of new sprites """
+import pygame
+import math
 
 from sprites_management.enemies.Enemy import Enemy
 from sprites_management.obstacles.Wall import Wall
-from resources.image_manager import get_bat_images, get_wall_image
+from sprites_management.obstacles.Door import Door
+from resources.image_manager import get_bat_images, get_wall_image, get_open_door_image
 
 
 def create_enemy(enemy_type, enemy_start_point):
@@ -29,6 +32,25 @@ def add_walls(walls, room_size, room_type):      # classic: walls are in the bor
 
         if "right" not in room_type or (i != (room_size[1] - 2) / 2 and i != (room_size[1] - 2) / 2 - 1):
             walls.add(Wall([550, 50 + 50 * i], wall_image))
+
+
+def add_doors(doors, room_size, room_type):
+    open_door_image = get_open_door_image()
+
+    if "top" in room_type:
+        doors.add(Door([50 * (room_size[0]/2 - 1), 0], open_door_image))
+
+    if "bottom" in room_type:
+        open_door_image_rotated = pygame.transform.rotate(open_door_image, 180)
+        doors.add(Door([50 * (room_size[0]/2 - 1), 50 * (room_size[1] - 1)], open_door_image_rotated))
+
+    if "left" in room_type:
+        open_door_image_rotated = pygame.transform.rotate(open_door_image, 270)
+        doors.add(Door([0, 50 * (room_size[1]/2 - 1)], open_door_image_rotated))
+
+    if "right" in room_type:
+        open_door_image_rotated = pygame.transform.rotate(open_door_image, 90)
+        doors.add(Door([50 * (room_size[0] - 1), 50 * (room_size[1]/2 - 1)], open_door_image_rotated))
 
 
 def add_enemies(enemies_group, enemies_list):

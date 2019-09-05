@@ -6,9 +6,14 @@ bg_image = pygame.image.load("../resources/images_and_animations/menu_bg.png")
 btn_image = pygame.image.load("../resources/images_and_animations/menu_button.png")
 del_image = pygame.image.load("../resources/images_and_animations/delete_button.png")
 
-# terrain and walls
+# terrain
 terrain_image = pygame.image.load("../resources/images_and_animations/terrain.png")
+
+# walls
 wall_image = pygame.image.load("../resources/images_and_animations/terrain_border.png")
+
+# doors
+open_door_image = pygame.image.load("../resources/images_and_animations/door_open.png")
 
 # enemies
 bat_images = connect_frames("../resources/images_and_animations/bat")
@@ -47,6 +52,10 @@ def get_terrain_image():
 
 def get_wall_image():
     return wall_image
+
+
+def get_open_door_image():
+    return open_door_image
 
 
 def get_bat_images():

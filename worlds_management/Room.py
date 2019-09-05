@@ -17,6 +17,10 @@ class Room:
         self.walls = pygame.sprite.Group()
         sprites_management.sprites_manager.add_walls(self.walls, room_size, room_type)
 
+        # doors group
+        self.doors = pygame.sprite.Group()
+        sprites_management.sprites_manager.add_doors(self.doors, room_size, room_type)
+
         # enemies group
         self.enemies = pygame.sprite.Group()
         sprites_management.sprites_manager.add_enemies(self.enemies, room_enemies)
@@ -25,6 +29,7 @@ class Room:
         screen.fill(WHITE)
         self.terrain_display()
         self.wall_display()
+        self.door_display()
         self.enemy_display()
 
     def terrain_display(self):
@@ -33,6 +38,9 @@ class Room:
 
     def wall_display(self):
         self.walls.draw(screen)
+
+    def door_display(self):
+        self.doors.draw(screen)
 
     def enemy_display(self):
         self.enemies.draw(screen)
