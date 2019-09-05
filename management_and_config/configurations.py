@@ -80,7 +80,7 @@ enemy_frame_change_time = 5
 enemy_health_bar_display_difference = [-2, 0]
 enemy_health_bar_width = 9
 enemy_health_bar_length = 54
-enemy_health_text_center_difference = [28, 7]
+enemy_health_text_center_difference = [28, 5]
 
 
 # ----- STATS -----
@@ -110,21 +110,21 @@ money_start_point = [610, 560]
 
 # ----- SKILL TREE DISPLAY -----
 
-st_level_start_point = [640, 40]
+st_level_text_center = [700, 70]
 
-st_experience_bar_start_point = [620, 100]
+st_experience_bar_start_point = [620, 120]
 st_experience_bar_width = 30
 st_experience_bar_length = 160
-exp_text_center = [700, 115]
+exp_text_center = [700, 135]
 
 left_margin = 608
-st_skill_points_text_start_point = [left_margin, 160]
+st_skill_points_text_start_point = [left_margin, 240]
 
-st_attack_damage_text_start_point = [left_margin, 300]
-st_attack_speed_text_start_point = [left_margin, 350]
-st_critical_attack_chance_text_start_point = [left_margin, 400]
-st_health_text_start_point = [left_margin, 450]
-st_mana_text_start_point = [left_margin, 500]
+st_attack_damage_text_start_point = [left_margin, 320]
+st_attack_speed_text_start_point = [left_margin, 370]
+st_critical_attack_chance_text_start_point = [left_margin, 420]
+st_health_text_start_point = [left_margin, 470]
+st_mana_text_start_point = [left_margin, 520]
 
 # ----- COMBAT -----
 

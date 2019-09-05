@@ -64,7 +64,7 @@ def money_display(character):
 
     money_number = money_font.render(str(character.get_money()), True, YELLOW)
     screen.blit(coin_image, money_start_point)
-    screen.blit(money_number, [money_start_point[0] + 25, money_start_point[1]])
+    screen.blit(money_number, [money_start_point[0] + 30, money_start_point[1] - 5])
 
 
 def level_display(character):
@@ -72,10 +72,10 @@ def level_display(character):
     screen.blit(level_number, level_start_point)
 
     pygame.draw.rect(screen, GREEN,
-                     [level_start_point[0] + 35, level_start_point[1] + 10, experience_bar_length,
+                     [level_start_point[0] + 35, level_start_point[1] + 17, experience_bar_length,
                       experience_bar_width], 1)
 
-    pygame.draw.rect(screen, GREEN, [level_start_point[0] + 35, level_start_point[1] + 10,
+    pygame.draw.rect(screen, GREEN, [level_start_point[0] + 35, level_start_point[1] + 17,
                                      character.get_exp() * experience_bar_length / character.get_to_next_level_exp(),
                                      experience_bar_width])
 
@@ -93,9 +93,12 @@ def display_skill_tree_stats_bar(character):
     # bar color
     bg_image = get_stats_bar_image()
     screen.blit(bg_image, [square_screen_width, 0])
-    # level number
+
+    # level
     level_text = level_font.render("level " + str(character.get_level()), True, GREEN)
-    screen.blit(level_text, st_level_start_point)
+    level_text_rect = level_text.get_rect()
+    level_text_rect.center = st_level_text_center
+    screen.blit(level_text, level_text_rect)
 
     # exp variables
     exp = character.get_exp()
