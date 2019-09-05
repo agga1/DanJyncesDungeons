@@ -3,7 +3,7 @@ import pygame
 from management_and_config.configurations import *
 
 
-def inventory_run():
+def inventory_run(character):
 
     screen.fill(GREY)
     pygame.display.flip()
@@ -12,6 +12,9 @@ def inventory_run():
 
         # return to game
         for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                exit(1)
+
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_i:
                     return "game"

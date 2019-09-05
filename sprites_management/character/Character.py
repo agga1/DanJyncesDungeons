@@ -1,6 +1,5 @@
 from sprites_management.sprites_functions import *
 from management_and_config.configurations import *
-from resources.image_manager import get_coin_image, get_heart_image
 
 
 class Character(pygame.sprite.Sprite):
@@ -17,6 +16,7 @@ class Character(pygame.sprite.Sprite):
         self.staying_image = staying_image  # animation name: "rest"
         self.movement_animation = movement_animation  # animation name: "move"
         self.attack_image = attack_image  # animation name: "attack"
+
         self.curr_animation = "rest"
         self.animation_start_time = 0  # time when current animation started
 
@@ -24,9 +24,18 @@ class Character(pygame.sprite.Sprite):
         self.rect.x = start_point[0]
         self.rect.y = start_point[1]
 
+        # stats
+        self.attack_damage = character_start_attack_damage
+        self.attack_speed = character_start_attack_speed
+        self.critical_attack_chance = character_start_critical_attack_chance
+
         # health
         self.max_health = start_health
         self.health = stats["health"]
+
+        # mana
+        self.max_mana = 1
+        self.mana = 0
 
         # money
         self.money = stats["money"]
@@ -46,7 +55,6 @@ class Character(pygame.sprite.Sprite):
         self.velocity = [0, 0]
 
         # combat
-        self.attack_damage = character_attack_damage
         self.knockback = character_knockback
         self.is_attacking = False
 
@@ -54,44 +62,6 @@ class Character(pygame.sprite.Sprite):
         self.immune = False
         self.stop_stun_time = 0
         self.stop_immunity_time = 0
-
-    # ----- DRAWING -----
-    def draw_stats(self):
-        self.health_display()
-        self.money_display()
-        self.level_display()
-
-    def health_display(self):
-        heart_image = get_heart_image()
-
-        screen.blit(heart_image, health_start_point)
-
-        pygame.draw.rect(screen, RED,
-                         [health_start_point[0] + 35, health_start_point[1], health_bar_length,
-                          health_bar_width], 1)
-
-        pygame.draw.rect(screen, RED, [health_start_point[0] + 35, health_start_point[1],
-                                       self.health * health_bar_length / self.max_health, health_bar_width])
-
-    def money_display(self):
-        coin_image = get_coin_image()
-
-        money_number = money_font.render(str(self.money), True, YELLOW)
-        screen.blit(coin_image, money_start_point)
-        screen.blit(money_number, [money_start_point[0] + 25, money_start_point[1]])
-
-    def level_display(self):
-
-        level_number = level_font.render(str(self.level), True, GREEN)
-        screen.blit(level_number, level_start_point)
-
-        pygame.draw.rect(screen, GREEN,
-                         [level_start_point[0] + 35, level_start_point[1] + 10, experience_bar_length,
-                          experience_bar_width], 1)
-
-        pygame.draw.rect(screen, GREEN, [level_start_point[0] + 35, level_start_point[1] + 10,
-                                         self.exp * experience_bar_length / self.to_next_level_exp,
-                                         experience_bar_width])
 
     # ----- MOVEMENT -----
     def set_velocity(self, direction):
@@ -240,11 +210,17 @@ class Character(pygame.sprite.Sprite):
     def get_position(self):
         return [self.rect.x, self.rect.y]
 
-    def get_key_clicked(self, direction):
-        return self.key_clicked[direction]
-
     def get_attack_damage(self):
         return self.attack_damage
+
+    def get_attack_speed(self):
+        return self.attack_speed
+
+    def get_critical_attack_chance(self):
+        return self.critical_attack_chance
+
+    def get_key_clicked(self, direction):
+        return self.key_clicked[direction]
 
     def get_knockback(self):
         return self.knockback
@@ -261,12 +237,26 @@ class Character(pygame.sprite.Sprite):
     def set_money(self, money):
         self.money = money
 
+    def get_max_health(self):
+        return self.max_health
+
     def get_health(self):
         return self.health
+
+    def get_max_mana(self):
+        return self.max_mana
+
+    def get_mana(self):
+        return self.mana
 
     def get_exp(self):
         return self.exp
 
-    def get_lvl(self):
+    def get_level(self):
         return self.level
 
+    def get_to_next_level_exp(self):
+        return self.to_next_level_exp
+
+    def get_skill_points(self):
+        return self.skill_points

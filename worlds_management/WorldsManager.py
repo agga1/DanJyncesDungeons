@@ -2,7 +2,8 @@ import pygame
 import os
 
 from worlds_management.World import World
-from management_and_config.configurations import screen, character_start_point
+from management_and_config.configurations import screen
+from management_and_config.display_functions import display_stats_bar
 
 curr_world = 0
 
@@ -31,7 +32,7 @@ class WorldsManager:
         self.worlds_list[self.curr_world].get_curr_room().draw_room()
 
         for main_character in self.character.sprites():
-            main_character.draw_stats()
+            display_stats_bar(main_character)
 
         self.character.draw(screen)
 

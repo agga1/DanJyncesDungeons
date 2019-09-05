@@ -32,18 +32,19 @@ def game_run(db, memory_slot):
         clock.tick(60)
 
         # changing display to inventory or skill tree if activated
-        if curr_display != "game":
-            while curr_display != "game":
-                if curr_display == "inventory":
-                    curr_display = inventory_run()
-                elif curr_display == "skill tree":
-                    curr_display = skill_tree_run()
+        for main_character in worlds_manager.get_character().sprites():
+            if curr_display != "game":
+                while curr_display != "game":
+                    if curr_display == "inventory":
+                        curr_display = inventory_run(main_character)
+                    elif curr_display == "skill tree":
+                        curr_display = skill_tree_run(main_character)
 
-            # stopping character movement to avoid bugs
-            main_character.set_key_clicked("top", False)
-            main_character.set_key_clicked("bottom", False)
-            main_character.set_key_clicked("left", False)
-            main_character.set_key_clicked("right", False)
+                # stopping character movement to avoid bugs
+                main_character.set_key_clicked("top", False)
+                main_character.set_key_clicked("bottom", False)
+                main_character.set_key_clicked("left", False)
+                main_character.set_key_clicked("right", False)
 
         # drawing all elements of the display
         worlds_manager.draw()

@@ -1,8 +1,7 @@
 """Contains universally used gui features like pop-ups, frame freeze"""
-import pygame
 
-from management_and_config.configurations import main_font, font_size_info, BLACK, screen_height, screen_width, screen, \
-    SHADOW, WHITE
+from management_and_config.configurations import *
+from resources.image_manager import get_heart_image, get_coin_image
 
 
 def show_popup(text_string):
@@ -23,9 +22,119 @@ def show_popup(text_string):
 
 
 def freeze_clock(time_in_sek):
-    clock = pygame.time.Clock()
+    # clock = pygame.time.Clock()   # it is defined in configurations
     time_in_sek *= 60
     time_passed = 0
     while time_passed <= time_in_sek:
         clock.tick(60)
         time_passed += 1
+
+
+def health_display(character):
+    heart_image = get_heart_image()
+
+    screen.blit(heart_image, health_start_point)
+
+    pygame.draw.rect(screen, RED,
+                     [health_start_point[0] + 35, health_start_point[1], health_bar_length,
+                      health_bar_width], 1)
+
+    pygame.draw.rect(screen, RED, [health_start_point[0] + 35, health_start_point[1],
+                                   character.get_health() * health_bar_length / character.get_max_health(),
+                                   health_bar_width])
+
+
+def mana_display(character):
+    # mana_image = get_mana_image()
+
+    # screen.blit(mana_image, health_start_point)
+
+    pygame.draw.rect(screen, BLUE,
+                     [mana_start_point[0] + 35, mana_start_point[1], mana_bar_length,
+                      mana_bar_width], 1)
+
+    pygame.draw.rect(screen, BLUE, [mana_start_point[0] + 35, mana_start_point[1],
+                                    character.get_mana() * mana_bar_length / character.get_max_mana(),
+                                    mana_bar_width])
+
+
+def money_display(character):
+    coin_image = get_coin_image()
+
+    money_number = money_font.render(str(character.get_money()), True, YELLOW)
+    screen.blit(coin_image, money_start_point)
+    screen.blit(money_number, [money_start_point[0] + 25, money_start_point[1]])
+
+
+def level_display(character):
+    level_number = level_font.render(str(character.get_level()), True, GREEN)
+    screen.blit(level_number, level_start_point)
+
+    pygame.draw.rect(screen, GREEN,
+                     [level_start_point[0] + 35, level_start_point[1] + 10, experience_bar_length,
+                      experience_bar_width], 1)
+
+    pygame.draw.rect(screen, GREEN, [level_start_point[0] + 35, level_start_point[1] + 10,
+                                     character.get_exp() * experience_bar_length / character.get_to_next_level_exp(),
+                                     experience_bar_width])
+
+
+def display_stats_bar(character):
+    pygame.draw.rect(screen, STATS_BAR_COLOR, stats_bar_rect)
+
+    health_display(character)
+    mana_display(character)
+    money_display(character)
+    level_display(character)
+
+
+def display_skill_tree_stats_bar(character):
+    # bar color
+    pygame.draw.rect(screen, STATS_BAR_COLOR, stats_bar_rect)
+
+    # level number
+    level_text = level_font.render("level " + str(character.get_level()), True, GREEN)
+    screen.blit(level_text, st_level_start_point)
+
+    # exp variables
+    exp = character.get_exp()
+    max_exp = character.get_to_next_level_exp()
+
+    # exp bar
+    pygame.draw.rect(screen, GREEN,
+                     [st_experience_bar_start_point[0], st_experience_bar_start_point[1], st_experience_bar_length,
+                      st_experience_bar_width], 1)
+
+    pygame.draw.rect(screen, GREEN, [st_experience_bar_start_point[0], st_experience_bar_start_point[1],
+                                     exp * st_experience_bar_length / max_exp, st_experience_bar_width])
+
+    # text: current exp / max exp in the center of exp bar
+    exp_text = st_exp_font.render(str(exp) + "/" + str(max_exp), True, WHITE)
+    exp_text_rect = exp_text.get_rect()
+    exp_text_rect.center = exp_text_center
+    screen.blit(exp_text, exp_text_rect)
+
+    # skill points
+    skill_points_text = skill_points_font.render("skill points: " + str(character.get_skill_points()), True, GREEN)
+    screen.blit(skill_points_text, st_skill_points_text_start_point)
+
+    # attack damage
+    attack_damage_text = stats_font.render("attack damage: " + str(character.get_attack_damage()), True, WHITE)
+    screen.blit(attack_damage_text, st_attack_damage_text_start_point)
+
+    # attack speed
+    attack_speed_text = stats_font.render("attack speed: " + str(character.get_attack_speed()), True, WHITE)
+    screen.blit(attack_speed_text, st_attack_speed_text_start_point)
+
+    # attack damage
+    crit_chance_text = stats_font.render("critical chance: " + str(character.get_critical_attack_chance() * 100) + "%",
+                                         True, WHITE)
+    screen.blit(crit_chance_text, st_critical_attack_chance_text_start_point)
+
+    # health
+    health_text = stats_font.render("hit points: " + str(character.get_max_health()), True, WHITE)
+    screen.blit(health_text, st_health_text_start_point)
+
+    # mana
+    mana_text = stats_font.render("mana points: " + str(character.get_max_mana()), True, WHITE)
+    screen.blit(mana_text, st_mana_text_start_point)
