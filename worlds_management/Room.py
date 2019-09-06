@@ -25,12 +25,16 @@ class Room:
         self.enemies = pygame.sprite.Group()
         sprites_management.sprites_manager.add_enemies(self.enemies, room_enemies)
 
+        # dropped items group
+        self.drop = pygame.sprite.Group()
+
     def draw_room(self):
         screen.fill(WHITE)
         self.terrain_display()
         self.wall_display()
         self.door_display()
         self.enemy_display()
+        self.drop_display()
 
     def terrain_display(self):
         terrain_image = image_manager.get_terrain_image()
@@ -69,8 +73,15 @@ class Room:
                 health_text_rect.center = health_text_center
                 screen.blit(health_text, health_text_rect)
 
-    def remove_enemy(self, enemy):
+    def drop_display(self):
+        self.drop.draw(screen)
+
+    def kill_enemy(self, enemy):
+        sprites_management.sprites_manager.add_drop(self.drop, enemy)
         self.enemies.remove(enemy)
+
+    def remove_drop(self, drop):
+        self.drop.remove(drop)
 
     def get_size(self):
         return self.size
@@ -80,3 +91,6 @@ class Room:
 
     def get_enemies(self):
         return self.enemies
+
+    def get_dropped_items(self):
+        return self.drop

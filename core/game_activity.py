@@ -6,7 +6,6 @@ from core.skill_tree_activity import skill_tree_run
 
 
 def game_run(db, memory_slot):
-
     # DATABASE
     db.update_date(memory_slot)
     db.update_if_new(memory_slot)
@@ -32,8 +31,8 @@ def game_run(db, memory_slot):
     while True:
         clock.tick(60)
 
-        # changing display to inventory or skill tree if activated
         for main_character in worlds_manager.get_character().sprites():
+            # changing display to inventory or skill tree if activated
             if curr_display != "game":
                 while curr_display != "game":
                     if curr_display == "inventory":
@@ -47,19 +46,19 @@ def game_run(db, memory_slot):
                 main_character.set_key_clicked("left", False)
                 main_character.set_key_clicked("right", False)
 
-        # drawing all elements of the display
-        worlds_manager.draw()
-        if time > can_attack_time:
-            attack_ready_display(True)
-        else:
-            attack_ready_display(False)
+            # drawing all elements of the display
+            worlds_manager.draw()
+            if time > can_attack_time:
+                attack_ready_display(True)
+            else:
+                attack_ready_display(False)
 
-        for e in pygame.event.get():
-            # quit game
-            if e.type == pygame.QUIT:
-                exit(1)
-            # keys management
-            for main_character in worlds_manager.get_character().sprites():
+            for e in pygame.event.get():
+                # quit game
+                if e.type == pygame.QUIT:
+                    exit(1)
+
+                # keys management
                 if e.type == pygame.KEYDOWN:
                     # movement (saving information about keys being pressed)
                     if e.key == pygame.K_w:
@@ -100,11 +99,10 @@ def game_run(db, memory_slot):
                     if e.key == pygame.K_d:
                         main_character.set_key_clicked("right", False)
 
-        # stop attacking
-        if main_character.get_is_attacking() and time == stop_attack_time:
-            main_character.stop_attack()
+            # stop attacking
+            if main_character.get_is_attacking() and time == stop_attack_time:
+                main_character.stop_attack()
 
-        for main_character in worlds_manager.get_character().sprites():
             # set character velocity
             if not main_character.get_stunned():
                 vertical_velocity = 0
@@ -125,8 +123,8 @@ def game_run(db, memory_slot):
 
                 main_character.set_velocity([horizontal_velocity, vertical_velocity])
 
-            # move if not colliding with walls
-            main_character.move(worlds_manager.get_curr_world().get_curr_room().get_walls(), time)
+            # move if not colliding with walls and check collision with drop
+            main_character.move(worlds_manager.get_curr_world().get_curr_room(), time)
 
             # colliding with enemies
             main_character.check_collisions(worlds_manager.get_curr_world().get_curr_room(), time)
@@ -137,9 +135,13 @@ def game_run(db, memory_slot):
             # checking changing room
             worlds_manager.get_curr_world().check_room(main_character)
 
-        # enemies movement
-        for enemy in worlds_manager.get_curr_world().get_curr_room().get_enemies().sprites():
-            enemy.move(worlds_manager.get_character(), time)
+            # enemies movement
+            for enemy in worlds_manager.get_curr_world().get_curr_room().get_enemies().sprites():
+                enemy.move(worlds_manager.get_character(), time)
+
+            # drop moving towards character
+            for drop in worlds_manager.get_curr_world().get_curr_room().get_dropped_items().sprites():
+                drop.move_towards_character(main_character)
 
         pygame.display.flip()
         time += 1

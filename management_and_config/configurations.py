@@ -13,7 +13,7 @@ clock = pygame.time.Clock()
 
 # fonts
 main_font = 'freesansbold.ttf'
-description_font = '../resources/ARJULIAN.ttf'
+description_font = '../resources/fonts/ARJULIAN.ttf'
 font_size_info = 14  # in pop u p windows
 font_size_bar = 12
 font_size_money = 25
@@ -54,6 +54,7 @@ distance_from_door = 50
 
 
 # ----- SPRITES -----
+sprite_size = [50, 50]
 
 # character
 character_start_point = [300, 300]
@@ -81,7 +82,12 @@ enemy_health_bar_display_difference = [-2, 0]
 enemy_health_bar_width = 9
 enemy_health_bar_length = 54
 enemy_health_text_center_difference = [28, 5]
+enemy_money_drop_range = [1, 3]
+enemy_exp_drop = 4
 
+# dropped items
+drop_speed = 0.5
+drop_moving_distance = 150
 
 # ----- STATS -----
 

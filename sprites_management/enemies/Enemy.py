@@ -41,14 +41,15 @@ class Enemy(pygame.sprite.Sprite):
         self.stop_immunity_time = 0
 
         # after being killed
-        self.reward = enemy_reward
-        self.exp_for_kill = enemy_exp_for_kill
+        self.drop = [enemy_money_drop_range, enemy_exp_drop]
 
     # ----- MOVEMENT -----
     def set_velocity_to_follow(self, main_character):
         # main character is a target
-        curr_character_position = main_character.get_position()
-        position_difference = [self.rect.x - curr_character_position[0], self.rect.y - curr_character_position[1]]
+        curr_character_position_center = [main_character.get_position()[0] + sprite_size[0]/2,
+                                          main_character.get_position()[1] + sprite_size[1]/2]
+        position_difference = [self.rect.x - curr_character_position_center[0],
+                               self.rect.y - curr_character_position_center[1]]
 
         # calculating angle
         angle = calculate_arctan(position_difference)
@@ -103,16 +104,13 @@ class Enemy(pygame.sprite.Sprite):
         if not self.immune:
             self.health -= main_character.get_attack_damage()
 
-            self.check_death(curr_room, main_character)
+            self.check_death(curr_room)
 
             self.knockback(main_character, time)
 
-    def check_death(self, curr_room, main_character):
+    def check_death(self, curr_room):
         if self.health <= 0:
-            main_character.add_money(self.reward)
-            main_character.add_experience(self.exp_for_kill)
-
-            curr_room.remove_enemy(self)
+            curr_room.kill_enemy(self)
 
     def knockback(self, main_character, time):
         # setting variables
@@ -171,3 +169,6 @@ class Enemy(pygame.sprite.Sprite):
 
     def get_knockback_multiplier(self):
         return self.knockback_multiplier
+
+    def get_drop(self):
+        return self.drop

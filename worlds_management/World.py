@@ -3,6 +3,7 @@ import os
 
 from worlds_management.Room import Room
 from sprites_management.sprites_manager import create_enemy
+from management_and_config.configurations import *
 
 
 def get_room_position(room):     # example: "room_1_12.txt", we need pos_x = 1 and pos_y = 12
@@ -84,11 +85,11 @@ class World:
 
         if main_character_pos[1] < 0:
             self.change_room("top", main_character)
-        elif main_character_pos[1] > self.rooms[self.curr_room[0]][self.curr_room[1]].get_size()[1] * 50:
+        elif main_character_pos[1] > self.rooms[self.curr_room[0]][self.curr_room[1]].get_size()[1]*50 - sprite_size[1]:
             self.change_room("bottom", main_character)
         elif main_character_pos[0] < 0:
             self.change_room("left", main_character)
-        elif main_character_pos[0] > self.rooms[self.curr_room[0]][self.curr_room[1]].get_size()[0] * 50:
+        elif main_character_pos[0] > self.rooms[self.curr_room[0]][self.curr_room[1]].get_size()[0]*50 - sprite_size[0]:
             self.change_room("right", main_character)
 
     def change_room(self, direction, main_character):

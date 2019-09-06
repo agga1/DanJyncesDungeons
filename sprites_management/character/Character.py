@@ -72,7 +72,7 @@ class Character(pygame.sprite.Sprite):
         if not (self.velocity[0] == 0 and self.velocity[1] == 0):
             self.angle = find_character_angle(self.velocity)
 
-    def move(self, walls, time):
+    def move(self, curr_room, time):
         curr_position = [self.rect.x, self.rect.y]
 
         # attempt to move
@@ -80,13 +80,22 @@ class Character(pygame.sprite.Sprite):
         self.rect.y += self.velocity[1]
 
         # checking collision with walls
-        if pygame.sprite.spritecollide(self, walls, False):
+        if pygame.sprite.spritecollide(self, curr_room.get_walls(), False):
             # if collide, do not move
             self.rect.x = curr_position[0]
             self.rect.y = curr_position[1]
 
         # checking animation and animating
         self.animation(time)
+
+        # checking picking up drop
+        for loot in pygame.sprite.spritecollide(self, curr_room.get_dropped_items(), False):
+            if loot.get_name() == "exp":
+                self.add_experience(1)
+            elif loot.get_name() == "coin":
+                self.add_money(1)
+
+            curr_room.remove_drop(loot)
 
     # ----- CHARACTER IMAGE -----
     def animation(self, time):

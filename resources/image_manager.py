@@ -5,10 +5,13 @@ from sprites_management.sprites_functions import connect_frames
 bg_image = pygame.image.load("../resources/images_and_animations/menu_bg.png")
 btn_image = pygame.image.load("../resources/images_and_animations/menu_button.png")
 del_image = pygame.image.load("../resources/images_and_animations/delete_button.png")
+
 # stats bar
 stats_bar_image = pygame.image.load("../resources/images_and_animations/stats_bar.png")
+
 # inventory
 inventory_image = pygame.image.load("../resources/images_and_animations/inventory.png")
+
 # terrain
 terrain_image = pygame.image.load("../resources/images_and_animations/terrain.png")
 
@@ -18,14 +21,14 @@ wall_image = pygame.image.load("../resources/images_and_animations/terrain_borde
 # doors
 open_door_image = pygame.image.load("../resources/images_and_animations/door_open.png")
 
-# enemies
-bat_images = connect_frames("../resources/images_and_animations/bat")
-
 # character
 character_rest_image = pygame.image.load(
     "../resources/images_and_animations/character/character_walk/character_walk_0.png")
 character_walk_images = connect_frames("../resources/images_and_animations/character/character_walk")
 character_attack_image = pygame.image.load("../resources/images_and_animations/character/character_attack.png")
+
+# enemies
+bat_images = connect_frames("../resources/images_and_animations/bat")
 
 # health
 heart_image = pygame.image.load("../resources/images_and_animations/heart.png")
@@ -36,6 +39,10 @@ coin_image = pygame.image.load("../resources/images_and_animations/coin.png")
 # attack ready diode
 attack_ready_image = pygame.image.load("../resources/images_and_animations/attack_ready.png")
 attack_not_ready_image = pygame.image.load("../resources/images_and_animations/attack_not_ready.png")
+
+# dropped
+coin_point_image = pygame.image.load("../resources/images_and_animations/coin_point.png")
+exp_point_image = pygame.image.load("../resources/images_and_animations/exp_point.png")
 
 # items
 item_image = pygame.image.load("../resources/images_and_animations/item.png")
@@ -81,10 +88,6 @@ def get_open_door_image():
     return open_door_image
 
 
-def get_bat_images():
-    return bat_images
-
-
 def get_character_rest_image():
     return character_rest_image
 
@@ -97,12 +100,24 @@ def get_character_attack_image():
     return character_attack_image
 
 
+def get_bat_images():
+    return bat_images
+
+
 def get_heart_image():
     return heart_image
 
 
 def get_coin_image():
     return coin_image
+
+
+def get_coin_point_image():
+    return coin_point_image
+
+
+def get_exp_point_image():
+    return exp_point_image
 
 
 def get_item_image():
