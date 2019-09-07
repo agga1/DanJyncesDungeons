@@ -202,12 +202,12 @@ class Character(pygame.sprite.Sprite):
             new_position[1] = new_room_size[1] * 50 - distance_from_door
         elif new_room_direction == "bottom":
             new_position[0] = self.rect.x
-            new_position[1] = distance_from_door
+            new_position[1] = 0  # distance_from_door
         elif new_room_direction == "left":
             new_position[0] = new_room_size[0] * 50 - distance_from_door
             new_position[1] = self.rect.y
         elif new_room_direction == "right":
-            new_position[0] = distance_from_door
+            new_position[0] = 0  # distance_from_door
             new_position[1] = self.rect.y
 
         self.rect.x = new_position[0]
