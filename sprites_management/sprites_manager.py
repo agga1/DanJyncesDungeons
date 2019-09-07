@@ -65,9 +65,8 @@ def add_enemies(enemies_group, enemies_list):
 def add_drop(drop_group, enemy):
     enemy_drop = enemy.get_drop()
     enemy_position = enemy.get_position()
-
-    number_of_coins = random.randint(enemy_drop[0][0], enemy_drop[0][1])
-    number_of_exp = enemy_drop[1]
+    number_of_coins = random.randint(enemy_drop["coin_range"][0], enemy_drop["coin_range"][1])
+    number_of_exp = enemy_drop["exp"]
 
     coin_image = get_coin_point_image()
     exp_image = get_exp_point_image()

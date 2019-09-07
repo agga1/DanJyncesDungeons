@@ -41,7 +41,8 @@ class Enemy(pygame.sprite.Sprite):
         self.stop_immunity_time = 0
 
         # after being killed
-        self.drop = [enemy_money_drop_range, enemy_exp_drop]
+        # self.drop = [enemy_money_drop_range, enemy_exp_drop]
+        self.drop = {"coin_range": enemy_money_drop_range, "exp": enemy_exp_drop}
 
     # ----- MOVEMENT -----
     def set_velocity_to_follow(self, main_character):

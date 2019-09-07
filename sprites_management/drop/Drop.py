@@ -23,10 +23,11 @@ class Drop(pygame.sprite.Sprite):
         self.base_speed = drop_speed
         self.velocity = [0, 0]
 
-    def move_towards_character(self, main_character):
+    def move_towards_character(self, character):
         # main character is a target
-        curr_character_position_center = [main_character.get_position()[0] + sprite_size[0] / 2,
-                                          main_character.get_position()[1] + sprite_size[1] / 2]
+        curr_character_position_center = [character.get_position()[0] + sprite_size[0] / 2,
+                                          character.get_position()[1] + sprite_size[1] / 2]
+
         position_difference = [self.rect.x - curr_character_position_center[0],
                                self.rect.y - curr_character_position_center[1]]
 
