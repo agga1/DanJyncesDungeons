@@ -13,6 +13,8 @@ class Room:
         self.size = room_size
         self.type = room_type
         # TODO self.enemies_on_start = [id, id, id...] ids of all enemies alive during room creation
+        #   (S: we need ids here? maybe just loading alive enemies in function add_enemies and have array with
+        #   alive enemies's ids in world object (but it will be necessary to pass world object instead of room in check_collisions in game activity))
 
         # walls group
         self.walls = pygame.sprite.Group()

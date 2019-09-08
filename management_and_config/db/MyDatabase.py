@@ -5,7 +5,8 @@ from datetime import datetime
 from management_and_config.configurations import start_health, start_lvl
 
 db_path = os.path.abspath('../data/stats_db')  # path to database
-# TODO add active_enemies column, getters and updaters
+# TODO add active_enemies column, getters and updaters (S: dropped items (?), curr_world, items in inv, skills,
+#  opened/closed doors)
 
 
 class MyDatabase:

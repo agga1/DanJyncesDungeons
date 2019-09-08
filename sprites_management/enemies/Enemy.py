@@ -3,9 +3,12 @@ from management_and_config.configurations import *
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, start_point, movement_animation, *groups):  # TODO add (..., enemy_id), each enemy should have unique id within world
+    def __init__(self, enemy_id, start_point, movement_animation, *groups):  # TODO add (..., enemy_id), each enemy should have unique id within world (S: done)
         super().__init__(*groups)
-        # TODO self.enemy_id = enemy_id
+        # TODO self.enemy_id = enemy_id (S: done)
+        # id
+        self.id = enemy_id
+
         # images
         self.original_image = movement_animation[0]
         self.image = movement_animation[0]
@@ -150,6 +153,9 @@ class Enemy(pygame.sprite.Sprite):
         self.velocity = [0, 0]
 
     # ----- GETTERS AND SETTERS -----
+    def get_id(self):
+        return self.id
+
     def get_position(self):
         return [self.rect.x, self.rect.y]
 
@@ -174,4 +180,4 @@ class Enemy(pygame.sprite.Sprite):
     def get_drop(self):
         return self.drop
 
-    # TODO get_id(self)
+    # TODO get_id(self) (S: done)

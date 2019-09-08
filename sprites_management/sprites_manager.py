@@ -1,6 +1,5 @@
 """ Managing creation and addition of new sprites """
 import pygame
-import math
 import random
 
 from sprites_management.enemies.Enemy import Enemy
@@ -11,11 +10,11 @@ from resources.image_manager import get_bat_images, get_wall_image, get_open_doo
     get_exp_point_image
 
 
-def create_enemy(enemy_type, enemy_start_point):
+def create_enemy(enemy_id, enemy_type, enemy_start_point):
     if enemy_type == "bat":
         bat_images = get_bat_images()
 
-        return Enemy(enemy_start_point, bat_images)
+        return Enemy(enemy_id, enemy_start_point, bat_images)
     return None
 
 

@@ -49,10 +49,12 @@ class World:
         # start room
         self.curr_room = self.start_room
 
-    def load_world(self):   # called when starting game or changing world TODO why not in constructor?
+    def load_world(self):   # called when starting game or changing world TODO why not in constructor? (S: we are making all worlds in worlds_manager's constructor)
         rooms = os.listdir(self.path)
-        # TODO enemies have unique id within world
-        # TODO enemy_id = 0
+        # TODO enemies have unique id within world  (S: done)
+        # TODO enemy_id = 0     (S: done)
+        enemy_id = 0    # to give every enemy unique id
+
         # reading rooms' configuration files
         for room in rooms:
             if room != "world.txt":
@@ -70,38 +72,40 @@ class World:
                 enemies = []    # list of enemies in the room
 
                 for enemy in range(0, enemies_number):
-                    # TODO if not active_enemies[enemy_id++] continue
+                    # TODO if not active_enemies[enemy_id++] continue (S: not yet, better after enemies in db)
                     curr_enemy_vars = room_file.readline().split()  # reading variables connected with the enemy
 
                     enemy_type = curr_enemy_vars[0]     # type (name) of the enemy
 
                     enemy_start_point = [int(curr_enemy_vars[1]),   # point where is the enemy at the beginning
                                          int(curr_enemy_vars[2])]
-                    # TODO (create_enemy(...,enemy_id))
-                    enemies.append(create_enemy(enemy_type, enemy_start_point))     # creating and adding object: enemy
+                    # TODO (create_enemy(...,enemy_id)) (S: done)
+                    enemies.append(create_enemy(enemy_id, enemy_type, enemy_start_point))  # creating and adding object
+
+                    enemy_id += 1
 
                 room_file.close()
 
                 self.rooms[position[0]][position[1]] = Room(room_size, room_type, enemies)   # adding room
 
-                # TODO enemy_id ++
+                # TODO enemy_id ++ (S: done but above)
 
     def check_room(self, main_character):
         # checking if we are changing room
         main_character_pos = main_character.get_position()
 
         if main_character_pos[1] < 0:
-            self.change_room("top", main_character)
+            self.change_room_and_save("top", main_character)
         elif main_character_pos[1] > self.rooms[self.curr_room[0]][self.curr_room[1]].get_size()[1]*50 - sprite_size[1]:
-            self.change_room("bottom", main_character)
+            self.change_room_and_save("bottom", main_character)
         elif main_character_pos[0] < 0:
-            self.change_room("left", main_character)
+            self.change_room_and_save("left", main_character)
         elif main_character_pos[0] > self.rooms[self.curr_room[0]][self.curr_room[1]].get_size()[0]*50 - sprite_size[0]:
-            self.change_room("right", main_character)
+            self.change_room_and_save("right", main_character)
 
-    def change_room(self, direction, main_character):
+    def change_room_and_save(self, direction, main_character):
         # changing room
-        # TODO: save current room state on exit? -> rename to change_room_and_save
+        # TODO: save current room state on exit? -> rename to change_room_and_save (S: so let's remove saving by "p")
         # active_enemies = self.get_current_room().update_active_enemies(active_enemies)
         # save_active_enemies(active_enemies, db)
         # TODO move saving character here (save_character(main_character, db)
