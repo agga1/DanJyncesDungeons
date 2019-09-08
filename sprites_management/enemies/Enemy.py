@@ -1,11 +1,12 @@
 from sprites_management.sprites_functions import *
 from management_and_config.configurations import *
+# TODO get_id(self)
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, start_point, movement_animation, *groups):
+    def __init__(self, start_point, movement_animation, *groups):  # TODO add (..., enemy_id)
         super().__init__(*groups)
-
+        # TODO self.enemy_id = enemy_id
         # images
         self.original_image = movement_animation[0]
         self.image = movement_animation[0]

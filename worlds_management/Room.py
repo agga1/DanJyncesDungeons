@@ -12,6 +12,7 @@ class Room:
         # specification of the room
         self.size = room_size
         self.type = room_type
+        # TODO self.enemies_on_start = [id, id, id...] ids of all enemies alive during room creation
 
         # walls group
         self.walls = pygame.sprite.Group()
@@ -94,3 +95,10 @@ class Room:
 
     def get_dropped_items(self):
         return self.drop
+
+    # TODO def update_active_enemies(active_enemies):
+    # active_enemies[self.enemies_on_start[:]] = 0
+    # for enemy in self.enemies:
+    #   active_enemies[enemy.get_id()] = 1
+    # return active_enemies
+

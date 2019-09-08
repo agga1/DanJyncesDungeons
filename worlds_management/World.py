@@ -17,7 +17,7 @@ def get_room_position(room):     # example: "room_1_12.txt", we need pos_x = 1 a
 
 
 class World:
-    def __init__(self, world_path):
+    def __init__(self, world_path):  # TODO db
         self.path = world_path
 
         # world configurations
@@ -40,15 +40,19 @@ class World:
             for j in range(0, self.size[0]):
                 if int(curr_line[j]) == 1:      # no room == 0, start room == 1, other rooms == 2
                     self.start_room = [j, i]
-
         world_file.close()
+
+        # active_enemies (array read from db w/ values enemy_id: 0/1 (0- enemy dead),
+        # TODO self.db = db
+        # TODO active_enemies (array read from db w/ values enemy_id: 0/1 (0- enemy dead) = load_active_enemies(db)
 
         # start room
         self.curr_room = self.start_room
 
-    def load_world(self):   # called when starting game or changing world
+    def load_world(self):   # called when starting game or changing world TODO why not in constructor?
         rooms = os.listdir(self.path)
-
+        # TODO enemies have unique id within world
+        # TODO enemy_id = 0
         # reading rooms' configuration files
         for room in rooms:
             if room != "world.txt":
@@ -66,18 +70,21 @@ class World:
                 enemies = []    # list of enemies in the room
 
                 for enemy in range(0, enemies_number):
+                    # TODO if not active_enemies[enemy_id++] continue
                     curr_enemy_vars = room_file.readline().split()  # reading variables connected with the enemy
 
                     enemy_type = curr_enemy_vars[0]     # type (name) of the enemy
 
                     enemy_start_point = [int(curr_enemy_vars[1]),   # point where is the enemy at the beginning
                                          int(curr_enemy_vars[2])]
-
+                    # TODO (create_enemy(...,enemy_id))
                     enemies.append(create_enemy(enemy_type, enemy_start_point))     # creating and adding object: enemy
 
                 room_file.close()
 
                 self.rooms[position[0]][position[1]] = Room(room_size, room_type, enemies)   # adding room
+
+                # TODO enemy_id ++
 
     def check_room(self, main_character):
         # checking if we are changing room
@@ -94,6 +101,10 @@ class World:
 
     def change_room(self, direction, main_character):
         # changing room
+        # TODO: save current room state on exit?
+        # active_enemies = self.get_current_room().update_active_enemies(active_enemies)
+        # save_active_enemies(active_enemies, db)
+        # TODO move saving character here (save_character(main_character, db)
         if direction == "top":
             if self.curr_room[1] > 0 and self.rooms[self.curr_room[0]][self.curr_room[1] - 1]:
                 self.curr_room[1] -= 1

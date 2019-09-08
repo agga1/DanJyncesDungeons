@@ -9,6 +9,12 @@ from sprites_management.character.Character import Character
 
 location = os.path.abspath('../data/config.character')
 
+# TODO save_active_enemies(active_enemies, db):
+# using pickle?
+
+# TODO load_active_enemies(db):
+# return active_enemies
+
 
 def save_character(character, db, memory_slot = -1):
     db.update_money(character.get_money())
