@@ -45,6 +45,7 @@ class World:
         # active_enemies (array read from db w/ values enemy_id: 0/1 (0- enemy dead),
         # TODO self.db = db
         # TODO active_enemies (array read from db w/ values enemy_id: 0/1 (0- enemy dead) = load_active_enemies(db)
+        # or in worldsManager?
 
         # start room
         self.curr_room = self.start_room

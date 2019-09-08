@@ -22,7 +22,7 @@ def game_run(db, memory_slot):
     character = pygame.sprite.Group()
     main_character = load_character(db)
     character.add(main_character)
-    worlds_manager = WorldsManager(character)
+    worlds_manager = WorldsManager(character)  # TODO db
     worlds_manager.game_start()
 
     # CURRENT DISPLAY MANAGEMENT
