@@ -1,10 +1,9 @@
 from sprites_management.sprites_functions import *
 from management_and_config.configurations import *
-# TODO get_id(self)
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, start_point, movement_animation, *groups):  # TODO add (..., enemy_id)
+    def __init__(self, start_point, movement_animation, *groups):  # TODO add (..., enemy_id), each enemy should have unique id within world
         super().__init__(*groups)
         # TODO self.enemy_id = enemy_id
         # images
@@ -174,3 +173,5 @@ class Enemy(pygame.sprite.Sprite):
 
     def get_drop(self):
         return self.drop
+
+    # TODO get_id(self)

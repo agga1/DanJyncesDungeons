@@ -45,7 +45,6 @@ class World:
         # active_enemies (array read from db w/ values enemy_id: 0/1 (0- enemy dead),
         # TODO self.db = db
         # TODO active_enemies (array read from db w/ values enemy_id: 0/1 (0- enemy dead) = load_active_enemies(db)
-        # or in worldsManager?
 
         # start room
         self.curr_room = self.start_room
@@ -102,7 +101,7 @@ class World:
 
     def change_room(self, direction, main_character):
         # changing room
-        # TODO: save current room state on exit?
+        # TODO: save current room state on exit? -> rename to change_room_and_save
         # active_enemies = self.get_current_room().update_active_enemies(active_enemies)
         # save_active_enemies(active_enemies, db)
         # TODO move saving character here (save_character(main_character, db)

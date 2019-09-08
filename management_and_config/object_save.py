@@ -1,6 +1,9 @@
+""" Currently all saving functions are to be invoked in World class, during room changing by the main character.
+When you go to the next WORLD, information about rooms' state in prev. world is overwritten by new world.
+Eventually separate columns for each world could be made and all states would be remembered(but is it necessary?)"""
+
 import os
 import pickle
-
 
 from management_and_config.configurations import *
 from management_and_config.display_functions import show_popup, freeze_clock
@@ -47,6 +50,4 @@ def load_character(db, memory_slot=-1):
         "exp": db.get_experience(),
         "lvl": db.get_lvl()
     }
-    # health = db.get_health(game_version) ...
-    # exp
     return Character(character_start_point, character_rest_image, character_walk_images, character_attack_image, stats)
