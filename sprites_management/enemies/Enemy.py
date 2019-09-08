@@ -3,9 +3,8 @@ from management_and_config.configurations import *
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, enemy_id, start_point, movement_animation, *groups):  # TODO add (..., enemy_id), each enemy should have unique id within world (S: done)
+    def __init__(self, enemy_id, start_point, movement_animation, *groups):
         super().__init__(*groups)
-        # TODO self.enemy_id = enemy_id (S: done)
         # id
         self.id = enemy_id
 
@@ -180,4 +179,3 @@ class Enemy(pygame.sprite.Sprite):
     def get_drop(self):
         return self.drop
 
-    # TODO get_id(self) (S: done)
