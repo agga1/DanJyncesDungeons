@@ -9,7 +9,7 @@ curr_world = 0
 
 
 class WorldsManager:
-    def __init__(self, character):  # gets passed character GROUP # TODO db
+    def __init__(self, character, db):  # gets passed character GROUP
         self.worlds_number = 0
         self.worlds_list = []
 
@@ -18,7 +18,7 @@ class WorldsManager:
         worlds.sort()   # To ensure alphabetical order
 
         for world in worlds:
-            self.worlds_list.append(World("../worlds_management/worlds/" + world))  # TODO db
+            self.worlds_list.append(World("../worlds_management/worlds/" + world, db))
 
         self.worlds_number = len(self.worlds_list)
 

@@ -9,7 +9,6 @@ pygame.init()
 # database
 
 db = MyDatabase()
-# TODO: show start screen: buttons: new game->db.insert() continue->choose from saved versions
 
 # CAPTION
 pygame.display.set_caption("Dan Jynce's Dungeons")

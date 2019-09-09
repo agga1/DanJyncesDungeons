@@ -12,11 +12,20 @@ from sprites_management.character.Character import Character
 
 location = os.path.abspath('../data/config.character')
 
-# TODO save_active_enemies(active_enemies, db):
-# using pickle?
 
-# TODO load_active_enemies(db):
-# return active_enemies
+def save_active_enemies(active_enemies, db):
+    active_enemies_str = ''.join(map(str, active_enemies))
+    db.update_active_enemies(active_enemies_str)
+    pass
+
+
+def load_active_enemies(db):
+    act_en_str = db.get_active_enemies()
+    print(act_en_str)
+    active_enemies = []
+    for c in act_en_str:
+        active_enemies.append(int(c))
+    return active_enemies
 
 
 def save_character(character, db, memory_slot = -1):
@@ -25,8 +34,8 @@ def save_character(character, db, memory_slot = -1):
     db.update_health(character.get_health())
     db.update_experience(character.get_exp())
     db.update_lvl(character.get_level())
-    show_popup('Progress saved!')
-    freeze_clock(0.5)
+    # show_popup('Progress saved!')
+    # freeze_clock(0.5)
 
 
 def get_character():

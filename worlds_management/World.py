@@ -1,6 +1,7 @@
 """ Manages current world, reading world's and rooms' configuration files, changing rooms, checking room changing"""
 import os
 
+from management_and_config.object_save import load_active_enemies, save_active_enemies, save_character
 from worlds_management.Room import Room
 from sprites_management.sprites_manager import create_enemy
 from management_and_config.configurations import *
@@ -17,7 +18,7 @@ def get_room_position(room):     # example: "room_1_12.txt", we need pos_x = 1 a
 
 
 class World:
-    def __init__(self, world_path):  # TODO db
+    def __init__(self, world_path, db):
         self.path = world_path
 
         # world configurations
@@ -43,16 +44,14 @@ class World:
         world_file.close()
 
         # active_enemies (array read from db w/ values enemy_id: 0/1 (0- enemy dead),
-        # TODO self.db = db
-        # TODO active_enemies (array read from db w/ values enemy_id: 0/1 (0- enemy dead) = load_active_enemies(db)
-
+        self.db = db
+        # active_enemies (array read from db w/ values enemy_id: 0/1 (0- enemy dead) = load_active_enemies(db)
+        self.active_enemies = load_active_enemies(db)
         # start room
         self.curr_room = self.start_room
 
     def load_world(self):   # called when starting game or changing world TODO why not in constructor? (S: we are making all worlds in worlds_manager's constructor)
         rooms = os.listdir(self.path)
-        # TODO enemies have unique id within world  (S: done)
-        # TODO enemy_id = 0     (S: done)
         enemy_id = 0    # to give every enemy unique id
 
         # reading rooms' configuration files
@@ -72,14 +71,19 @@ class World:
                 enemies = []    # list of enemies in the room
 
                 for enemy in range(0, enemies_number):
-                    # TODO if not active_enemies[enemy_id++] continue (S: not yet, better after enemies in db)
-                    curr_enemy_vars = room_file.readline().split()  # reading variables connected with the enemy
+                    if len(self.active_enemies) > enemy_id and not self.active_enemies[enemy_id]:
+                        enemy_id += 1
+                        continue
+
+                    if len(self.active_enemies) <= enemy_id: # the first time game opens, active_enemies is empty. default is 1 - enemy active
+                        self.active_enemies.append(1)
+
+                    curr_enemy_vars = room_file.readline().split()  # readiang variables connected with the enemy
 
                     enemy_type = curr_enemy_vars[0]     # type (name) of the enemy
 
                     enemy_start_point = [int(curr_enemy_vars[1]),   # point where is the enemy at the beginning
                                          int(curr_enemy_vars[2])]
-                    # TODO (create_enemy(...,enemy_id)) (S: done)
                     enemies.append(create_enemy(enemy_id, enemy_type, enemy_start_point))  # creating and adding object
 
                     enemy_id += 1
@@ -87,8 +91,6 @@ class World:
                 room_file.close()
 
                 self.rooms[position[0]][position[1]] = Room(room_size, room_type, enemies)   # adding room
-
-                # TODO enemy_id ++ (S: done but above)
 
     def check_room(self, main_character):
         # checking if we are changing room
@@ -105,10 +107,10 @@ class World:
 
     def change_room_and_save(self, direction, main_character):
         # changing room
-        # TODO: save current room state on exit? -> rename to change_room_and_save (S: so let's remove saving by "p")
-        # active_enemies = self.get_current_room().update_active_enemies(active_enemies)
-        # save_active_enemies(active_enemies, db)
-        # TODO move saving character here (save_character(main_character, db)
+        # TODO: save current room on exit
+        self.active_enemies = self.get_curr_room().update_active_enemies(self.active_enemies)
+        save_active_enemies(self.active_enemies, self.db)
+        save_character(main_character, self.db)
         if direction == "top":
             if self.curr_room[1] > 0 and self.rooms[self.curr_room[0]][self.curr_room[1] - 1]:
                 self.curr_room[1] -= 1

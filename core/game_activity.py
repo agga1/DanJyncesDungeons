@@ -22,7 +22,7 @@ def game_run(db, memory_slot):
     character = pygame.sprite.Group()
     main_character = load_character(db)
     character.add(main_character)
-    worlds_manager = WorldsManager(character)  # TODO db
+    worlds_manager = WorldsManager(character, db)
     worlds_manager.game_start()
 
     # CURRENT DISPLAY MANAGEMENT
@@ -69,10 +69,6 @@ def game_run(db, memory_slot):
                         main_character.set_key_clicked("left", True)
                     if e.key == pygame.K_d:
                         main_character.set_key_clicked("right", True)
-
-                    # pause game and save
-                    if e.key == pygame.K_p:
-                        save_character(main_character, db)
 
                     # start attacking
                     if e.key == pygame.K_SPACE and time > can_attack_time:
