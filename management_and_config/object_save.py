@@ -12,6 +12,8 @@ from sprites_management.character.Character import Character
 
 location = os.path.abspath('../data/config.character')
 
+#  TODO: character: save more stats
+
 
 def save_active_enemies(active_enemies, db):
     active_enemies_str = ''.join(map(str, active_enemies))  # looks like string 11011101
@@ -76,12 +78,10 @@ def load_curr_room(db):
 
 
 def save_curr_world(curr_world, db):
-    db.update_curr_world(curr_world)
     pass
 
 
 def load_curr_world(db):
-    curr_world = db.get_curr_world()
-    return curr_world
+    pass
 
 
