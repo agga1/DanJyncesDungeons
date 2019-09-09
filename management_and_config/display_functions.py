@@ -2,7 +2,7 @@
 
 from management_and_config.configurations import *
 from resources.image_manager import get_heart_image, get_coin_image, get_attack_ready_image, get_attack_not_ready_image, \
-    get_stats_bar_image
+    get_stats_bar_image, get_upgrade_stat_image
 
 
 def show_popup(text_string):
@@ -48,15 +48,20 @@ def health_display(character):
 def mana_display(character):
     # mana_image = get_mana_image()
 
-    # screen.blit(mana_image, health_start_point)
+    # screen.blit(mana_image, mana_start_point) TODO
 
     pygame.draw.rect(screen, BLUE,
                      [mana_start_point[0] + 35, mana_start_point[1], mana_bar_length,
                       mana_bar_width], 1)
 
-    pygame.draw.rect(screen, BLUE, [mana_start_point[0] + 35, mana_start_point[1],
-                                    character.get_mana() * mana_bar_length / character.get_max_mana(),
-                                    mana_bar_width])
+    if character.get_max_mana() == 0:  # when no mana yet to not dividing by 0
+        pygame.draw.rect(screen, BLUE, [mana_start_point[0] + 35, mana_start_point[1],
+                                        character.get_mana() * mana_bar_length, mana_bar_width])
+
+    else:
+        pygame.draw.rect(screen, BLUE, [mana_start_point[0] + 35, mana_start_point[1],
+                                        character.get_mana() * mana_bar_length / character.get_max_mana(),
+                                        mana_bar_width])
 
 
 def money_display(character):
@@ -130,9 +135,9 @@ def display_skill_tree_stats_bar(character):
     attack_speed_text = stats_font.render("attack speed: " + str(character.get_attack_speed()), True, WHITE)
     screen.blit(attack_speed_text, st_attack_speed_text_start_point)
 
-    # attack damage
-    crit_chance_text = stats_font.render("critical chance: " + str(character.get_critical_attack_chance() * 100) + "%",
-                                         True, WHITE)
+    # critical chance (int() to avoid displaying 10.0, 20.0 etc - we want 10, 20 etc instead)
+    crit_chance_text = stats_font.render(
+        "critical chance: " + str(int(character.get_critical_attack_chance() * 100)) + "%", True, WHITE)
     screen.blit(crit_chance_text, st_critical_attack_chance_text_start_point)
 
     # health
@@ -142,6 +147,17 @@ def display_skill_tree_stats_bar(character):
     # mana
     mana_text = stats_font.render("mana points: " + str(character.get_max_mana()), True, WHITE)
     screen.blit(mana_text, st_mana_text_start_point)
+
+    if character.get_skill_points() > 0:
+        plus_image = get_upgrade_stat_image()
+
+        screen.blit(plus_image, st_attack_damage_plus_start_point)
+        if character.get_attack_speed() < max_attack_speed:
+            screen.blit(plus_image, st_attack_speed_plus_start_point)
+        if character.get_critical_attack_chance() < max_critical_attack_chance:
+            screen.blit(plus_image, st_critical_attack_chance_plus_start_point)
+        screen.blit(plus_image, st_health_plus_start_point)
+        screen.blit(plus_image, st_mana_plus_start_point)
 
 
 def attack_ready_display(ready):

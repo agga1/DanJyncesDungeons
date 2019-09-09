@@ -20,7 +20,7 @@ font_size_money = 25
 font_size_level = 40
 font_size_st_exp = 20
 font_size_st_skill_points = 25
-font_size_st_stats = 18
+font_size_st_stats = 17
 font_size_enemy_health = 15
 
 money_font = pygame.font.Font(description_font, font_size_money)
@@ -45,9 +45,11 @@ STATS_BAR_COLOR = (136, 94, 44)
 
 
 # ----- ROOM -----
-
 # terrain
 terrain_image_start_point = [50, 50]
+
+# attack ready light
+attack_ready_coord = [5, 5]
 
 # changing room
 distance_from_door = 50
@@ -63,7 +65,7 @@ start_lvl = 1
 
 character_start_attack_damage = 1
 character_start_attack_speed = 0.7
-character_start_critical_attack_chance = 0
+character_start_critical_attack_chance = 0.0
 
 character_knockback = 2
 
@@ -89,9 +91,7 @@ enemy_exp_drop = 4
 drop_speed = 0.5
 drop_moving_distance = 150
 
-# ----- STATS -----
-
-attack_ready_coord = [5, 5]
+# ----- STATS DISPLAY -----
 # stats bar
 stats_bar_rect = [600, 0, 300, 600]
 
@@ -115,7 +115,6 @@ money_start_point = [610, 560]
 
 
 # ----- SKILL TREE DISPLAY -----
-
 st_level_text_center = [700, 70]
 
 st_experience_bar_start_point = [620, 120]
@@ -127,16 +126,33 @@ left_margin = 608
 st_skill_points_text_start_point = [left_margin, 240]
 
 st_attack_damage_text_start_point = [left_margin, 320]
+st_attack_damage_plus_start_point = [778, 320]
+
 st_attack_speed_text_start_point = [left_margin, 370]
+st_attack_speed_plus_start_point = [778, 370]
+
 st_critical_attack_chance_text_start_point = [left_margin, 420]
+st_critical_attack_chance_plus_start_point = [778, 420]
+
 st_health_text_start_point = [left_margin, 470]
+st_health_plus_start_point = [778, 470]
+
 st_mana_text_start_point = [left_margin, 520]
+st_mana_plus_start_point = [778, 520]
+
+# ----- UPGRADING STATS -----
+upgrade_attack_damage = 1
+upgrade_attack_speed = 0.1
+upgrade_critical_attack_chance = 0.1
+upgrade_health = 5
+upgrade_mana = 10
+
+max_attack_speed = 2.0
+max_critical_attack_chance = 1.0
 
 # ----- COMBAT -----
-
 # timers
 attack_duration = 20
-attack_interval = 70 + attack_duration
 
 # after attack
 knockback_duration = 15     # also stun duration

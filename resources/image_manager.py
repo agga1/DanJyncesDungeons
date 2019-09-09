@@ -9,6 +9,9 @@ del_image = pygame.image.load("../resources/images_and_animations/delete_button.
 # stats bar
 stats_bar_image = pygame.image.load("../resources/images_and_animations/stats_bar.png")
 
+# upgrade stat
+upgrade_stat_image = pygame.image.load("../resources/images_and_animations/plus.png")
+
 # inventory
 inventory_image = pygame.image.load("../resources/images_and_animations/inventory.png")
 
@@ -62,6 +65,10 @@ def get_inventory_image():
 
 def get_stats_bar_image():
     return stats_bar_image
+
+
+def get_upgrade_stat_image():
+    return upgrade_stat_image
 
 
 def get_bg():

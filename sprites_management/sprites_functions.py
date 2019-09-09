@@ -3,6 +3,7 @@
 import pygame
 import math
 import os
+import random
 
 
 # ----- ANIMATIONS -----
@@ -60,3 +61,10 @@ def calculate_arctan(values):
 def calculate_to_next_level_exp(level):
     return 6 + 4*level
 
+
+def decide_critical_attack(chance):
+    random_number = random.randrange(10)
+    if random_number < int(round(chance, 1) * 10):
+        return True
+    else:
+        return False

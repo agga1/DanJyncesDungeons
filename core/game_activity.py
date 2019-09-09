@@ -77,7 +77,7 @@ def game_run(db, memory_slot):
                     # start attacking
                     if e.key == pygame.K_SPACE and time > can_attack_time:
                         stop_attack_time = time + attack_duration
-                        can_attack_time = time + attack_interval
+                        can_attack_time = int(time + 60/main_character.get_attack_speed())
                         main_character.start_attack()
 
                     # inventory

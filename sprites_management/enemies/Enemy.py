@@ -103,9 +103,12 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=self.rect.center)
 
     # ----- COMBAT -----
-    def hit(self, curr_room, main_character, time):
+    def hit(self, curr_room, main_character, time, critical):
         if not self.immune:
-            self.health -= main_character.get_attack_damage()
+            if not critical:
+                self.health -= main_character.get_attack_damage()
+            else:
+                self.health -= 2 * main_character.get_attack_damage()
 
             self.check_death(curr_room)
 

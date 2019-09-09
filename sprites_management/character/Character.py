@@ -34,7 +34,7 @@ class Character(pygame.sprite.Sprite):
         self.health = stats["health"]
 
         # mana
-        self.max_mana = 1
+        self.max_mana = 0
         self.mana = 0
 
         # money
@@ -132,7 +132,7 @@ class Character(pygame.sprite.Sprite):
         attackers = pygame.sprite.spritecollide(self, curr_room.get_enemies(), False)
         for attacker in attackers:
             if self.is_attacking:
-                attacker.hit(curr_room, self, time)
+                attacker.hit(curr_room, self, time, decide_critical_attack(self.critical_attack_chance))
             else:
                 self.hit(attacker, time)
 
@@ -192,6 +192,32 @@ class Character(pygame.sprite.Sprite):
 
     def add_money(self, amount):
         self.money += amount
+
+    # ----- UPGRADING STATS -----
+    def upgrade_stat_attack_damage(self):
+        self.attack_damage += upgrade_attack_damage
+        self.skill_points -= 1
+
+    def upgrade_stat_attack_speed(self):
+        if self.attack_speed < max_attack_speed:
+            self.attack_speed += upgrade_attack_speed
+            self.attack_speed = round(self.attack_speed, 1)  # to avoid that problem: 0.7 + 0.1 = 0.799999
+            self.skill_points -= 1
+
+    def upgrade_stat_critical_attack_chance(self):
+        if self.critical_attack_chance < max_critical_attack_chance:
+            self.critical_attack_chance += upgrade_critical_attack_chance
+            self.skill_points -= 1
+
+    def upgrade_stat_health(self):
+        self.max_health += upgrade_health
+        self.health += upgrade_health
+        self.skill_points -= 1
+
+    def upgrade_stat_mana(self):
+        self.max_mana += upgrade_mana
+        self.mana += upgrade_mana
+        self.skill_points -= 1
 
     # ----- GETTERS AND SETTERS -----
     def set_position(self, new_room_direction, new_room_size):
