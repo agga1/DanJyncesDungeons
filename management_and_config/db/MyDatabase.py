@@ -5,9 +5,9 @@ from datetime import datetime
 from management_and_config.configurations import start_health, start_lvl
 
 db_path = os.path.abspath('../data/stats_db')  # path to database
-# TODO add column, getters and updaters (S: dropped items (?), curr_world, curr_room, items in inv, skills,
-#  opened/closed doors)
-
+# TODO curr_room, curr_world
+# TODO add column, getters and updaters (S: dropped items (?), items in inv, skills opened/closed doors)
+values = (0, start_health, 0, start_lvl, "", "", None, None, datetime.now(tz=None), 1)
 
 class MyDatabase:
     def __init__(self):
@@ -16,7 +16,7 @@ class MyDatabase:
         self.cursor = self.db.cursor()
         self.cursor.execute(''' CREATE TABLE IF NOT EXISTS stats(id INTEGER PRIMARY KEY, 
         money INTEGER, health INTEGER, experience INTEGER, lvl INTEGER, active_enemies TEXT, 
-        inventory TEXT, last_saved TIMESTAMP, if_new INTEGER)''')
+        inventory TEXT, curr_room INTEGER, curr_world INTEGER, last_saved TIMESTAMP, if_new INTEGER)''')
         self.db.commit()
         self.cursor.execute("SELECT COUNT(*) FROM stats")
         rows = self.cursor.fetchone()
@@ -32,14 +32,25 @@ class MyDatabase:
 
     def new_row(self):  # create new row with new game instance, and automatically set row_id
         print('evoked insert')
-        self.cursor.execute('''INSERT INTO stats(money, health, experience, lvl, active_enemies, inventory, last_saved, if_new)
-        VALUES(?, ?, ?, ?, ?, ?, ?, ?)''', (0, start_health, 0, start_lvl, "", "", datetime.now(tz=None), 1))
+        self.cursor.execute('''INSERT INTO stats(money, health, experience, lvl, active_enemies, inventory, curr_room, 
+        curr_world, last_saved, if_new) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+                            values)
         self.db.commit()
         return self.cursor.lastrowid
 
     def update_active_enemies(self, act_en, row_id=-1):
         row_id = self.row_id if row_id == -1 else row_id
         self.cursor.execute('''UPDATE stats SET active_enemies = ? WHERE id = ? ''', (act_en, row_id))
+        self.db.commit()
+
+    def update_curr_room(self, room, row_id=-1):
+        row_id = self.row_id if row_id == -1 else row_id
+        self.cursor.execute('''UPDATE stats SET curr_room = ? WHERE id = ? ''', (room, row_id))
+        self.db.commit()
+
+    def update_curr_world(self, world, row_id=-1):
+        row_id = self.row_id if row_id == -1 else row_id
+        self.cursor.execute('''UPDATE stats SET curr_world = ? WHERE id = ? ''', (world, row_id))
         self.db.commit()
 
     def update_date(self, row_id=-1):
@@ -77,6 +88,18 @@ class MyDatabase:
         self.cursor.execute('''SELECT active_enemies FROM stats WHERE id = ?''', (row_id, ))
         act_en = self.cursor.fetchone()
         return act_en[0]
+
+    def get_curr_room(self, row_id=-1):
+        row_id = self.row_id if row_id == -1 else row_id
+        self.cursor.execute('''SELECT curr_room FROM stats WHERE id = ?''', (row_id, ))
+        room = self.cursor.fetchone()
+        return room[0]
+
+    def get_curr_world(self, row_id=-1):
+        row_id = self.row_id if row_id == -1 else row_id
+        self.cursor.execute('''SELECT curr_world FROM stats WHERE id = ?''', (row_id, ))
+        world = self.cursor.fetchone()
+        return world[0]
 
     def get_money(self, row_id=-1):
         row_id = self.row_id if row_id == -1 else row_id
@@ -119,7 +142,8 @@ class MyDatabase:
 
     def reset_row(self, row_id=-1):
         row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''UPDATE stats SET money = ?, health = ?, experience = ?, lvl = ?, active_enemies = ?, inventory = ?, last_saved = ?, if_new = ? WHERE id = ?''',
-                            (0, start_health, 0, start_lvl, "", "", datetime.now(), 1, row_id))
+        self.cursor.execute('''UPDATE stats SET money = ?, health = ?, experience = ?, lvl = ?, active_enemies = ?, 
+        inventory = ?, curr_room = ?, curr_world = ?, last_saved = ?, if_new = ? WHERE id = ?''',
+                            values)
         self.db.commit()
 

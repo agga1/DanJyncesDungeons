@@ -14,14 +14,13 @@ location = os.path.abspath('../data/config.character')
 
 
 def save_active_enemies(active_enemies, db):
-    active_enemies_str = ''.join(map(str, active_enemies))
+    active_enemies_str = ''.join(map(str, active_enemies))  # looks like string 11011101
     db.update_active_enemies(active_enemies_str)
     pass
 
 
 def load_active_enemies(db):
-    act_en_str = db.get_active_enemies()
-    print(act_en_str)
+    act_en_str = db.get_active_enemies()  # looks like 1101101
     active_enemies = []
     for c in act_en_str:
         active_enemies.append(int(c))
@@ -60,3 +59,29 @@ def load_character(db, memory_slot=-1):
         "lvl": db.get_lvl()
     }
     return Character(character_start_point, character_rest_image, character_walk_images, character_attack_image, stats)
+
+
+def save_curr_room(curr_room, db):
+    room_str = ', '.join(map(str, curr_room))  # looks like string 5, 2
+    db.update_curr_room(room_str)
+    pass
+
+# TODO edit
+def load_curr_room(db):
+    curr_room_str = db.get_curr_room()
+    if curr_room_str is None:
+        return None
+    curr_room = [int(s) for s in curr_room_str.split(',')]
+    return curr_room
+
+
+def save_curr_world(curr_world, db):
+    db.update_curr_world(curr_world)
+    pass
+
+
+def load_curr_world(db):
+    curr_world = db.get_curr_world()
+    return curr_world
+
+

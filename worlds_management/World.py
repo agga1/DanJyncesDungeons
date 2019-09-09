@@ -1,7 +1,7 @@
 """ Manages current world, reading world's and rooms' configuration files, changing rooms, checking room changing"""
 import os
 
-from management_and_config.object_save import load_active_enemies, save_active_enemies, save_character
+from management_and_config.object_save import *
 from worlds_management.Room import Room
 from sprites_management.sprites_manager import create_enemy
 from management_and_config.configurations import *
@@ -47,8 +47,11 @@ class World:
         self.db = db
         # active_enemies (array read from db w/ values enemy_id: 0/1 (0- enemy dead) = load_active_enemies(db)
         self.active_enemies = load_active_enemies(db)
+
         # start room
-        self.curr_room = self.start_room
+        self.curr_room = load_curr_room(db)
+        if self.curr_room is None:  # when new game opens, curr_room in db is not initialized!
+            self.curr_room = self.start_room
 
     def load_world(self):   # called when starting game or changing world TODO why not in constructor? (S: we are making all worlds in worlds_manager's constructor)
         rooms = os.listdir(self.path)
@@ -108,9 +111,12 @@ class World:
     def change_room_and_save(self, direction, main_character):
         # changing room
         # TODO: save current room on exit
+        # save game
         self.active_enemies = self.get_curr_room().update_active_enemies(self.active_enemies)
         save_active_enemies(self.active_enemies, self.db)
         save_character(main_character, self.db)
+        save_curr_room(self.curr_room, self.db)
+
         if direction == "top":
             if self.curr_room[1] > 0 and self.rooms[self.curr_room[0]][self.curr_room[1] - 1]:
                 self.curr_room[1] -= 1
