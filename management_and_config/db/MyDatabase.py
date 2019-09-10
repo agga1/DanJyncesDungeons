@@ -7,18 +7,56 @@ from management_and_config.configurations import start_health, start_lvl
 db_path = os.path.abspath('../data/stats_db')  # path to database
 # TODO curr_room, curr_world
 # TODO add column, getters and updaters (S: dropped items (?), items in inv, skills opened/closed doors)
+columns = ["id", "INTEGER PRIMARY KEY",
+           "money", "INTEGER",
+           "health", "INTEGER",
+           "experience", "INTEGER",
+           "lvl", "INTEGER",
+           "active_enemies", "TEXT",
+           "inventory", "TEXT",
+           "curr_room", "TEXT",
+           "curr_world", "INTEGER",
+           "last_saved", "TIMESTAMP",
+           "if_new", "INTEGER"]
 values = (0, start_health, 0, start_lvl, "", "", None, None, datetime.now(tz=None), 1)
+
+table_name = "stats"
+# create_table command
+create_table = ''' CREATE TABLE IF NOT EXISTS ''' + table_name + "("
+for i in range(0, len(columns), 2):
+    create_table += columns[i] + " " + columns[i + 1] + ", "
+create_table = create_table[:-2]  # trim comma
+create_table += ")"
+
+# insert command
+insert_into = '''INSERT INTO ''' + table_name + "("
+for i in range(2, len(columns), 2):  # skip id!
+    insert_into += columns[i] + ", "
+insert_into = insert_into[:-2]  # trim last comma
+insert_into += ") "
+insert_into += "VALUES("
+for i in range(2, len(columns), 2):
+    insert_into += "?, "
+insert_into = insert_into[:-2]
+insert_into += ")"
+
+# reset row
+reset_row = '''UPDATE ''' + table_name + " SET "
+for i in range(2, len(columns), 2):
+    reset_row += columns[i] + " = ?, "
+reset_row = reset_row[:-2]
+reset_row += ''' WHERE id = '''
+
 
 class MyDatabase:
     def __init__(self):
         print('evoked constructor ')
         self.db = sqlite3.connect(db_path)
         self.cursor = self.db.cursor()
-        self.cursor.execute(''' CREATE TABLE IF NOT EXISTS stats(id INTEGER PRIMARY KEY, 
-        money INTEGER, health INTEGER, experience INTEGER, lvl INTEGER, active_enemies TEXT, 
-        inventory TEXT, curr_room INTEGER, curr_world INTEGER, last_saved TIMESTAMP, if_new INTEGER)''')
+        self.cursor.execute(create_table)
+        print(reset_row)
         self.db.commit()
-        self.cursor.execute("SELECT COUNT(*) FROM stats")
+        self.cursor.execute("SELECT COUNT(*) FROM " + table_name)
         rows = self.cursor.fetchone()
         rows_nr = rows[0]
         while rows_nr < 3:
@@ -32,11 +70,13 @@ class MyDatabase:
 
     def new_row(self):  # create new row with new game instance, and automatically set row_id
         print('evoked insert')
-        self.cursor.execute('''INSERT INTO stats(money, health, experience, lvl, active_enemies, inventory, curr_room, 
-        curr_world, last_saved, if_new) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-                            values)
+        self.cursor.execute(insert_into, values)
         self.db.commit()
         return self.cursor.lastrowid
+
+    def update_column(self, col_name, value, row_id):
+        cmd_str = "UPDATE " + table_name + " SET " + col_name + " = ? WHERE id = ? "
+        self.cursor.execute(cmd_str, (value, row_id))
 
     def update_active_enemies(self, act_en, row_id=-1):
         row_id = self.row_id if row_id == -1 else row_id
@@ -138,12 +178,18 @@ class MyDatabase:
         return if_new[0]
 
     def reset_db(self):
-        self.cursor.execute('''DELETE FROM stats''')
+        self.cursor.execute('''DELETE FROM ''' + table_name)
 
     def reset_row(self, row_id=-1):
         row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''UPDATE stats SET money = ?, health = ?, experience = ?, lvl = ?, active_enemies = ?, 
-        inventory = ?, curr_room = ?, curr_world = ?, last_saved = ?, if_new = ? WHERE id = ?''',
+        self.cursor.execute(reset_row + str(row_id),
                             values)
         self.db.commit()
 
+
+# insert command
+"""'''INSERT INTO stats(money, health, experience, lvl, active_enemies, inventory, curr_room, 
+        curr_world, last_saved, if_new) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''"""
+# reset row
+"""'''UPDATE stats SET money = ?, health = ?, experience = ?, lvl = ?, active_enemies = ?, 
+        inventory = ?, curr_room = ?, curr_world = ?, last_saved = ?, if_new = ? WHERE id = ''' + str(self.row_id)"""
