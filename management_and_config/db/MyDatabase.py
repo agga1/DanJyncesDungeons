@@ -5,7 +5,7 @@ from datetime import datetime
 from management_and_config.configurations import start_health, start_lvl
 
 db_path = os.path.abspath('../data/stats_db')  # path to database
-# TODO curr_room, curr_world
+# TODO char stats
 # TODO add column, getters and updaters (S: dropped items (?), items in inv, skills opened/closed doors)
 columns = ["id", "INTEGER PRIMARY KEY",
            "money", "INTEGER",
@@ -74,116 +74,79 @@ class MyDatabase:
         self.db.commit()
         return self.cursor.lastrowid
 
-    def update_column(self, col_name, value, row_id):
+    def update_column(self, col_name, value, row_id=-1):
+        row_id = self.row_id if row_id == -1 else row_id
         cmd_str = "UPDATE " + table_name + " SET " + col_name + " = ? WHERE id = ? "
         self.cursor.execute(cmd_str, (value, row_id))
-
-    def update_active_enemies(self, act_en, row_id=-1):
-        row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''UPDATE stats SET active_enemies = ? WHERE id = ? ''', (act_en, row_id))
         self.db.commit()
 
-    def update_curr_room(self, room, row_id=-1):
+    def get_column(self, col_name, row_id=-1):
         row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''UPDATE stats SET curr_room = ? WHERE id = ? ''', (room, row_id))
-        self.db.commit()
+        cmd_str = "SELECT " + col_name + " FROM " + table_name + " WHERE id = ? "
+        self.cursor.execute(cmd_str, (row_id, ))
+        result = self.cursor.fetchone()
+        return result[0]
 
-    def update_curr_world(self, world, row_id=-1):
-        row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''UPDATE stats SET curr_world = ? WHERE id = ? ''', (world, row_id))
-        self.db.commit()
+    def update_active_enemies(self, value, row_id=-1):
+        self.update_column("active_enemies", value, row_id)
+
+    def update_curr_room(self, value, row_id=-1):
+        self.update_column("curr_room", value, row_id)
+
+    def update_curr_world(self, value, row_id=-1):
+        self.update_column("curr_world", value, row_id)
 
     def update_date(self, row_id=-1):
-        row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''UPDATE stats SET last_saved = ? WHERE id = ?''', (datetime.now(tz=None), row_id))
-        self.db.commit()
+        self.update_column("last_saved", datetime.now(tz=None), row_id)
 
-    def update_experience(self, exp, row_id=-1):
-        row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''UPDATE stats SET experience = ? WHERE id = ? ''', (exp, row_id))
-        self.db.commit()
+    def update_experience(self, value, row_id=-1):
+        self.update_column("experience", value, row_id)
 
-    def update_health(self, health, row_id=-1):
-        row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''UPDATE stats SET health = ? WHERE id = ? ''', (health, row_id))
-        self.db.commit()
+    def update_health(self, value, row_id=-1):
+        self.update_column("health", value, row_id)
 
     def update_if_new(self, row_id=-1):
-        row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''UPDATE stats SET if_new = ? WHERE id = ?''', (0, row_id))
-        self.db.commit()
+        self.update_column("if_new", 0, row_id)
 
-    def update_lvl(self, lvl, row_id=-1):
-        row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''UPDATE stats SET lvl = ? WHERE id = ? ''', (lvl, row_id))
-        self.db.commit()
+    def update_lvl(self, value, row_id=-1):
+        self.update_column("lvl", value, row_id)
 
-    def update_money(self, money, row_id=-1):
-        row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''UPDATE stats SET money = ? WHERE id = ? ''', (money, row_id))
-        self.db.commit()
+    def update_money(self, value, row_id=-1):
+        self.update_column("money", value, row_id)
 
     def get_active_enemies(self, row_id=-1):
-        row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''SELECT active_enemies FROM stats WHERE id = ?''', (row_id, ))
-        act_en = self.cursor.fetchone()
-        return act_en[0]
+        return self.get_column("active_enemies", row_id)
 
     def get_curr_room(self, row_id=-1):
-        row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''SELECT curr_room FROM stats WHERE id = ?''', (row_id, ))
-        room = self.cursor.fetchone()
-        return room[0]
+        return self.get_column("curr_room", row_id)
 
     def get_curr_world(self, row_id=-1):
-        row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''SELECT curr_world FROM stats WHERE id = ?''', (row_id, ))
-        world = self.cursor.fetchone()
-        return world[0]
+        return self.get_column("curr_world", row_id)
 
     def get_money(self, row_id=-1):
-        row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''SELECT money FROM stats WHERE id = ?''', (row_id, ))
-        money = self.cursor.fetchone()
-        return money[0]
+        return self.get_column("money", row_id)
 
     def get_health(self, row_id=-1):
-        row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''SELECT health FROM stats WHERE id = ?''', (row_id,))
-        health = self.cursor.fetchone()
-        return health[0]
+        return self.get_column("health", row_id)
 
     def get_experience(self, row_id=-1):
-        row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''SELECT experience FROM stats WHERE id = ?''', (row_id, ))
-        exp = self.cursor.fetchone()
-        return exp[0]
+        return self.get_column("experience", row_id)
 
     def get_lvl(self, row_id=-1):
-        row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''SELECT lvl FROM stats WHERE id = ?''', (row_id, ))
-        lvl = self.cursor.fetchone()
-        return lvl[0]
+        return self.get_column("lvl", row_id)
 
     def get_date(self, row_id=-1):
-        row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''SELECT last_saved FROM stats WHERE id = ?''', (row_id, ))
-        date = self.cursor.fetchone()
-        return date[0]
+        return self.get_column("last_saved", row_id)
 
     def get_if_new(self, row_id=-1):
-        row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute('''SELECT if_new FROM stats WHERE id = ?''', (row_id, ))
-        if_new = self.cursor.fetchone()
-        return if_new[0]
+        return self.get_column("if_new", row_id)
 
     def reset_db(self):
         self.cursor.execute('''DELETE FROM ''' + table_name)
 
     def reset_row(self, row_id=-1):
         row_id = self.row_id if row_id == -1 else row_id
-        self.cursor.execute(reset_row + str(row_id),
-                            values)
+        self.cursor.execute(reset_row + str(row_id), values)
         self.db.commit()
 
 
