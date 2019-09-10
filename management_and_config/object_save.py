@@ -12,8 +12,6 @@ from sprites_management.character.Character import Character
 
 location = os.path.abspath('../data/config.character')
 
-#  TODO: character: save more stats
-
 
 def save_active_enemies(active_enemies, db):
     active_enemies_str = ''.join(map(str, active_enemies))  # looks like string 11011101
@@ -30,23 +28,19 @@ def load_active_enemies(db):
 
 
 def save_character(character, db, memory_slot = -1):
-    db.update_money(character.get_money())
+    # saving info
     db.update_date()
+    # general stats
+    db.update_money(character.get_money())
     db.update_health(character.get_health())
+    db.update_mana(character.get_mana())
     db.update_experience(character.get_exp())
     db.update_lvl(character.get_level())
-    # show_popup('Progress saved!')
-    # freeze_clock(0.5)
-
-
-def get_character():
-    with open(location, 'rb') as config_character_file:
-        # Step 3
-        character = pickle.load(config_character_file)
-
-        # After config_dictionary is read from file
-        print(character)
-        return character
+    db.update_skill_points(character.get_skill_points())
+    # skills upgrades
+    db.update_attack_damage(character.get_attack_damage())
+    db.update_attack_speed(character.get_attack_speed())
+    db.update_critical_attack_chance(character.get_critical_attack_chance())
 
 
 def load_character(db, memory_slot=-1):
@@ -57,8 +51,13 @@ def load_character(db, memory_slot=-1):
     stats = {
         "money": db.get_money(),
         "health": db.get_health(),
+        "mana": db.get_mana(),
         "exp": db.get_experience(),
-        "lvl": db.get_lvl()
+        "lvl": db.get_lvl(),
+        "skill_points": db.get_skill_points(),
+        "attack_damage": db.get_attack_damage(),
+        "attack_speed": db.get_attack_speed(),
+        "critical_attack_chance": db.get_critical_attack_chance(),
     }
     return Character(character_start_point, character_rest_image, character_walk_images, character_attack_image, stats)
 
@@ -66,9 +65,8 @@ def load_character(db, memory_slot=-1):
 def save_curr_room(curr_room, db):
     room_str = ', '.join(map(str, curr_room))  # looks like string 5, 2
     db.update_curr_room(room_str)
-    pass
 
-# TODO edit
+
 def load_curr_room(db):
     curr_room_str = db.get_curr_room()
     if curr_room_str is None:
@@ -84,4 +82,13 @@ def save_curr_world(curr_world, db):
 def load_curr_world(db):
     pass
 
+
+def get_character():
+    with open(location, 'rb') as config_character_file:
+        # Step 3
+        character = pickle.load(config_character_file)
+
+        # After config_dictionary is read from file
+        print(character)
+        return character
 

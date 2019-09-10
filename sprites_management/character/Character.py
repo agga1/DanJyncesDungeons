@@ -24,10 +24,10 @@ class Character(pygame.sprite.Sprite):
         self.rect.x = start_point[0]
         self.rect.y = start_point[1]
 
-        # stats TODO read from db
-        self.attack_damage = character_start_attack_damage
-        self.attack_speed = character_start_attack_speed
-        self.critical_attack_chance = character_start_critical_attack_chance
+        # stats
+        self.attack_damage = stats["attack_damage"]
+        self.attack_speed = stats["attack_speed"]
+        self.critical_attack_chance = stats["critical_attack_chance"]
 
         # health
         self.max_health = start_health
@@ -35,7 +35,7 @@ class Character(pygame.sprite.Sprite):
 
         # mana
         self.max_mana = 0
-        self.mana = 0  # TODO stats["mana"]
+        self.mana = stats["mana"]
 
         # money
         self.money = stats["money"]
@@ -45,7 +45,7 @@ class Character(pygame.sprite.Sprite):
         self.level = stats["lvl"]
         self.to_next_level_exp = calculate_to_next_level_exp(self.level)
 
-        self.skill_points = 0  # TODO stats
+        self.skill_points = stats["skill_points"]
 
         # checking if character is moving
         self.key_clicked = {"top": False, "bottom": False, "left": False, "right": False}

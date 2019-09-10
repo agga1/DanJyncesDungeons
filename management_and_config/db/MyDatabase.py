@@ -2,21 +2,28 @@ import sqlite3
 import os
 from datetime import datetime
 
-from management_and_config.configurations import start_health, start_lvl
+from management_and_config.configurations import start_health, start_lvl, character_start_attack_damage, \
+    character_start_attack_speed, character_start_critical_attack_chance
 
 db_path = os.path.abspath('../data/stats_db')  # path to database
-# TODO char stats
 # TODO add column, getters and updaters (S: dropped items (?), items in inv, skills opened/closed doors)
 columns = ["id", "INTEGER PRIMARY KEY",
+           # character stats
            "money", "INTEGER",
            "health", "INTEGER",
            "mana", "INTEGER",
            "experience", "INTEGER",
            "lvl", "INTEGER",
+           "skill_points", "INTEGER",
+           "attack_damage", "INTEGER",
+           "attack_speed", "REAL",
+           "critical_attack_chance", "REAL",
+           # room&world state
            "active_enemies", "TEXT",
            "inventory", "TEXT",
            "curr_room", "TEXT",
            "curr_world", "INTEGER",
+           # general game state
            "last_saved", "TIMESTAMP",
            "if_new", "INTEGER"]
 start_values = {"money": 0,
@@ -24,10 +31,14 @@ start_values = {"money": 0,
                 "mana": 0,
                 "experience": 0,
                 "lvl": start_lvl,
+                "skill_points": 0,
+                "attack_damage": character_start_attack_damage,
+                "attack_speed": character_start_attack_speed,
+                "critical_attack_chance": character_start_critical_attack_chance,
                 "active_enemies": "",
                 "inventory": "",
-                "curr_room": None,
-                "curr_world": None,
+                "curr_room": None,   # needs to be updated in world during first startup
+                "curr_world": None,  # same (or should be 1?)
                 "last_saved": datetime.now(tz=None),
                 "if_new": 1}
 values = []
@@ -106,6 +117,21 @@ class MyDatabase:
     def update_active_enemies(self, value, row_id=-1):
         self.update_column("active_enemies", value, row_id)
 
+    def update_mana(self, value, row_id=-1):
+        self.update_column("mana", value, row_id)
+
+    def update_skill_points(self, value, row_id=-1):
+        self.update_column("skill_points", value, row_id)
+
+    def update_attack_damage(self, value, row_id=-1):
+        self.update_column("attack_damage", value, row_id)
+
+    def update_attack_speed(self, value, row_id=-1):
+        self.update_column("attack_speed", value, row_id)
+
+    def update_critical_attack_chance(self, value, row_id=-1):
+        self.update_column("critical_attack_chance", value, row_id)
+
     def update_curr_room(self, value, row_id=-1):
         self.update_column("curr_room", value, row_id)
 
@@ -132,6 +158,21 @@ class MyDatabase:
 
     def get_active_enemies(self, row_id=-1):
         return self.get_column("active_enemies", row_id)
+
+    def get_mana(self, row_id=-1):
+        return self.get_column("mana", row_id)
+
+    def get_skill_points(self, row_id=-1):
+        return self.get_column("skill_points", row_id)
+
+    def get_attack_damage(self, row_id=-1):
+        return self.get_column("attack_damage", row_id)
+
+    def get_attack_speed(self, row_id=-1):
+        return self.get_column("attack_speed", row_id)
+
+    def get_critical_attack_chance(self, row_id=-1):
+        return self.get_column("critical_attack_chance", row_id)
 
     def get_curr_room(self, row_id=-1):
         return self.get_column("curr_room", row_id)

@@ -53,7 +53,7 @@ class World:
         if self.curr_room is None:  # when new game opens, curr_room in db is not initialized!
             self.curr_room = self.start_room
 
-    def load_world(self):   # called when starting game or changing world TODO why not in constructor? (S: we are making all worlds in worlds_manager's constructor)
+    def load_world(self):   # called when starting game or changing world
         rooms = os.listdir(self.path)
         enemy_id = 0    # to give every enemy unique id
 
@@ -108,9 +108,8 @@ class World:
         elif main_character_pos[0] > self.rooms[self.curr_room[0]][self.curr_room[1]].get_size()[0]*50 - sprite_size[0]:
             self.change_room_and_save("right", main_character)
 
-    def change_room_and_save(self, direction, main_character):
+    def change_room_and_save(self, direction, main_character): # TODO: maybe save only in checkpoints? if killed -> reload last checkpoint
         # changing room
-        # TODO: save current room on exit
         # save game
         self.active_enemies = self.get_curr_room().update_active_enemies(self.active_enemies)
         save_active_enemies(self.active_enemies, self.db)
