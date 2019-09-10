@@ -295,3 +295,4 @@ class Character(pygame.sprite.Sprite):
 
     def get_skill_points(self):
         return self.skill_points
+

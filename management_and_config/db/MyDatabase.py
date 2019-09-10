@@ -6,8 +6,11 @@ from management_and_config.configurations import start_health, start_lvl, charac
     character_start_attack_speed, character_start_critical_attack_chance
 
 db_path = os.path.abspath('../data/stats_db')  # path to database
-# TODO add column, getters and updaters (S: dropped items (?), items in inv, skills opened/closed doors)
-columns = ["id", "INTEGER PRIMARY KEY",
+table_name = "stats"  # name of the table storing all the data
+
+# TODO world save (prepared but not used)
+# TODO add column, getters and updaters (S: items in inv, skills opened/closed doors)
+columns = ["id", "INTEGER PRIMARY KEY",  # list of columns along with data type
            # character stats
            "money", "INTEGER",
            "health", "INTEGER",
@@ -26,7 +29,7 @@ columns = ["id", "INTEGER PRIMARY KEY",
            # general game state
            "last_saved", "TIMESTAMP",
            "if_new", "INTEGER"]
-start_values = {"money": 0,
+start_values = {"money": 0,  # keys must be the same as column names!
                 "health": start_health,
                 "mana": 0,
                 "experience": 0,
@@ -46,9 +49,7 @@ for i in range(2, len(columns), 2):
     values.append(start_values[columns[i]])
 values = tuple(values)
 
-table_name = "stats"
-
-# create_table command
+# create_table command (new columns are automatically added to the query)
 create_table = ''' CREATE TABLE IF NOT EXISTS ''' + table_name + "("
 for i in range(0, len(columns), 2):
     create_table += columns[i] + " " + columns[i + 1] + ", "
