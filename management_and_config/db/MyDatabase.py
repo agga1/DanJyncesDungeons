@@ -10,6 +10,7 @@ db_path = os.path.abspath('../data/stats_db')  # path to database
 columns = ["id", "INTEGER PRIMARY KEY",
            "money", "INTEGER",
            "health", "INTEGER",
+           "mana", "INTEGER",
            "experience", "INTEGER",
            "lvl", "INTEGER",
            "active_enemies", "TEXT",
@@ -18,9 +19,24 @@ columns = ["id", "INTEGER PRIMARY KEY",
            "curr_world", "INTEGER",
            "last_saved", "TIMESTAMP",
            "if_new", "INTEGER"]
-values = (0, start_health, 0, start_lvl, "", "", None, None, datetime.now(tz=None), 1)
+start_values = {"money": 0,
+                "health": start_health,
+                "mana": 0,
+                "experience": 0,
+                "lvl": start_lvl,
+                "active_enemies": "",
+                "inventory": "",
+                "curr_room": None,
+                "curr_world": None,
+                "last_saved": datetime.now(tz=None),
+                "if_new": 1}
+values = []
+for i in range(2, len(columns), 2):
+    values.append(start_values[columns[i]])
+values = tuple(values)
 
 table_name = "stats"
+
 # create_table command
 create_table = ''' CREATE TABLE IF NOT EXISTS ''' + table_name + "("
 for i in range(0, len(columns), 2):
@@ -50,7 +66,7 @@ reset_row += ''' WHERE id = '''
 
 class MyDatabase:
     def __init__(self):
-        print('evoked constructor ')
+        print(values)
         self.db = sqlite3.connect(db_path)
         self.cursor = self.db.cursor()
         self.cursor.execute(create_table)
