@@ -10,27 +10,27 @@ pygame.init()
 class Room:
     def __init__(self, room_size, room_type, room_enemies):
         # specification of the room
-        self.size = room_size
-        self.type = room_type
+        self._size = room_size
+        self._type = room_type
 
-        self.enemies_on_start = []
+        self._enemies_on_start = []
         for enemy in room_enemies:
-            self.enemies_on_start.append(enemy.get_id())
+            self._enemies_on_start.append(enemy.id)
 
         # walls group
-        self.walls = pygame.sprite.Group()
-        sprites_management.sprites_manager.add_walls(self.walls, room_size, room_type)
+        self._walls = pygame.sprite.Group()
+        sprites_management.sprites_manager.add_walls(self._walls, room_size, room_type)
 
         # doors group
-        self.doors = pygame.sprite.Group()
-        sprites_management.sprites_manager.add_doors(self.doors, room_size, room_type)
+        self._doors = pygame.sprite.Group()
+        sprites_management.sprites_manager.add_doors(self._doors, room_size, room_type)
 
         # enemies group
-        self.enemies = pygame.sprite.Group()
-        sprites_management.sprites_manager.add_enemies(self.enemies, room_enemies)
+        self._enemies = pygame.sprite.Group()
+        sprites_management.sprites_manager.add_enemies(self._enemies, room_enemies)
 
         # dropped items group
-        self.drop = pygame.sprite.Group()
+        self._drop = pygame.sprite.Group()
 
     def draw_room(self):
         screen.fill(WHITE)
@@ -45,18 +45,18 @@ class Room:
         screen.blit(terrain_image, terrain_image_start_point)
 
     def wall_display(self):
-        self.walls.draw(screen)
+        self._walls.draw(screen)
 
     def door_display(self):
-        self.doors.draw(screen)
+        self._doors.draw(screen)
 
     def enemy_display(self):
-        self.enemies.draw(screen)
+        self._enemies.draw(screen)
 
         # displaying enemies' health
-        for enemy in self.enemies.sprites():
-            health = enemy.get_health()
-            max_health = enemy.get_max_health()
+        for enemy in self._enemies.sprites():
+            health = enemy.health
+            max_health = enemy.max_health
             if health != max_health:
                 health_bar_start_point = [enemy.get_position()[0] + enemy_health_bar_display_difference[0],
                                           enemy.get_position()[1] + enemy_health_bar_display_difference[1]]
@@ -78,31 +78,40 @@ class Room:
                 screen.blit(health_text, health_text_rect)
 
     def drop_display(self):
-        self.drop.draw(screen)
+        self._drop.draw(screen)
 
     def kill_enemy(self, enemy):
-        sprites_management.sprites_manager.add_drop(self.drop, enemy)
-        self.enemies.remove(enemy)
+        sprites_management.sprites_manager.add_drop(self._drop, enemy)
+        self._enemies.remove(enemy)
 
     def remove_drop(self, drop):
-        self.drop.remove(drop)
-
-    def get_size(self):
-        return self.size
-
-    def get_walls(self):
-        return self.walls
-
-    def get_enemies(self):
-        return self.enemies
-
-    def get_dropped_items(self):
-        return self.drop
+        self._drop.remove(drop)
 
     def update_active_enemies(self, active_enemies):
-        for id in self.enemies_on_start:
-            active_enemies[id] = 0
-        for enemy in self.enemies:
-            active_enemies[enemy.get_id()] = 1
+        for enemy_id in self._enemies_on_start:
+            active_enemies[enemy_id] = 0
+
+        for enemy in self._enemies:
+            active_enemies[enemy.id] = 1
+
         return active_enemies
 
+    @property
+    def size(self):
+        """ size of the room """
+        return self._size
+
+    @property
+    def walls(self):
+        """ room's walls (sprite group of walls) """
+        return self._walls
+
+    @property
+    def enemies(self):
+        """ room's enemies (sprite group of enemies) """
+        return self._enemies
+
+    @property
+    def dropped_items(self):
+        """ items dropped in the room (sprite group of drops) """
+        return self._drop

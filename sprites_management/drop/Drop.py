@@ -10,18 +10,18 @@ class Drop(pygame.sprite.Sprite):
         super().__init__(*groups)
 
         # core variables
-        self.name = name  # now just "coin" and "exp"
+        self._name = name  # now just "coin" and "exp"
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.x = position[0]
         self.rect.y = position[1]
 
         # rect.x and rec.y must be integers so to make movement more precise we need that float
-        self.exact_pos = position
+        self._exact_pos = position
 
         # movement towards character
-        self.base_speed = drop_speed
-        self.velocity = [0, 0]
+        self._base_speed = drop_speed
+        self._velocity = [0, 0]
 
     def move_towards_character(self, character):
         # main character is a target
@@ -35,24 +35,25 @@ class Drop(pygame.sprite.Sprite):
         distance = math.sqrt(position_difference[0] ** 2 + position_difference[1] ** 2)
         if distance < drop_moving_distance:
             # moving faster when the character is closer
-            curr_speed = drop_moving_distance * self.base_speed / distance
+            curr_speed = drop_moving_distance * self._base_speed / distance
 
             # calculating angle
             angle = calculate_arctan(position_difference)
 
             # setting velocity
             if position_difference[0] >= 0:
-                self.velocity = [-1 * curr_speed * math.cos(angle), -1 * curr_speed * math.sin(angle)]
+                self._velocity = [-1 * curr_speed * math.cos(angle), -1 * curr_speed * math.sin(angle)]
             else:
-                self.velocity = [curr_speed * math.cos(angle), curr_speed * math.sin(angle)]
+                self._velocity = [curr_speed * math.cos(angle), curr_speed * math.sin(angle)]
 
             # to improve softness of movement
-            self.exact_pos[0] += self.velocity[0]
-            self.exact_pos[1] += self.velocity[1]
+            self._exact_pos[0] += self._velocity[0]
+            self._exact_pos[1] += self._velocity[1]
 
             # movement
-            self.rect.x = self.exact_pos[0]
-            self.rect.y = self.exact_pos[1]
+            self.rect.x = self._exact_pos[0]
+            self.rect.y = self._exact_pos[1]
 
-    def get_name(self):
-        return self.name
+    @property
+    def name(self):
+        return self._name

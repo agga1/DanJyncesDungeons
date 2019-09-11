@@ -49,7 +49,7 @@ def skill_tree_run(character):
                 if e.key == pygame.K_i:
                     return "inventory"
 
-            if character.get_skill_points() > 0 and e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
+            if character.skill_points > 0 and e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
                 if upgrade_stat_buttons[0].collidepoint(e.pos):
                     character.upgrade_stat_attack_damage()
                 elif upgrade_stat_buttons[1].collidepoint(e.pos):

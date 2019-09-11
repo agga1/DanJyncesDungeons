@@ -41,7 +41,7 @@ def health_display(character):
                       health_bar_width], 1)
 
     pygame.draw.rect(screen, RED, [health_start_point[0] + 35, health_start_point[1],
-                                   character.get_health() * health_bar_length / character.get_max_health(),
+                                   character.health * health_bar_length / character.max_health,
                                    health_bar_width])
 
 
@@ -54,26 +54,26 @@ def mana_display(character):
                      [mana_start_point[0] + 35, mana_start_point[1], mana_bar_length,
                       mana_bar_width], 1)
 
-    if character.get_max_mana() == 0:  # when no mana yet to not dividing by 0
+    if character.max_mana == 0:  # when no mana yet to not dividing by 0
         pygame.draw.rect(screen, BLUE, [mana_start_point[0] + 35, mana_start_point[1],
-                                        character.get_mana() * mana_bar_length, mana_bar_width])
+                                        character.mana * mana_bar_length, mana_bar_width])
 
     else:
         pygame.draw.rect(screen, BLUE, [mana_start_point[0] + 35, mana_start_point[1],
-                                        character.get_mana() * mana_bar_length / character.get_max_mana(),
+                                        character.mana * mana_bar_length / character.max_mana,
                                         mana_bar_width])
 
 
 def money_display(character):
     coin_image = get_coin_image()
 
-    money_number = money_font.render(str(character.get_money()), True, YELLOW)
+    money_number = money_font.render(str(character.money), True, YELLOW)
     screen.blit(coin_image, money_start_point)
     screen.blit(money_number, [money_start_point[0] + 30, money_start_point[1] - 5])
 
 
 def level_display(character):
-    level_number = level_font.render(str(character.get_level()), True, GREEN)
+    level_number = level_font.render(str(character.level), True, GREEN)
     screen.blit(level_number, level_start_point)
 
     pygame.draw.rect(screen, GREEN,
@@ -81,7 +81,7 @@ def level_display(character):
                       experience_bar_width], 1)
 
     pygame.draw.rect(screen, GREEN, [level_start_point[0] + 35, level_start_point[1] + 17,
-                                     character.get_exp() * experience_bar_length / character.get_to_next_level_exp(),
+                                     character.exp * experience_bar_length / character.to_next_level_exp,
                                      experience_bar_width])
 
 
@@ -100,14 +100,14 @@ def display_skill_tree_stats_bar(character):
     screen.blit(bg_image, [square_screen_width, 0])
 
     # level
-    level_text = level_font.render("level " + str(character.get_level()), True, GREEN)
+    level_text = level_font.render("level " + str(character.level), True, GREEN)
     level_text_rect = level_text.get_rect()
     level_text_rect.center = st_level_text_center
     screen.blit(level_text, level_text_rect)
 
     # exp variables
-    exp = character.get_exp()
-    max_exp = character.get_to_next_level_exp()
+    exp = character.exp
+    max_exp = character.to_next_level_exp
 
     # exp bar
     pygame.draw.rect(screen, GREEN,
@@ -124,37 +124,37 @@ def display_skill_tree_stats_bar(character):
     screen.blit(exp_text, exp_text_rect)
 
     # skill points
-    skill_points_text = skill_points_font.render("skill points: " + str(character.get_skill_points()), True, GREEN)
+    skill_points_text = skill_points_font.render("skill points: " + str(character.skill_points), True, GREEN)
     screen.blit(skill_points_text, st_skill_points_text_start_point)
 
     # attack damage
-    attack_damage_text = stats_font.render("attack damage: " + str(character.get_attack_damage()), True, WHITE)
+    attack_damage_text = stats_font.render("attack damage: " + str(character.attack_damage), True, WHITE)
     screen.blit(attack_damage_text, st_attack_damage_text_start_point)
 
     # attack speed
-    attack_speed_text = stats_font.render("attack speed: " + str(character.get_attack_speed()), True, WHITE)
+    attack_speed_text = stats_font.render("attack speed: " + str(character.attack_speed), True, WHITE)
     screen.blit(attack_speed_text, st_attack_speed_text_start_point)
 
     # critical chance (int() to avoid displaying 10.0, 20.0 etc - we want 10, 20 etc instead)
     crit_chance_text = stats_font.render(
-        "critical chance: " + str(int(character.get_critical_attack_chance() * 100)) + "%", True, WHITE)
+        "critical chance: " + str(int(character.critical_attack_chance * 100)) + "%", True, WHITE)
     screen.blit(crit_chance_text, st_critical_attack_chance_text_start_point)
 
     # health
-    health_text = stats_font.render("hit points: " + str(character.get_max_health()), True, WHITE)
+    health_text = stats_font.render("hit points: " + str(character.max_health), True, WHITE)
     screen.blit(health_text, st_health_text_start_point)
 
     # mana
-    mana_text = stats_font.render("mana points: " + str(character.get_max_mana()), True, WHITE)
+    mana_text = stats_font.render("mana points: " + str(character.max_mana), True, WHITE)
     screen.blit(mana_text, st_mana_text_start_point)
 
-    if character.get_skill_points() > 0:
+    if character.skill_points > 0:
         plus_image = get_upgrade_stat_image()
 
         screen.blit(plus_image, st_attack_damage_plus_start_point)
-        if character.get_attack_speed() < max_attack_speed:
+        if character.attack_speed < max_attack_speed:
             screen.blit(plus_image, st_attack_speed_plus_start_point)
-        if character.get_critical_attack_chance() < max_critical_attack_chance:
+        if character.critical_attack_chance < max_critical_attack_chance:
             screen.blit(plus_image, st_critical_attack_chance_plus_start_point)
         screen.blit(plus_image, st_health_plus_start_point)
         screen.blit(plus_image, st_mana_plus_start_point)

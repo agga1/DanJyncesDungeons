@@ -7,80 +7,80 @@ class Character(pygame.sprite.Sprite):
         super().__init__(*groups)
 
         # image
-        self.original_image = staying_image
+        self._original_image = staying_image
         self.image = staying_image
-        self.angle = 0
+        self._angle = 0
         self.rect = self.image.get_rect()
 
         # animations
-        self.staying_image = staying_image  # animation name: "rest"
-        self.movement_animation = movement_animation  # animation name: "move"
-        self.attack_image = attack_image  # animation name: "attack"
+        self._staying_image = staying_image  # animation name: "rest"
+        self._movement_animation = movement_animation  # animation name: "move"
+        self._attack_image = attack_image  # animation name: "attack"
 
-        self.curr_animation = "rest"
-        self.animation_start_time = 0  # time when current animation started
+        self._curr_animation = "rest"
+        self._animation_start_time = 0  # time when current animation started
 
         # position
         self.rect.x = start_point[0]
         self.rect.y = start_point[1]
 
         # stats
-        self.attack_damage = stats["attack_damage"]
-        self.attack_speed = stats["attack_speed"]
-        self.critical_attack_chance = stats["critical_attack_chance"]
+        self._attack_damage = stats["attack_damage"]
+        self._attack_speed = stats["attack_speed"]
+        self._critical_attack_chance = stats["critical_attack_chance"]
 
         # health
-        self.max_health = start_health
-        self.health = stats["health"]
+        self._max_health = start_health
+        self._health = stats["health"]
 
         # mana
-        self.max_mana = 0
-        self.mana = stats["mana"]
+        self._max_mana = 0
+        self._mana = stats["mana"]
 
         # money
-        self.money = stats["money"]
+        self._money = stats["money"]
 
         # levels
-        self.exp = stats["exp"]
-        self.level = stats["lvl"]
-        self.to_next_level_exp = calculate_to_next_level_exp(self.level)
+        self._exp = stats["exp"]
+        self._level = stats["lvl"]
+        self._to_next_level_exp = calculate_to_next_level_exp(self._level)
 
-        self.skill_points = stats["skill_points"]
+        self._skill_points = stats["skill_points"]
 
         # checking if character is moving
-        self.key_clicked = {"top": False, "bottom": False, "left": False, "right": False}
+        self._key_clicked = {"top": False, "bottom": False, "left": False, "right": False}
 
         # movement
-        self.speed = character_speed
-        self.velocity = [0, 0]
+        self._speed = character_speed
+        self._velocity = [0, 0]
 
         # combat
-        self.knockback = character_knockback
-        self.is_attacking = False
+        self._knockback = character_knockback
+        self._is_attacking = False
 
-        self.stunned = False
-        self.immune = False
-        self.stop_stun_time = 0
-        self.stop_immunity_time = 0
+        self._stunned = False
+        self._immune = False
+        self._stop_stun_time = 0
+        self._stop_immunity_time = 0
 
     # ----- MOVEMENT -----
     def set_velocity(self, direction):
-        self.velocity[0] = direction[0] * self.speed
-        self.velocity[1] = direction[1] * self.speed
+        self._velocity[0] = direction[0] * self._speed
+        self._velocity[1] = direction[1] * self._speed
 
         # changing angle for rotation
-        if not (self.velocity[0] == 0 and self.velocity[1] == 0):
-            self.angle = find_character_angle(self.velocity)
+        if not (self._velocity[0] == 0 and self._velocity[1] == 0):
+            self._angle = find_character_angle(self._velocity)
 
     def move(self, curr_room, time):
         curr_position = [self.rect.x, self.rect.y]
 
         # attempt to move
-        self.rect.x += self.velocity[0]
-        self.rect.y += self.velocity[1]
+        self.rect.x += self._velocity[0]
+        self.rect.y += self._velocity[1]
 
         # checking collision with walls
-        if pygame.sprite.spritecollide(self, curr_room.get_walls(), False):
+        if pygame.sprite.spritecollide(self, curr_room.walls, False):
             # if collide, do not move
             self.rect.x = curr_position[0]
             self.rect.y = curr_position[1]
@@ -89,10 +89,10 @@ class Character(pygame.sprite.Sprite):
         self.animation(time)
 
         # checking picking up drop
-        for loot in pygame.sprite.spritecollide(self, curr_room.get_dropped_items(), False):
-            if loot.get_name() == "exp":
+        for loot in pygame.sprite.spritecollide(self, curr_room.dropped_items, False):
+            if loot.name == "exp":
                 self.add_experience(1)
-            elif loot.get_name() == "coin":
+            elif loot.name == "coin":
                 self.add_money(1)
 
             curr_room.remove_drop(loot)
@@ -100,124 +100,125 @@ class Character(pygame.sprite.Sprite):
     # ----- CHARACTER IMAGE -----
     def animation(self, time):
         # changing current animation
-        if self.is_attacking:
-            self.curr_animation = "attack"
-            self.animation_start_time = time
-        elif (self.velocity[0] == 0 and self.velocity[1] == 0) or self.stunned:
-            self.curr_animation = "rest"
-            self.animation_start_time = time
+        if self._is_attacking:
+            self._curr_animation = "attack"
+            self._animation_start_time = time
+        elif (self._velocity[0] == 0 and self._velocity[1] == 0) or self._stunned:
+            self._curr_animation = "rest"
+            self._animation_start_time = time
         else:
-            if not self.curr_animation == "move":
-                self.animation_start_time = time
-                self.curr_animation = "move"
+            if not self._curr_animation == "move":
+                self._animation_start_time = time
+                self._curr_animation = "move"
 
         # animation
-        if self.curr_animation == "rest":
-            self.original_image = self.staying_image
-        elif self.curr_animation == "move":
-            self.original_image = animate(self.movement_animation, time, self.animation_start_time, frame_change_time)
-        elif self.curr_animation == "attack":
-            self.original_image = self.attack_image
+        if self._curr_animation == "rest":
+            self._original_image = self._staying_image
+        elif self._curr_animation == "move":
+            self._original_image = animate(self._movement_animation, time, self._animation_start_time,
+                                           frame_change_time)
+        elif self._curr_animation == "attack":
+            self._original_image = self._attack_image
 
         # rotation
         self.rot_center()
 
     def rot_center(self):
-        self.image = pygame.transform.rotate(self.original_image, self.angle)
+        self.image = pygame.transform.rotate(self._original_image, self._angle)
         self.rect = self.image.get_rect(center=self.rect.center)
 
     # ----- COMBAT -----
     def check_collisions(self, curr_room, time):
         # checking collision with enemies
-        attackers = pygame.sprite.spritecollide(self, curr_room.get_enemies(), False)
+        attackers = pygame.sprite.spritecollide(self, curr_room.enemies, False)
         for attacker in attackers:
-            if self.is_attacking:
-                attacker.hit(curr_room, self, time, decide_critical_attack(self.critical_attack_chance))
+            if self._is_attacking:
+                attacker.hit(curr_room, self, time, decide_critical_attack(self._critical_attack_chance))
             else:
                 self.hit(attacker, time)
 
     def hit(self, attacker, time):
-        if not self.immune:
+        if not self._immune:
             # damage and death
-            self.health -= attacker.get_damage()
+            self._health -= attacker.damage
             self.check_death()
 
             # stun
-            self.stunned = True
-            self.stop_stun_time = time + knockback_duration
+            self._stunned = True
+            self._stop_stun_time = time + knockback_duration
 
             # immunity to attacks
-            self.immune = True
-            self.stop_immunity_time = time + immunity_duration
+            self._immune = True
+            self._stop_immunity_time = time + immunity_duration
 
             # knockback
-            attacker_velocity = attacker.get_velocity()
-            attacker_speed = attacker.get_speed()
-            attacker_knockback = attacker.get_knockback_multiplier()
+            attacker_velocity = attacker.velocity
+            attacker_speed = attacker.speed
+            attacker_knockback = attacker.knockback_multiplier
 
-            self.set_velocity([attacker_velocity[0] * attacker_knockback / (attacker_speed * self.speed),
-                               attacker_velocity[1] * attacker_knockback / (attacker_speed * self.speed)])
+            self.set_velocity([attacker_velocity[0] * attacker_knockback / (attacker_speed * self._speed),
+                               attacker_velocity[1] * attacker_knockback / (attacker_speed * self._speed)])
 
             # stunning enemy for a while
             attacker.rest_after_attack(time)
 
     def check_death(self):
         # end of the game
-        if self.health <= 0:
+        if self._health <= 0:
             exit(1)
 
     def start_attack(self):
-        self.is_attacking = True
+        self._is_attacking = True
 
     def stop_attack(self):
-        self.is_attacking = False
+        self._is_attacking = False
 
     def check_stun_and_immunity(self, time):
-        if time == self.stop_stun_time:
-            self.stunned = False
+        if time == self._stop_stun_time:
+            self._stunned = False
             self.set_velocity([0, 0])
-        if time == self.stop_immunity_time:
-            self.immune = False
+        if time == self._stop_immunity_time:
+            self._immune = False
 
     def add_experience(self, amount):
-        self.exp += amount
+        self._exp += amount
         self.check_level()
 
     def check_level(self):
-        while self.exp >= self.to_next_level_exp:
-            self.level += 1
-            self.skill_points += 1
-            self.exp -= self.to_next_level_exp
-            self.to_next_level_exp = calculate_to_next_level_exp(self.level)
+        while self._exp >= self._to_next_level_exp:
+            self._level += 1
+            self._skill_points += 1
+            self._exp -= self._to_next_level_exp
+            self._to_next_level_exp = calculate_to_next_level_exp(self._level)
 
     def add_money(self, amount):
-        self.money += amount
+        self._money += amount
 
     # ----- UPGRADING STATS -----
     def upgrade_stat_attack_damage(self):
-        self.attack_damage += upgrade_attack_damage
-        self.skill_points -= 1
+        self._attack_damage += upgrade_attack_damage
+        self._skill_points -= 1
 
     def upgrade_stat_attack_speed(self):
-        if self.attack_speed < max_attack_speed:
-            self.attack_speed += upgrade_attack_speed
-            self.attack_speed = round(self.attack_speed, 1)  # to avoid that problem: 0.7 + 0.1 = 0.799999
-            self.skill_points -= 1
+        if self._attack_speed < max_attack_speed:
+            self._attack_speed += upgrade_attack_speed
+            self._attack_speed = round(self._attack_speed, 1)  # to avoid that problem: 0.7 + 0.1 = 0.799999
+            self._skill_points -= 1
 
     def upgrade_stat_critical_attack_chance(self):
-        if self.critical_attack_chance < max_critical_attack_chance:
-            self.critical_attack_chance += upgrade_critical_attack_chance
-            self.skill_points -= 1
+        if self._critical_attack_chance < max_critical_attack_chance:
+            self._critical_attack_chance += upgrade_critical_attack_chance
+            self._skill_points -= 1
 
     def upgrade_stat_health(self):
-        self.max_health += upgrade_health
-        self.health += upgrade_health
-        self.skill_points -= 1
+        self._max_health += upgrade_health
+        self._health += upgrade_health
+        self._skill_points -= 1
 
     def upgrade_stat_mana(self):
-        self.max_mana += upgrade_mana
-        self.mana += upgrade_mana
-        self.skill_points -= 1
+        self._max_mana += upgrade_mana
+        self._mana += upgrade_mana
+        self._skill_points -= 1
 
     # ----- GETTERS AND SETTERS -----
     def set_position(self, new_room_direction, new_room_size):
@@ -240,59 +241,91 @@ class Character(pygame.sprite.Sprite):
         self.rect.y = new_position[1]
 
     def set_key_clicked(self, direction, click):  # setting that the movement key is (not) being pressed
-        self.key_clicked[direction] = click
+        self._key_clicked[direction] = click
 
     def get_position(self):
         return [self.rect.x, self.rect.y]
 
-    def get_attack_damage(self):
-        return self.attack_damage
+    @property
+    def attack_damage(self):
+        """ current attack damage """
+        return self._attack_damage
 
-    def get_attack_speed(self):
-        return self.attack_speed
+    @property
+    def attack_speed(self):
+        """ current attack speed """
+        return self._attack_speed
 
-    def get_critical_attack_chance(self):
-        return self.critical_attack_chance
+    @property
+    def critical_attack_chance(self):
+        """ current critical attack chance """
+        return self._critical_attack_chance
 
-    def get_key_clicked(self, direction):
-        return self.key_clicked[direction]
+    @property
+    def key_clicked(self):
+        """ current clicked keys (array) """
+        return self._key_clicked
 
-    def get_knockback(self):
-        return self.knockback
+    @property
+    def knockback(self):
+        """ current knockback """
+        return self._knockback
 
-    def get_is_attacking(self):
-        return self.is_attacking
+    @property
+    def is_attacking(self):
+        """ it is true during character attack """
+        return self._is_attacking
 
-    def get_stunned(self):
-        return self.stunned
+    @property
+    def stunned(self):
+        """ it is true when character is stunned """
+        return self._stunned
 
-    def get_money(self):
-        return self.money
+    @property
+    def money(self):
+        """ current amount of money """
+        return self._money
 
-    def set_money(self, money):
-        self.money = money
+    @property
+    def max_health(self):
+        """ maximum possible health now """
+        return self._max_health
 
-    def get_max_health(self):
-        return self.max_health
+    @property
+    def health(self):
+        """ current character health """
+        return self._health
 
-    def get_health(self):
-        return self.health
+    @property
+    def max_mana(self):
+        """ maximum possible mana now """
+        return self._max_mana
 
-    def get_max_mana(self):
-        return self.max_mana
+    @property
+    def mana(self):
+        """ current character mana """
+        return self._mana
 
-    def get_mana(self):
-        return self.mana
+    @property
+    def exp(self):
+        """ current character experience points """
+        return self._exp
 
-    def get_exp(self):
-        return self.exp
+    @property
+    def level(self):
+        """ current character level """
+        return self._level
 
-    def get_level(self):
-        return self.level
+    @property
+    def to_next_level_exp(self):
+        """ amount of experience needed to get next level """
+        return self._to_next_level_exp
 
-    def get_to_next_level_exp(self):
-        return self.to_next_level_exp
+    @property
+    def skill_points(self):
+        """ amount of skill points ready to be spent on new skills or stats improvement """
+        return self._skill_points
 
-    def get_skill_points(self):
-        return self.skill_points
-
+    @money.setter
+    def money(self, money):
+        self._money = money

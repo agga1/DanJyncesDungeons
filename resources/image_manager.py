@@ -32,6 +32,7 @@ character_attack_image = pygame.image.load("../resources/images_and_animations/c
 
 # enemies
 bat_images = connect_frames("../resources/images_and_animations/bat")
+hedgehog_images = connect_frames("../resources/images_and_animations/hedgehog")
 
 # health
 heart_image = pygame.image.load("../resources/images_and_animations/heart.png")

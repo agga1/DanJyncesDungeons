@@ -31,16 +31,16 @@ def save_character(character, db, memory_slot = -1):
     # saving info
     db.update_date()
     # general stats
-    db.update_money(character.get_money())
-    db.update_health(character.get_health())
-    db.update_mana(character.get_mana())
-    db.update_experience(character.get_exp())
-    db.update_lvl(character.get_level())
-    db.update_skill_points(character.get_skill_points())
+    db.update_money(character.money)
+    db.update_health(character.health)
+    db.update_mana(character.mana)
+    db.update_experience(character.exp)
+    db.update_lvl(character.level)
+    db.update_skill_points(character.skill_points)
     # skills upgrades
-    db.update_attack_damage(character.get_attack_damage())
-    db.update_attack_speed(character.get_attack_speed())
-    db.update_critical_attack_chance(character.get_critical_attack_chance())
+    db.update_attack_damage(character.attack_damage)
+    db.update_attack_speed(character.attack_speed)
+    db.update_critical_attack_chance(character.critical_attack_chance)
 
 
 def load_character(db, memory_slot=-1):
