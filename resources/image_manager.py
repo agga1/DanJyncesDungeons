@@ -2,9 +2,9 @@ import pygame
 from sprites_management.sprites_functions import connect_frames
 
 # menu
-bg_image = pygame.image.load("../resources/images_and_animations/menu_bg.png")
-btn_image = pygame.image.load("../resources/images_and_animations/menu_button.png")
-del_image = pygame.image.load("../resources/images_and_animations/delete_button.png")
+bg_image = pygame.image.load("../resources/images_and_animations/menu/menu_bg.png")
+btn_image = pygame.image.load("../resources/images_and_animations/menu/menu_button.png")
+del_image = pygame.image.load("../resources/images_and_animations/menu/delete_button.png")
 
 # stats bar
 stats_bar_image = pygame.image.load("../resources/images_and_animations/stats_bar.png")
@@ -22,7 +22,15 @@ terrain_image = pygame.image.load("../resources/images_and_animations/terrain.pn
 wall_image = pygame.image.load("../resources/images_and_animations/terrain_border.png")
 
 # doors
-open_door_image = pygame.image.load("../resources/images_and_animations/door_open.png")
+open_door = pygame.image.load("../resources/images_and_animations/doors_n_keys/door_open.png")
+door_closed_blue = pygame.image.load("../resources/images_and_animations/doors_n_keys/door_closed_blue.png")
+door_closed_green = pygame.image.load("../resources/images_and_animations/doors_n_keys/door_closed_green.png")
+door_closed_grey = pygame.image.load("../resources/images_and_animations/doors_n_keys/door_closed_grey.png")
+door_closed_yellow = pygame.image.load("../resources/images_and_animations/doors_n_keys/door_closed_yellow.png")
+key_blue = pygame.image.load("../resources/images_and_animations/doors_n_keys/key_blue.png")
+key_green = pygame.image.load("../resources/images_and_animations/doors_n_keys/key_green.png")
+key_grey = pygame.image.load("../resources/images_and_animations/doors_n_keys/key_grey.png")
+key_yellow = pygame.image.load("../resources/images_and_animations/doors_n_keys/key_yellow.png")
 
 # character
 character_rest_image = pygame.image.load(
@@ -40,8 +48,8 @@ heart_image = pygame.image.load("../resources/images_and_animations/heart.png")
 coin_image = pygame.image.load("../resources/images_and_animations/coin.png")
 
 # attack ready diode
-attack_ready_image = pygame.image.load("../resources/images_and_animations/attack_ready.png")
-attack_not_ready_image = pygame.image.load("../resources/images_and_animations/attack_not_ready.png")
+attack_ready_image = pygame.image.load("../resources/images_and_animations/attack_diode/attack_ready.png")
+attack_not_ready_image = pygame.image.load("../resources/images_and_animations/attack_diode/attack_not_ready.png")
 
 # dropped
 coin_point_image = pygame.image.load("../resources/images_and_animations/coin_point.png")
@@ -92,7 +100,36 @@ def get_wall_image():
 
 
 def get_open_door_image():
-    return open_door_image
+    return open_door
+
+def get_closed_door_blue():
+    return door_closed_blue
+
+def get_closed_door_green():
+    return door_closed_green
+
+def get_closed_door_grey():
+    return door_closed_grey
+
+
+def get_closed_door_yellow():
+    return door_closed_yellow
+
+
+def get_key_blue():
+    return key_blue
+
+
+def get_key_green():
+    return key_green
+
+
+def get_key_grey():
+    return key_grey
+
+
+def get_key_yellow():
+    return key_yellow
 
 
 def get_character_rest_image():
