@@ -114,6 +114,8 @@ hedgehog_exp_drop = 3
 drop_speed = 0.5
 drop_moving_distance = 150
 
+pick_up_time = 25
+
 # ----- STATS DISPLAY -----
 # stats bar
 stats_bar_rect = [600, 0, 300, 600]

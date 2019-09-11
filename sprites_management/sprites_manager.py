@@ -66,7 +66,7 @@ def add_enemies(enemies_group, enemies_list):
             enemies_group.add(enemy)
 
 
-def add_drop(drop_group, enemy):
+def add_drop(drop_group, enemy, time):
     enemy_drop = enemy.drop
     enemy_position = enemy.get_position()
     number_of_coins = random.randint(enemy_drop["coin_range"][0], enemy_drop["coin_range"][1])
@@ -79,10 +79,10 @@ def add_drop(drop_group, enemy):
         coin_position = [random.randint(enemy_position[0], enemy_position[0] + 50),
                          random.randint(enemy_position[1], enemy_position[1] + 50)]
 
-        drop_group.add(Drop("coin", coin_position, coin_image))
+        drop_group.add(Drop("coin", coin_position, coin_image, time))
 
     for i in range(0, number_of_exp):
         exp_position = [random.randint(enemy_position[0], enemy_position[0] + 50),
                         random.randint(enemy_position[1], enemy_position[1] + 50)]
 
-        drop_group.add(Drop("exp", exp_position, exp_image))
+        drop_group.add(Drop("exp", exp_position, exp_image, time))

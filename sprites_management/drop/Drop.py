@@ -6,7 +6,7 @@ from management_and_config.configurations import *
 
 
 class Drop(pygame.sprite.Sprite):
-    def __init__(self, name, position, image, *groups):
+    def __init__(self, name, position, image, time, *groups):
         super().__init__(*groups)
 
         # core variables
@@ -23,31 +23,43 @@ class Drop(pygame.sprite.Sprite):
         self._base_speed = drop_speed
         self._velocity = [0, 0]
 
-    def move_towards_character(self, character):
-        # main character is a target
-        curr_character_position_center = [character.get_position()[0] + sprite_size[0] / 2,
-                                          character.get_position()[1] + sprite_size[1] / 2]
+        # delay after creation
+        self._pick_up_time = time + pick_up_time
 
-        position_difference = [self.rect.x - curr_character_position_center[0],
-                               self.rect.y - curr_character_position_center[1]]
+    def move_towards_character(self, character, time):
+        print(time)
+        if time >= self._pick_up_time:
+            # main character is a target
+            curr_character_position_center = [character.get_position()[0] + sprite_size[0] / 2,
+                                              character.get_position()[1] + sprite_size[1] / 2]
 
-        # following character just if it is closer than drop_moving_distance
-        distance = math.sqrt(position_difference[0] ** 2 + position_difference[1] ** 2)
-        if distance < drop_moving_distance:
-            # moving faster when the character is closer
-            curr_speed = drop_moving_distance * self._base_speed / distance
+            position_difference = [self.rect.x - curr_character_position_center[0],
+                                   self.rect.y - curr_character_position_center[1]]
 
-            # setting velocity
-            self._velocity = set_velocity_in_given_direction(position_difference, curr_speed)
+            # following character just if it is closer than drop_moving_distance
+            distance = math.sqrt(position_difference[0] ** 2 + position_difference[1] ** 2)
+            if distance < drop_moving_distance:
+                # moving faster when the character is closer
+                if distance != 0:
+                    curr_speed = drop_moving_distance * self._base_speed / distance
+                else:
+                    curr_speed = drop_moving_distance * self._base_speed
 
-            # to improve softness of movement
-            self._exact_pos[0] += self._velocity[0]
-            self._exact_pos[1] += self._velocity[1]
+                # setting velocity
+                self._velocity = set_velocity_in_given_direction(position_difference, curr_speed)
 
-            # movement
-            self.rect.x = self._exact_pos[0]
-            self.rect.y = self._exact_pos[1]
+                # to improve softness of movement
+                self._exact_pos[0] += self._velocity[0]
+                self._exact_pos[1] += self._velocity[1]
+
+                # movement
+                self.rect.x = self._exact_pos[0]
+                self.rect.y = self._exact_pos[1]
 
     @property
     def name(self):
         return self._name
+
+    @property
+    def pick_up_time(self):
+        return self._pick_up_time

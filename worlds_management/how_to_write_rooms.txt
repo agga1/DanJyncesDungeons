@@ -10,15 +10,17 @@ represent a position in the room where that enemy starts, 4th one represents the
 
 types of enemies:
 - bat: it follows main character
+- hedgehog: it wanders up and down or left and right
 
 example:
 12 12
-classic
+top left
 2
 bat 450 450
-bat 100 200
+hedgehog 100 200 right
 
-it is a classic room with size [12, 12] which contains 2 bats at the positions: [450, 450] and [100, 200]
+it is a room with size [12, 12] and doors in top and left sides which contains a bat at the position [450, 450] and a
+hedgehog at the position [100, 200] which are starting its wander going to the right side of the room
 
 you can write comments if there is at least one space after last necessary for room building variable in the line
 (except for line with type of room - in this line do not add anything)

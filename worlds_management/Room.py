@@ -80,8 +80,8 @@ class Room:
     def drop_display(self):
         self._drop.draw(screen)
 
-    def kill_enemy(self, enemy):
-        sprites_management.sprites_manager.add_drop(self._drop, enemy)
+    def kill_enemy(self, enemy, time):
+        sprites_management.sprites_manager.add_drop(self._drop, enemy, time)
         self._enemies.remove(enemy)
 
     def remove_drop(self, drop):

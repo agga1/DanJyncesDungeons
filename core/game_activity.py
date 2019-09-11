@@ -137,7 +137,7 @@ def game_run(db, memory_slot):
 
             # drop moving towards character
             for drop in worlds_manager.curr_world.curr_room.dropped_items.sprites():
-                drop.move_towards_character(main_character)
+                drop.move_towards_character(main_character, time)
 
         pygame.display.flip()
         time += 1

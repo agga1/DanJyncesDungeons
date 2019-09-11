@@ -112,7 +112,7 @@ class Enemy(pygame.sprite.Sprite):
             else:
                 self._health -= 2 * main_character.get_attack_damage()
 
-            self.check_death(curr_room)
+            self.check_death(curr_room, time)
 
             # knockback
             self._stop_stun_time = time + knockback_duration
@@ -123,9 +123,9 @@ class Enemy(pygame.sprite.Sprite):
             # calculating knockback velocity
             self._velocity = calculate_knockback(main_character, self)
 
-    def check_death(self, curr_room):
+    def check_death(self, curr_room, time):
         if self._health <= 0:
-            curr_room.kill_enemy(self)
+            curr_room.kill_enemy(self, time)
 
     def check_stun_and_immunity(self, time):
         if time == self._stop_stun_time:

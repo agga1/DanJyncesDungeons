@@ -90,12 +90,13 @@ class Character(pygame.sprite.Sprite):
 
         # checking picking up drop
         for loot in pygame.sprite.spritecollide(self, curr_room.dropped_items, False):
-            if loot.name == "exp":
-                self.add_experience(1)
-            elif loot.name == "coin":
-                self.add_money(1)
+            if time >= loot.pick_up_time:
+                if loot.name == "exp":
+                    self.add_experience(1)
+                elif loot.name == "coin":
+                    self.add_money(1)
 
-            curr_room.remove_drop(loot)
+                curr_room.remove_drop(loot)
 
     # ----- CHARACTER IMAGE -----
     def animation(self, time):
