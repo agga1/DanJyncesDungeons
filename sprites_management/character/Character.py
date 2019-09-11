@@ -81,7 +81,7 @@ class Character(pygame.sprite.Sprite):
 
         # checking collision with walls
         if pygame.sprite.spritecollide(self, curr_room.walls, False):
-            # if collide, do not move
+            # if collision, do not move
             self.rect.x = curr_position[0]
             self.rect.y = curr_position[1]
 
@@ -130,17 +130,17 @@ class Character(pygame.sprite.Sprite):
     # ----- COMBAT -----
     def check_collisions(self, curr_room, time):
         # checking collision with enemies
-        attackers = pygame.sprite.spritecollide(self, curr_room.enemies, False)
-        for attacker in attackers:
+        aggressors = pygame.sprite.spritecollide(self, curr_room.enemies, False)
+        for aggressor in aggressors:
             if self._is_attacking:
-                attacker.hit(curr_room, self, time, decide_critical_attack(self._critical_attack_chance))
+                aggressor.hit(curr_room, self, time, decide_critical_attack(self._critical_attack_chance))
             else:
-                self.hit(attacker, time)
+                self.hit(aggressor, time)
 
-    def hit(self, attacker, time):
+    def hit(self, aggressor, time):
         if not self._immune:
             # damage and death
-            self._health -= attacker.damage
+            self._health -= aggressor.damage
             self.check_death()
 
             # stun
@@ -152,15 +152,10 @@ class Character(pygame.sprite.Sprite):
             self._stop_immunity_time = time + immunity_duration
 
             # knockback
-            attacker_velocity = attacker.velocity
-            attacker_speed = attacker.speed
-            attacker_knockback = attacker.knockback_multiplier
-
-            self.set_velocity([attacker_velocity[0] * attacker_knockback / (attacker_speed * self._speed),
-                               attacker_velocity[1] * attacker_knockback / (attacker_speed * self._speed)])
+            self._velocity = calculate_knockback(aggressor, self)
 
             # stunning enemy for a while
-            attacker.rest_after_attack(time)
+            aggressor.rest_after_attack(time)
 
     def check_death(self):
         # end of the game
@@ -265,6 +260,11 @@ class Character(pygame.sprite.Sprite):
     def key_clicked(self):
         """ current clicked keys (array) """
         return self._key_clicked
+
+    @property
+    def speed(self):
+        """ character speed """
+        return self._speed
 
     @property
     def knockback(self):

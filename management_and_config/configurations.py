@@ -73,12 +73,10 @@ character_speed = 5
 frame_change_time = 20 / character_speed  # inverse proportion to make it more universal
 
 # enemies
-enemy_speed = 2.5     # other types of enemies will have different set of these values
+enemy_speed = 2.5
 enemy_health = 2
 enemy_damage = 1
-enemy_knockback_multiplier = 4
-enemy_reward = 10
-enemy_exp_for_kill = 4
+enemy_knockback_multiplier = 2
 enemy_frame_change_time = 5
 enemy_health_bar_display_difference = [-2, 0]
 enemy_health_bar_width = 9
@@ -86,6 +84,31 @@ enemy_health_bar_length = 54
 enemy_health_text_center_difference = [28, 5]
 enemy_money_drop_range = [1, 3]
 enemy_exp_drop = 4
+
+bat_speed = 2.5
+bat_health = 2
+bat_damage = 1
+bat_knockback = 1
+bat_frame_change_time = 5
+bat_health_bar_display_difference = [-2, 0]
+bat_health_bar_width = 9
+bat_health_bar_length = 54
+bat_health_text_center_difference = [28, 5]
+bat_money_drop_range = [1, 3]
+bat_exp_drop = 4
+
+hedgehog_speed = 2
+hedgehog_health = 3
+hedgehog_damage = 1
+hedgehog_knockback = 1
+hedgehog_frame_change_time = 12
+hedgehog_health_bar_display_difference = [-2, 0]
+hedgehog_health_bar_width = 9
+hedgehog_health_bar_length = 54
+hedgehog_health_text_center_difference = [28, 5]
+hedgehog_money_drop_range = [1, 2]
+hedgehog_exp_drop = 3
+
 
 # dropped items
 drop_speed = 0.5

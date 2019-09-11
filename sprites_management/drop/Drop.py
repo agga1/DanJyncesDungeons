@@ -1,7 +1,7 @@
 import pygame
 import math
 
-from sprites_management.sprites_functions import calculate_arctan
+from sprites_management.sprites_functions import set_velocity_in_given_direction
 from management_and_config.configurations import *
 
 
@@ -37,14 +37,8 @@ class Drop(pygame.sprite.Sprite):
             # moving faster when the character is closer
             curr_speed = drop_moving_distance * self._base_speed / distance
 
-            # calculating angle
-            angle = calculate_arctan(position_difference)
-
             # setting velocity
-            if position_difference[0] >= 0:
-                self._velocity = [-1 * curr_speed * math.cos(angle), -1 * curr_speed * math.sin(angle)]
-            else:
-                self._velocity = [curr_speed * math.cos(angle), curr_speed * math.sin(angle)]
+            self._velocity = set_velocity_in_given_direction(position_difference, curr_speed)
 
             # to improve softness of movement
             self._exact_pos[0] += self._velocity[0]

@@ -133,7 +133,7 @@ def game_run(db, memory_slot):
 
             # enemies movement
             for enemy in worlds_manager.curr_world.curr_room.enemies.sprites():
-                enemy.move(worlds_manager.character, time)
+                enemy.move(worlds_manager, time)
 
             # drop moving towards character
             for drop in worlds_manager.curr_world.curr_room.dropped_items.sprites():

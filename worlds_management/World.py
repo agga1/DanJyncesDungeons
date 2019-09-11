@@ -91,7 +91,15 @@ class World:
 
                     enemy_start_point = [int(curr_enemy_vars[1]),  # point where is the enemy at the beginning
                                          int(curr_enemy_vars[2])]
-                    enemies.append(create_enemy(enemy_id, enemy_type, enemy_start_point))  # creating and adding object
+
+                    enemy_start_direction = ""
+                    if len(curr_enemy_vars) >= 4:
+                        if curr_enemy_vars[3] == "up" or curr_enemy_vars[3] == "down" or curr_enemy_vars[3] == "left"\
+                                or curr_enemy_vars[3] == "right":
+                            enemy_start_direction = curr_enemy_vars[3]
+
+                    enemies.append(create_enemy(enemy_id, enemy_type, enemy_start_point,
+                                                enemy_start_direction))  # creating and adding object
 
                     enemy_id += 1
 

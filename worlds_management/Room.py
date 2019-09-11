@@ -107,6 +107,11 @@ class Room:
         return self._walls
 
     @property
+    def doors(self):
+        """ room's doors (sprite group of doors) """
+        return self._doors
+
+    @property
     def enemies(self):
         """ room's enemies (sprite group of enemies) """
         return self._enemies

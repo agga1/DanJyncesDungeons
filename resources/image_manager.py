@@ -112,6 +112,10 @@ def get_bat_images():
     return bat_images
 
 
+def get_hedgehog_images():
+    return hedgehog_images
+
+
 def get_heart_image():
     return heart_image
 
