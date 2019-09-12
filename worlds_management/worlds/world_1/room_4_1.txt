@@ -1,5 +1,5 @@
 12 12
-bottom left
+bottom-open left-open
 2
 bat 400 60
 bat 400 400

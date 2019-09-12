@@ -1,5 +1,5 @@
 12 12
-bottom left
+bottom-open left-open
 2
 bat 250 60
 hedgehog 100 100 right

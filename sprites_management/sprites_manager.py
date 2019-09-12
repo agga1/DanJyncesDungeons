@@ -8,7 +8,8 @@ from sprites_management.obstacles.Wall import Wall
 from sprites_management.obstacles.Door import Door
 from sprites_management.drop.Drop import Drop
 from resources.image_manager import get_bat_images, get_hedgehog_images, get_wall_image, get_open_door_image, \
-    get_coin_point_image, get_exp_point_image
+    get_door_closed_blue_image, get_door_closed_green_image, get_door_closed_grey_image, \
+    get_door_closed_yellow_image,  get_coin_point_image, get_exp_point_image
 
 
 def create_enemy(enemy_id, enemy_type, enemy_start_point, enemy_start_direction):
@@ -41,23 +42,39 @@ def add_walls(walls, room_size, room_type):
             walls.add(Wall([550, 50 + 50 * i], wall_image))
 
 
-def add_doors(doors, room_size, room_type):
-    open_door_image = get_open_door_image()
+def add_doors(doors, room_size, doors_config):
+    for door_config in doors_config:
+        door = door_config.split("-")
+        door_image = get_open_door_image()
+        door_color = None
 
-    if "top" in room_type:
-        doors.add(Door([50 * (room_size[0] / 2 - 1), 0], open_door_image))
+        if door[1] == "blue":
+            door_image = get_door_closed_blue_image()
+            door_color = "blue"
+        elif door[1] == "green":
+            door_image = get_door_closed_green_image()
+            door_color = "green"
+        elif door[1] == "grey":
+            door_image = get_door_closed_grey_image()
+            door_color = "grey"
+        elif door[1] == "yellow":
+            door_image = get_door_closed_yellow_image()
+            door_color = "yellow"
 
-    if "bottom" in room_type:
-        open_door_image_rotated = pygame.transform.rotate(open_door_image, 180)
-        doors.add(Door([50 * (room_size[0] / 2 - 1), 50 * (room_size[1] - 1)], open_door_image_rotated))
+        if door[0] == "top":
+            doors.add(Door([50 * (room_size[0] / 2 - 1), 0], door_image, door_color))
 
-    if "left" in room_type:
-        open_door_image_rotated = pygame.transform.rotate(open_door_image, 270)
-        doors.add(Door([0, 50 * (room_size[1] / 2 - 1)], open_door_image_rotated))
+        elif door[0] == "bottom":
+            door_image_rotated = pygame.transform.rotate(door_image, 180)
+            doors.add(Door([50 * (room_size[0] / 2 - 1), 50 * (room_size[1] - 1)], door_image_rotated, door_color))
 
-    if "right" in room_type:
-        open_door_image_rotated = pygame.transform.rotate(open_door_image, 90)
-        doors.add(Door([50 * (room_size[0] - 1), 50 * (room_size[1] / 2 - 1)], open_door_image_rotated))
+        elif door[0] == "left":
+            door_image_rotated = pygame.transform.rotate(door_image, 90)
+            doors.add(Door([0, 50 * (room_size[1] / 2 - 1)], door_image_rotated, door_color))
+
+        elif door[0] == "right":
+            door_image_rotated = pygame.transform.rotate(door_image, 270)
+            doors.add(Door([50 * (room_size[0] - 1), 50 * (room_size[1] / 2 - 1)], door_image_rotated, door_color))
 
 
 def add_enemies(enemies_group, enemies_list):

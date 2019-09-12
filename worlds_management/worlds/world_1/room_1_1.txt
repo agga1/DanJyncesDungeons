@@ -1,4 +1,4 @@
 12 12
-top left right
+top-open left-open right-open
 1
 bat 100 100

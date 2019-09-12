@@ -1,5 +1,5 @@
 12 12
-top
+top-open
 3
 bat 60 400
 bat 250 400

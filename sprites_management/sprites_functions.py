@@ -98,3 +98,12 @@ def decide_critical_attack(chance):
         return True
     else:
         return False
+
+
+# ----- STRINGS -----
+def extract_doors_sides(doors_config):
+    doors_sides = []
+    for door in doors_config:
+        doors_sides.append(door.split("-")[0])
+
+    return doors_sides
