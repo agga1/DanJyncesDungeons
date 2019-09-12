@@ -17,13 +17,14 @@ columns = ["id", "INTEGER PRIMARY KEY",  # list of columns along with data type
            "mana", "INTEGER",
            "experience", "INTEGER",
            "lvl", "INTEGER",
+           "inventory", "TEXT",
+           # skills upgrades
            "skill_points", "INTEGER",
            "attack_damage", "INTEGER",
            "attack_speed", "REAL",
            "critical_attack_chance", "REAL",
            # room&world state
            "active_enemies", "TEXT",
-           "inventory", "TEXT",
            "curr_room", "TEXT",
            "curr_world", "INTEGER",
            # general game state
