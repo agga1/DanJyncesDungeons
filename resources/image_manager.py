@@ -56,8 +56,6 @@ attack_not_ready_image = pygame.image.load("../resources/images_and_animations/a
 coin_point_image = pygame.image.load("../resources/images_and_animations/coin_point.png")
 exp_point_image = pygame.image.load("../resources/images_and_animations/exp_point.png")
 
-# items
-item_image = pygame.image.load("../resources/images_and_animations/item.png")
 
 
 def get_attack_ready_image():
@@ -169,5 +167,3 @@ def get_exp_point_image():
     return exp_point_image
 
 
-def get_item_image():
-    return item_image
