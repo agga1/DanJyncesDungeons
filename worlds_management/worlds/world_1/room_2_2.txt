@@ -1,5 +1,5 @@
 12 12
-top-green bottom-open left-grey right-blue
+top-green bottom-yellow left-grey right-blue
 1
 hedgehog 100 100 down
 grey
