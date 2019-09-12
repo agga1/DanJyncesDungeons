@@ -4,19 +4,23 @@ contains specification of the room (with position [{pos_x}, {pos_y}]) written in
 first line: two integers which represents size of the room: first is the number of elements from left ot right, second is the number of elements from top to bottom
 second line: there are strings which represent positions of doors separated by 1 space ("top", "bottom", "left", "right")
 third line: i - number of enemies in the room
-next i lines: 3 variables connected with the enemy: first one is the type of enemy, next 2 variables represent a position in the room where that enemy starts
+next i lines: 3 (4th is optional) variables connected with the enemy: first one is the type of enemy, next 2 variables
+represent a position in the room where that enemy starts, 4th one represents the direction of movement in the beginning
+(just for enemies which are not following main character) "up", "down", "left", "right"
 
 types of enemies:
 - bat: it follows main character
+- hedgehog: it wanders up and down or left and right
 
 example:
 12 12
-classic
+top left
 2
 bat 450 450
-bat 100 200
+hedgehog 100 200 right
 
-it is a classic room with size [12, 12] which contains 2 bats at the positions: [450, 450] and [100, 200]
+it is a room with size [12, 12] and doors in top and left sides which contains a bat at the position [450, 450] and a
+hedgehog at the position [100, 200] which are starting its wander going to the right side of the room
 
 you can write comments if there is at least one space after last necessary for room building variable in the line
 (except for line with type of room - in this line do not add anything)

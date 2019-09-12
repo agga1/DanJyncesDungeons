@@ -31,7 +31,7 @@ def game_run(db, memory_slot):
     while True:
         clock.tick(60)
 
-        for main_character in worlds_manager.get_character().sprites():
+        for main_character in worlds_manager.character.sprites():
             # changing display to inventory or skill tree if activated
             if curr_display != "game":
                 while curr_display != "game":
@@ -73,7 +73,7 @@ def game_run(db, memory_slot):
                     # start attacking
                     if e.key == pygame.K_SPACE and time > can_attack_time:
                         stop_attack_time = time + attack_duration
-                        can_attack_time = int(time + 60/main_character.get_attack_speed())
+                        can_attack_time = int(time + 60/main_character.attack_speed)
                         main_character.start_attack()
 
                     # inventory
@@ -96,48 +96,48 @@ def game_run(db, memory_slot):
                         main_character.set_key_clicked("right", False)
 
             # stop attacking
-            if main_character.get_is_attacking() and time == stop_attack_time:
+            if main_character.is_attacking and time == stop_attack_time:
                 main_character.stop_attack()
 
             # set character velocity
-            if not main_character.get_stunned():
+            if not main_character.stunned:
                 vertical_velocity = 0
-                if main_character.get_key_clicked("top") and main_character.get_key_clicked("bottom"):
+                if main_character.key_clicked["top"] and main_character.key_clicked["bottom"]:
                     vertical_velocity = 0
-                elif main_character.get_key_clicked("top"):
+                elif main_character.key_clicked["top"]:
                     vertical_velocity = -1
-                elif main_character.get_key_clicked("bottom"):
+                elif main_character.key_clicked["bottom"]:
                     vertical_velocity = 1
 
                 horizontal_velocity = 0
-                if main_character.get_key_clicked("left") and main_character.get_key_clicked("right"):
+                if main_character.key_clicked["left"] and main_character.key_clicked["right"]:
                     horizontal_velocity = 0
-                elif main_character.get_key_clicked("left"):
+                elif main_character.key_clicked["left"]:
                     horizontal_velocity = -1
-                elif main_character.get_key_clicked("right"):
+                elif main_character.key_clicked["right"]:
                     horizontal_velocity = 1
 
                 main_character.set_velocity([horizontal_velocity, vertical_velocity])
 
             # move if not colliding with walls and check collision with drop
-            main_character.move(worlds_manager.get_curr_world().get_curr_room(), time)
+            main_character.move(worlds_manager.curr_world.curr_room, time)
 
             # colliding with enemies
-            main_character.check_collisions(worlds_manager.get_curr_world().get_curr_room(), time)
+            main_character.check_collisions(worlds_manager.curr_world.curr_room, time)
 
             # checking stun and immunity to enemies
             main_character.check_stun_and_immunity(time)
 
             # checking changing room
-            worlds_manager.get_curr_world().check_room(main_character)
+            worlds_manager.curr_world.check_room(main_character)
 
             # enemies movement
-            for enemy in worlds_manager.get_curr_world().get_curr_room().get_enemies().sprites():
-                enemy.move(worlds_manager.get_character(), time)
+            for enemy in worlds_manager.curr_world.curr_room.enemies.sprites():
+                enemy.move(worlds_manager, time)
 
             # drop moving towards character
-            for drop in worlds_manager.get_curr_world().get_curr_room().get_dropped_items().sprites():
-                drop.move_towards_character(main_character)
+            for drop in worlds_manager.curr_world.curr_room.dropped_items.sprites():
+                drop.move_towards_character(main_character, time)
 
         pygame.display.flip()
         time += 1
