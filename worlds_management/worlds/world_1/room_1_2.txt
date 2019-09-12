@@ -1,5 +1,7 @@
 12 12
-right
+right-open
 2
 bat 60 100
+none
 bat 60 400
+none

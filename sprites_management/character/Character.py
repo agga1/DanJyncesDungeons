@@ -37,6 +37,9 @@ class Character(pygame.sprite.Sprite):
         self._max_mana = 0
         self._mana = stats["mana"]
 
+        # keys
+        self._keys = {"grey": 0, "blue": 0, "green": 0, "yellow": 0}
+
         # money
         self._money = stats["money"]
 
@@ -89,12 +92,24 @@ class Character(pygame.sprite.Sprite):
         self.animation(time)
 
         # checking picking up drop
+        self.check_drop(curr_room, time)
+
+    def check_drop(self, curr_room, time):
         for loot in pygame.sprite.spritecollide(self, curr_room.dropped_items, False):
             if time >= loot.pick_up_time:
+                print(loot.name)
                 if loot.name == "exp":
                     self.add_experience(1)
                 elif loot.name == "coin":
                     self.add_money(1)
+                elif loot.name == "grey key":
+                    self.add_key("grey")
+                elif loot.name == "blue key":
+                    self.add_key("blue")
+                elif loot.name == "green key":
+                    self.add_key("green")
+                elif loot.name == "yellow key":
+                    self.add_key("yellow")
 
                 curr_room.remove_drop(loot)
 
@@ -176,6 +191,7 @@ class Character(pygame.sprite.Sprite):
         if time == self._stop_immunity_time:
             self._immune = False
 
+    # ----- DROP -----
     def add_experience(self, amount):
         self._exp += amount
         self.check_level()
@@ -186,6 +202,9 @@ class Character(pygame.sprite.Sprite):
             self._skill_points += 1
             self._exp -= self._to_next_level_exp
             self._to_next_level_exp = calculate_to_next_level_exp(self._level)
+
+    def add_key(self, key):
+        self._keys[key] += 1
 
     def add_money(self, amount):
         self._money += amount
@@ -306,6 +325,11 @@ class Character(pygame.sprite.Sprite):
     def mana(self):
         """ current character mana """
         return self._mana
+
+    @property
+    def keys(self):
+        """ array with numbers of particular keys """
+        return self._keys
 
     @property
     def exp(self):

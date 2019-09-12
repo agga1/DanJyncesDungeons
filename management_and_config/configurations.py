@@ -131,9 +131,17 @@ mana_bar_width = 20
 mana_bar_length = 140
 
 # levels
-level_start_point = [610, 340]
+level_start_point = [610, 320]
 experience_bar_width = 10
 experience_bar_length = 140
+
+# keys
+key_grey_start_point = [640, 390]
+key_blue_start_point = [640, 430]
+key_green_start_point = [640, 470]
+key_yellow_start_point = [640, 510]
+
+keys_number_dist = [35, -6]
 
 # money
 money_start_point = [610, 560]

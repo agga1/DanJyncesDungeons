@@ -1,6 +1,7 @@
 """ Manages actual screen display w all sprites and elements, hardcoded values included """
 
 import sprites_management.sprites_manager
+from sprites_management.sprites_functions import extract_doors_sides
 from management_and_config.configurations import *
 from resources import image_manager
 
@@ -8,10 +9,10 @@ pygame.init()
 
 
 class Room:
-    def __init__(self, room_size, room_type, room_enemies):
+    def __init__(self, room_size, doors_config, room_enemies):
         # specification of the room
         self._size = room_size
-        self._type = room_type
+        self._doors_config = doors_config
 
         self._enemies_on_start = []
         for enemy in room_enemies:
@@ -19,11 +20,11 @@ class Room:
 
         # walls group
         self._walls = pygame.sprite.Group()
-        sprites_management.sprites_manager.add_walls(self._walls, room_size, room_type)
+        sprites_management.sprites_manager.add_walls(self._walls, room_size, extract_doors_sides(doors_config))
 
         # doors group
         self._doors = pygame.sprite.Group()
-        sprites_management.sprites_manager.add_doors(self._doors, room_size, room_type)
+        sprites_management.sprites_manager.add_doors(self._doors, room_size, doors_config)
 
         # enemies group
         self._enemies = pygame.sprite.Group()

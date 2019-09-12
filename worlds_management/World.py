@@ -70,15 +70,17 @@ class World:
                 room_size = room_file.readline().split()  # size of the room [from left to right, from top to bottom]
                 room_size = [int(room_size[0]), int(room_size[1])]
 
-                room_type = room_file.readline().split()  # places with doors ("top", "bottom", "left", "right")
+                doors_config = room_file.readline().split()  # places with doors ("top", "bottom", "left", "right")
 
                 enemies_number = int(room_file.readline().split()[0])  # number of enemies in the room
 
                 enemies = []  # list of enemies in the room
 
-                for enemy in range(0, enemies_number):
+                for enemy in range(0, enemies_number):  # every enemy has two lines
                     if len(self._active_enemies) > enemy_id and not self._active_enemies[enemy_id]:
                         enemy_id += 1
+                        ignore_that_enemy = room_file.readline()    # to not add that enemy to the room
+                        ignore_that_enemy = room_file.readline()
                         continue
 
                     # the first time game opens, active_enemies is empty. default is 1 - enemy active
@@ -98,14 +100,16 @@ class World:
                                 or curr_enemy_vars[3] == "right":
                             enemy_start_direction = curr_enemy_vars[3]
 
-                    enemies.append(create_enemy(enemy_id, enemy_type, enemy_start_point,
+                    enemy_drop = room_file.readline().split()
+
+                    enemies.append(create_enemy(enemy_id, enemy_type, enemy_start_point, enemy_drop,
                                                 enemy_start_direction))  # creating and adding object
 
                     enemy_id += 1
 
                 room_file.close()
 
-                self._rooms[position[0]][position[1]] = Room(room_size, room_type, enemies)  # adding room
+                self._rooms[position[0]][position[1]] = Room(room_size, doors_config, enemies)  # adding room
 
         # start room
         self._curr_room = self._rooms[self._curr_room_pos[0]][self._curr_room_pos[1]]

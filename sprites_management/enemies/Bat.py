@@ -5,8 +5,8 @@ from sprites_management.enemies.Enemy import Enemy
 
 
 class Bat(Enemy):
-    def __init__(self, enemy_id, start_point, movement_animation, *groups):
-        super().__init__(enemy_id, start_point, movement_animation, *groups)
+    def __init__(self, enemy_id, start_point, movement_animation, drop, *groups):
+        super().__init__(enemy_id, start_point, movement_animation, drop, *groups)
 
         # animation
         self._frame_change_time = bat_frame_change_time
@@ -21,7 +21,7 @@ class Bat(Enemy):
         self._knockback = bat_knockback
 
         # after death
-        self._drop = {"coin_range": bat_money_drop_range, "exp": bat_exp_drop}
+        self._fixed_drop = {"coin_range": bat_money_drop_range, "exp": bat_exp_drop}
 
     def set_velocity(self, worlds_manager):
         for main_character in worlds_manager.character.sprites():
