@@ -97,6 +97,16 @@ class Room:
 
         return active_enemies
 
+    def open_door(self, character):
+        for door in self._doors.sprites():
+            door_pos = door.get_position_center()
+            character_pos = character.get_position_center()
+            if door.closed and ((character_pos[0] - door_pos[0]) ** 2 + (
+                    character_pos[1] - door_pos[1]) ** 2) < distance_to_open_door ** 2 and \
+                    character.keys[door.color] > 0:
+                character.use_key(door.color)
+                door.open()
+
     @property
     def size(self):
         """ size of the room """

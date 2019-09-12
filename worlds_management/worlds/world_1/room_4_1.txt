@@ -1,7 +1,7 @@
 12 12
-bottom-open left-open
+bottom-grey left-open
 2
-bat 400 60
+bat 275 80
 none
 bat 400 400
 none

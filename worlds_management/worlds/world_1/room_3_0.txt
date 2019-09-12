@@ -1,7 +1,7 @@
 12 12
 bottom-open
 2
-bat 400 60
-none
-bat 100 60
+bat 80 120
+grey
+bat 470 120
 none

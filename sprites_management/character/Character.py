@@ -88,6 +88,15 @@ class Character(pygame.sprite.Sprite):
             self.rect.x = curr_position[0]
             self.rect.y = curr_position[1]
 
+        # checking collision with doors
+        door_collision = pygame.sprite.spritecollide(self, curr_room.doors, False)
+        if door_collision:
+            for door in door_collision:
+                if door.closed:
+                    # if collision with closed doors, do not move
+                    self.rect.x = curr_position[0]
+                    self.rect.y = curr_position[1]
+
         # checking animation and animating
         self.animation(time)
 
@@ -97,7 +106,6 @@ class Character(pygame.sprite.Sprite):
     def check_drop(self, curr_room, time):
         for loot in pygame.sprite.spritecollide(self, curr_room.dropped_items, False):
             if time >= loot.pick_up_time:
-                print(loot.name)
                 if loot.name == "exp":
                     self.add_experience(1)
                 elif loot.name == "coin":
@@ -191,7 +199,7 @@ class Character(pygame.sprite.Sprite):
         if time == self._stop_immunity_time:
             self._immune = False
 
-    # ----- DROP -----
+    # ----- DROP & ITEMS -----
     def add_experience(self, amount):
         self._exp += amount
         self.check_level()
@@ -208,6 +216,9 @@ class Character(pygame.sprite.Sprite):
 
     def add_money(self, amount):
         self._money += amount
+
+    def use_key(self, key):
+        self._keys[key] -= 1
 
     # ----- UPGRADING STATS -----
     def upgrade_stat_attack_damage(self):
@@ -260,6 +271,9 @@ class Character(pygame.sprite.Sprite):
 
     def get_position(self):
         return [self.rect.x, self.rect.y]
+
+    def get_position_center(self):
+        return self.rect.center
 
     @property
     def attack_damage(self):

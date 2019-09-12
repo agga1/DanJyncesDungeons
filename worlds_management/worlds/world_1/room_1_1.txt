@@ -1,5 +1,7 @@
 12 12
-top-open left-open right-open
-1
-bat 100 100
+top-open left-grey right-open
+2
+hedgehog 60 275 right
+none
+bat 275 100
 none

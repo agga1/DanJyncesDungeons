@@ -1,7 +1,5 @@
 12 12
 right-open
-2
-bat 60 100
-none
-bat 60 400
-none
+1
+bat 275 275
+blue

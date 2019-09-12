@@ -1,7 +1,11 @@
 12 12
 right-open
-2
+4
 bat 60 100
 none
-bat 60 400
+bat 60 440
+none
+hedgehog 200 450 up
+yellow
+hedgehog 400 60 down
 none

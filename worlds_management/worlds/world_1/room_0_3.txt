@@ -1,11 +1,15 @@
 12 12
 bottom-open
-4
-bat 400 60
+6
+hedgehog 275 60 down
 none
-bat 100 60
+hedgehog 60 450 right
 none
-bat 100 250
+hedgehog 490 350 left
 none
-bat 400 250
+bat 90 60
+none
+bat 460 60
+none
+bat 275 225
 none

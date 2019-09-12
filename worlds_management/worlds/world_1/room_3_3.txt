@@ -1,7 +1,9 @@
 12 12
 left-open
-2
-bat 400 60
+3
+bat 300 80
 none
-bat 400 400
+bat 450 275
+grey
+bat 300 470
 none

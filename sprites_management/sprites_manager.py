@@ -75,12 +75,12 @@ def add_doors(doors, room_size, doors_config):
 
         elif door[0] == "left":
             door_image_rotated = pygame.transform.rotate(door_image, 90)
-            open_door_image_rotated = pygame.transform.rotate(door_image, 90)
+            open_door_image_rotated = pygame.transform.rotate(open_door_image, 90)
             doors.add(Door([0, 50 * (room_size[1] / 2 - 1)], door_image_rotated, open_door_image_rotated, door_color))
 
         elif door[0] == "right":
             door_image_rotated = pygame.transform.rotate(door_image, 270)
-            open_door_image_rotated = pygame.transform.rotate(door_image, 270)
+            open_door_image_rotated = pygame.transform.rotate(open_door_image, 270)
             doors.add(Door([50 * (room_size[0] - 1), 50 * (room_size[1] / 2 - 1)], door_image_rotated,
                            open_door_image_rotated, door_color))
 

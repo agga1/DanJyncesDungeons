@@ -111,7 +111,7 @@ class Enemy(pygame.sprite.Sprite):
             if not critical:
                 self._health -= main_character.attack_damage
             else:
-                self._health -= 2 * main_character.get_attack_damage()
+                self._health -= 2 * main_character.attack_damage
 
             self.check_death(curr_room, time)
 

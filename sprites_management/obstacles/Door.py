@@ -18,7 +18,20 @@ class Door(pygame.sprite.Sprite):
         else:
             self._closed = True
 
-    def open(self, key):
-        if key.color == self._color:
-            self._closed = False
+    def open(self):
+        self._closed = False
+        self._color = None
         self.image = self._open_image
+
+    def get_position_center(self):
+        return self.rect.center
+
+    @property
+    def color(self):
+        """ color of the door if closed, None otherwise """
+        return self._color
+
+    @property
+    def closed(self):
+        """ true if the door is still closed """
+        return self._closed

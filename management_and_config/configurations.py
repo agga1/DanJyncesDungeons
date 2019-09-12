@@ -109,6 +109,8 @@ hedgehog_health_text_center_difference = [28, 5]
 hedgehog_money_drop_range = [1, 2]
 hedgehog_exp_drop = 3
 
+# door
+distance_to_open_door = 100
 
 # dropped items
 drop_speed = 0.5

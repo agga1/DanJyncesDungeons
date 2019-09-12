@@ -84,6 +84,10 @@ def game_run(db, memory_slot):
                     if e.key == pygame.K_k:
                         curr_display = "skill tree"
 
+                    # open door
+                    if e.key == pygame.K_e:
+                        worlds_manager.curr_world.curr_room.open_door(main_character)
+
                 # movement (saving information about keys stop being pressed)
                 if e.type == pygame.KEYUP:
                     if e.key == pygame.K_w:

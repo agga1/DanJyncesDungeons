@@ -1,7 +1,9 @@
 12 12
 bottom-open
-2
-bat 400 60
+3
+hedgehog 60 60 right
+grey
+bat 100 130
 none
-bat 100 60
+bat 450 130
 none

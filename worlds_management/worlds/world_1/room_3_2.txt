@@ -1,5 +1,5 @@
 12 12
 top-open left-open
 1
-bat 350 60
+bat 300 275
 none
