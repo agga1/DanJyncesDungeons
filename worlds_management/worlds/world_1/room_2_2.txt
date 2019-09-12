@@ -2,3 +2,4 @@
 top-open bottom-open left-open right-open
 1
 hedgehog 100 100 down
+yellow

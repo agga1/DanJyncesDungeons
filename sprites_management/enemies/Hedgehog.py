@@ -5,8 +5,8 @@ from sprites_management.enemies.Enemy import Enemy
 
 
 class Hedgehog(Enemy):
-    def __init__(self, enemy_id, start_point, movement_animation, direction, *groups):
-        super().__init__(enemy_id, start_point, movement_animation, *groups)
+    def __init__(self, enemy_id, start_point, movement_animation, drop, direction, *groups):
+        super().__init__(enemy_id, start_point, movement_animation, drop, *groups)
 
         # animation
         self._frame_change_time = hedgehog_frame_change_time
@@ -24,7 +24,7 @@ class Hedgehog(Enemy):
         self._knockback = hedgehog_knockback
 
         # after death
-        self._drop = {"coin_range": hedgehog_money_drop_range, "exp": hedgehog_exp_drop}
+        self._fixed_drop = {"coin_range": hedgehog_money_drop_range, "exp": hedgehog_exp_drop}
 
     def set_velocity(self, worlds_manager):
         # wandering up and down or left and right

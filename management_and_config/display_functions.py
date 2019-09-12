@@ -1,8 +1,9 @@
 """Contains universally used gui features like pop-ups, frame freeze"""
 
 from management_and_config.configurations import *
-from resources.image_manager import get_heart_image, get_coin_image, get_attack_ready_image, get_attack_not_ready_image, \
-    get_stats_bar_image, get_upgrade_stat_image
+from resources.image_manager import get_heart_image, get_coin_image, get_attack_ready_image, \
+    get_attack_not_ready_image, get_stats_bar_image, get_upgrade_stat_image, get_key_grey_image, get_key_blue_image, \
+    get_key_green_image, get_key_yellow_image
 
 
 def show_popup(text_string):
@@ -64,14 +65,6 @@ def mana_display(character):
                                         mana_bar_width])
 
 
-def money_display(character):
-    coin_image = get_coin_image()
-
-    money_number = money_font.render(str(character.money), True, YELLOW)
-    screen.blit(coin_image, money_start_point)
-    screen.blit(money_number, [money_start_point[0] + 30, money_start_point[1] - 5])
-
-
 def level_display(character):
     level_number = level_font.render(str(character.level), True, GREEN)
     screen.blit(level_number, level_start_point)
@@ -85,13 +78,48 @@ def level_display(character):
                                      experience_bar_width])
 
 
+def keys_display(character):
+    key_grey_image = get_key_grey_image()
+    key_blue_image = get_key_blue_image()
+    key_green_image = get_key_green_image()
+    key_yellow_image = get_key_yellow_image()
+
+    screen.blit(key_grey_image, key_grey_start_point)
+    screen.blit(key_blue_image, key_blue_start_point)
+    screen.blit(key_green_image, key_green_start_point)
+    screen.blit(key_yellow_image, key_yellow_start_point)
+
+    key_grey_number = stats_font.render(str(character.keys["grey"]), True, BLACK)
+    key_blue_number = stats_font.render(str(character.keys["blue"]), True, BLACK)
+    key_green_number = stats_font.render(str(character.keys["green"]), True, BLACK)
+    key_yellow_number = stats_font.render(str(character.keys["yellow"]), True, BLACK)
+
+    screen.blit(key_grey_number,
+                [key_grey_start_point[0] + keys_number_dist[0], key_grey_start_point[1] + keys_number_dist[1]])
+    screen.blit(key_blue_number,
+                [key_blue_start_point[0] + keys_number_dist[0], key_blue_start_point[1] + keys_number_dist[1]])
+    screen.blit(key_green_number,
+                [key_green_start_point[0] + keys_number_dist[0], key_green_start_point[1] + keys_number_dist[1]])
+    screen.blit(key_yellow_number,
+                [key_yellow_start_point[0] + keys_number_dist[0], key_yellow_start_point[1] + keys_number_dist[1]])
+
+
+def money_display(character):
+    coin_image = get_coin_image()
+
+    money_number = money_font.render(str(character.money), True, YELLOW)
+    screen.blit(coin_image, money_start_point)
+    screen.blit(money_number, [money_start_point[0] + 30, money_start_point[1] - 5])
+
+
 def display_stats_bar(character):
     bg_image = get_stats_bar_image()
     screen.blit(bg_image, [square_screen_width, 0])
     health_display(character)
     mana_display(character)
-    money_display(character)
     level_display(character)
+    keys_display(character)
+    money_display(character)
 
 
 def display_skill_tree_stats_bar(character):

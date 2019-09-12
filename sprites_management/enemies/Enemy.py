@@ -3,7 +3,7 @@ from management_and_config.configurations import *
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, enemy_id, start_point, movement_animation, *groups):
+    def __init__(self, enemy_id, start_point, movement_animation, drop, *groups):
         super().__init__(*groups)
 
         # id
@@ -45,7 +45,8 @@ class Enemy(pygame.sprite.Sprite):
         self._stop_immunity_time = 0
 
         # after death
-        self._drop = None
+        self._fixed_drop = None
+        self._drop = drop
 
     # ----- MOVEMENT -----
     def set_velocity(self, worlds_manager):
@@ -179,6 +180,11 @@ class Enemy(pygame.sprite.Sprite):
         return self._knockback
 
     @property
+    def fixed_drop(self):
+        """ enemy's drop which is the same for every enemy of that type (money, exp) """
+        return self._fixed_drop
+
+    @property
     def drop(self):
-        """ enemy's drop """
+        """ enemy's drop which is not the same for every enemy of that type """
         return self._drop

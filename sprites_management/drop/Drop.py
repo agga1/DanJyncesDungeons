@@ -27,7 +27,6 @@ class Drop(pygame.sprite.Sprite):
         self._pick_up_time = time + pick_up_time
 
     def move_towards_character(self, character, time):
-        print(time)
         if time >= self._pick_up_time:
             # main character is a target
             curr_character_position_center = [character.get_position()[0] + sprite_size[0] / 2,

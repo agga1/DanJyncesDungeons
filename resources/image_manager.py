@@ -22,26 +22,18 @@ terrain_image = pygame.image.load("../resources/images_and_animations/terrain.pn
 wall_image = pygame.image.load("../resources/images_and_animations/terrain_border.png")
 
 # doors
-open_door = pygame.image.load("../resources/images_and_animations/doors_n_keys/door_open.png")
-door_closed_blue = pygame.image.load("../resources/images_and_animations/doors_n_keys/door_closed_blue.png")
-door_closed_green = pygame.image.load("../resources/images_and_animations/doors_n_keys/door_closed_green.png")
-door_closed_grey = pygame.image.load("../resources/images_and_animations/doors_n_keys/door_closed_grey.png")
-door_closed_yellow = pygame.image.load("../resources/images_and_animations/doors_n_keys/door_closed_yellow.png")
-key_blue = pygame.image.load("../resources/images_and_animations/doors_n_keys/key_blue.png")
-key_green = pygame.image.load("../resources/images_and_animations/doors_n_keys/key_green.png")
-key_grey = pygame.image.load("../resources/images_and_animations/doors_n_keys/key_grey.png")
-key_yellow = pygame.image.load("../resources/images_and_animations/doors_n_keys/key_yellow.png")
+open_door_image = pygame.image.load("../resources/images_and_animations/doors_n_keys/door_open.png")
 
-door_closed_blue_image = pygame.image.load("../resources/images_and_animations/door_closed_blue.png")
-door_closed_green_image = pygame.image.load("../resources/images_and_animations/door_closed_green.png")
-door_closed_grey_image = pygame.image.load("../resources/images_and_animations/door_closed_grey.png")
-door_closed_yellow_image = pygame.image.load("../resources/images_and_animations/door_closed_yellow.png")
+door_closed_blue_image = pygame.image.load("../resources/images_and_animations/doors_n_keys/door_closed_blue.png")
+door_closed_green_image = pygame.image.load("../resources/images_and_animations/doors_n_keys/door_closed_green.png")
+door_closed_grey_image = pygame.image.load("../resources/images_and_animations/doors_n_keys/door_closed_grey.png")
+door_closed_yellow_image = pygame.image.load("../resources/images_and_animations/doors_n_keys/door_closed_yellow.png")
 
 # keys
-key_blue_image = pygame.image.load("../resources/images_and_animations/key_blue.png")
-key_green_image = pygame.image.load("../resources/images_and_animations/key_green.png")
-key_grey_image = pygame.image.load("../resources/images_and_animations/key_grey.png")
-key_yellow_image = pygame.image.load("../resources/images_and_animations/key_yellow.png")
+key_blue_image = pygame.image.load("../resources/images_and_animations/doors_n_keys/key_blue.png")
+key_green_image = pygame.image.load("../resources/images_and_animations/doors_n_keys/key_green.png")
+key_grey_image = pygame.image.load("../resources/images_and_animations/doors_n_keys/key_grey.png")
+key_yellow_image = pygame.image.load("../resources/images_and_animations/doors_n_keys/key_yellow.png")
 
 # character
 character_rest_image = pygame.image.load(
@@ -112,36 +104,7 @@ def get_wall_image():
 
 
 def get_open_door_image():
-    return open_door
-
-def get_closed_door_blue():
-    return door_closed_blue
-
-def get_closed_door_green():
-    return door_closed_green
-
-def get_closed_door_grey():
-    return door_closed_grey
-
-
-def get_closed_door_yellow():
-    return door_closed_yellow
-
-
-def get_key_blue():
-    return key_blue
-
-
-def get_key_green():
-    return key_green
-
-
-def get_key_grey():
-    return key_grey
-
-
-def get_key_yellow():
-    return key_yellow
+    return open_door_image
 
 
 def get_door_closed_blue_image():

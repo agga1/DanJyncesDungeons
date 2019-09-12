@@ -2,5 +2,8 @@
 top-open right-open
 3
 bat 60 60
+none
 bat 60 400
+none
 bat 250 250
+none

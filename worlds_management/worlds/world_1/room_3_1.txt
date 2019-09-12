@@ -2,3 +2,4 @@
 top-open bottom-open right-open
 1
 bat 250 200
+none

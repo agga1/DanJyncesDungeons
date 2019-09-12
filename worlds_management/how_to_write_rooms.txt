@@ -5,9 +5,11 @@ first line: two integers which represents size of the room: first is the number 
 second line: there are strings which represent positions of doors ("top", "bottom", "left", "right") connected with their color
 or being open by "-" ("open", "blue", "green", "grey", "yellow") separated by 1 space (e.g. "top-green")
 third line: i - number of enemies in the room
-next i lines: 3 (4th is optional) variables connected with the enemy: first one is the type of enemy, next 2 variables
+next 2i lines:
+- (3 + 2i - 1)th lines: 3 (4th is optional) variables connected with the enemy: first one is the type of enemy, next 2 variables
 represent a position in the room where that enemy starts, 4th one represents the direction of movement in the beginning
 (just for enemies which are not following main character) "up", "down", "left", "right"
+- (3 + 2i)th lines: colors of keys that are dropped by that enemy (if there is no drop there should be just "none"), possibilities: ("grey", "blue", "green", "yellow")
 
 types of enemies:
 - bat: it follows main character
@@ -18,10 +20,12 @@ example:
 top-open left-blue
 2
 bat 450 450
+grey
 hedgehog 100 200 right
+none
 
-it is a room with size [12, 12], open door in top side and closed blue door in left side which contains a bat at the position [450, 450] and a
-hedgehog at the position [100, 200] which are starting its wander going to the right side of the room
+it is a room with size [12, 12], open door in top side and closed blue door in left side with a bat at the position [450, 450] which drops a grey key and a
+hedgehog at the position [100, 200] which are starting its wander going to the right side of the room and does not drop anything
 
 you can write comments if there is at least one space after last necessary for room building variable in the line
 (except for line with type of room - in this line do not add anything)

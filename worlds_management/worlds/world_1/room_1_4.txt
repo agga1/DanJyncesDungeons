@@ -2,4 +2,6 @@
 right-open left-open
 2
 bat 60 100
+none
 bat 60 400
+none

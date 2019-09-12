@@ -2,4 +2,6 @@
 bottom-open left-open
 2
 bat 400 60
+none
 bat 400 400
+none

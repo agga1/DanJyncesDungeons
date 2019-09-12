@@ -76,9 +76,11 @@ class World:
 
                 enemies = []  # list of enemies in the room
 
-                for enemy in range(0, enemies_number):
+                for enemy in range(0, enemies_number):  # every enemy has two lines
                     if len(self._active_enemies) > enemy_id and not self._active_enemies[enemy_id]:
                         enemy_id += 1
+                        ignore_that_enemy = room_file.readline()    # to not add that enemy to the room
+                        ignore_that_enemy = room_file.readline()
                         continue
 
                     # the first time game opens, active_enemies is empty. default is 1 - enemy active
@@ -98,7 +100,9 @@ class World:
                                 or curr_enemy_vars[3] == "right":
                             enemy_start_direction = curr_enemy_vars[3]
 
-                    enemies.append(create_enemy(enemy_id, enemy_type, enemy_start_point,
+                    enemy_drop = room_file.readline().split()
+
+                    enemies.append(create_enemy(enemy_id, enemy_type, enemy_start_point, enemy_drop,
                                                 enemy_start_direction))  # creating and adding object
 
                     enemy_id += 1
