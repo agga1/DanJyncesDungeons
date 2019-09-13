@@ -65,23 +65,24 @@ def add_doors(doors, room_size, doors_config):
             door_color = "yellow"
 
         if door[0] == "top":
-            doors.add(Door([50 * (room_size[0] / 2 - 1), 0], door_image, open_door_image, door_color))
+            doors.add(Door("top", [50 * (room_size[0] / 2 - 1), 0], door_image, open_door_image, door_color))
 
         elif door[0] == "bottom":
             door_image_rotated = pygame.transform.rotate(door_image, 180)
             open_door_image_rotated = pygame.transform.rotate(open_door_image, 180)
-            doors.add(Door([50 * (room_size[0] / 2 - 1), 50 * (room_size[1] - 1)], door_image_rotated,
+            doors.add(Door("bottom", [50 * (room_size[0] / 2 - 1), 50 * (room_size[1] - 1)], door_image_rotated,
                            open_door_image_rotated, door_color))
 
         elif door[0] == "left":
             door_image_rotated = pygame.transform.rotate(door_image, 90)
             open_door_image_rotated = pygame.transform.rotate(open_door_image, 90)
-            doors.add(Door([0, 50 * (room_size[1] / 2 - 1)], door_image_rotated, open_door_image_rotated, door_color))
+            doors.add(
+                Door("left", [0, 50 * (room_size[1] / 2 - 1)], door_image_rotated, open_door_image_rotated, door_color))
 
         elif door[0] == "right":
             door_image_rotated = pygame.transform.rotate(door_image, 270)
             open_door_image_rotated = pygame.transform.rotate(open_door_image, 270)
-            doors.add(Door([50 * (room_size[0] - 1), 50 * (room_size[1] / 2 - 1)], door_image_rotated,
+            doors.add(Door("right", [50 * (room_size[0] - 1), 50 * (room_size[1] / 2 - 1)], door_image_rotated,
                            open_door_image_rotated, door_color))
 
 

@@ -29,7 +29,7 @@ def add_upgrade_stat_buttons():
     return button_attack_damage, button_attack_speed, button_critical_attack, button_health, button_mana
 
 
-def display_skill_tree(character):  # in display_functions? (i'd rather not bc its used only here)
+def display_skill_tree(character):  # in display_functions? (i'd rather not bc its used only here) S: so maybe display skill tree stats bar as well?
     # TODO get from character if skill is active and display proper image
     # sword_skill_image = get_bought_sword_skill_image() if character.sword_skill else get_sword_skill_image()
     # sword_skill_rect = get_sword_skill_image().get_rect()

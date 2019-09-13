@@ -32,7 +32,7 @@ class WorldsManager:
         self._worlds_list[self._curr_world].curr_room.draw_room()
 
         for main_character in self._character.sprites():
-            display_stats_bar(main_character)
+            display_stats_bar(main_character, self._worlds_list[self._curr_world])
 
         self._character.draw(screen)
 

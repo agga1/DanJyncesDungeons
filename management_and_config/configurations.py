@@ -118,6 +118,20 @@ drop_moving_distance = 150
 
 pick_up_time = 25
 
+# ----- MINIMAP DISPLAY -----
+minimap_background_start_point = [600, 0]
+minimap_background_frame_thickness = 4
+
+minimap_room_size = [30, 30]
+minimap_room_frame_thickness = 3
+
+minimap_room_drawing_start_point = [631, 31]  # the biggest world that can be displayed whole in the minimap is 7x7
+
+minimap_top_door_diff = [10, -2]
+minimap_bottom_door_diff = [10, 25]
+minimap_left_door_diff = [-2, 10]
+minimap_right_door_diff = [25, 10]
+
 # ----- STATS DISPLAY -----
 # stats bar
 stats_bar_rect = [600, 0, 300, 600]

@@ -3,7 +3,9 @@
 from management_and_config.configurations import *
 from resources.image_manager import get_heart_image, get_coin_image, get_attack_ready_image, \
     get_attack_not_ready_image, get_stats_bar_image, get_upgrade_stat_image, get_key_grey_image, get_key_blue_image, \
-    get_key_green_image, get_key_yellow_image
+    get_key_green_image, get_key_yellow_image, get_minimap_background_image, get_minimap_room_image, \
+    get_minimap_current_room_image, get_minimap_door_open_image, get_minimap_door_grey_image, \
+    get_minimap_door_blue_image, get_minimap_door_green_image, get_minimap_door_yellow_image
 
 
 def show_popup(text_string):
@@ -30,6 +32,80 @@ def freeze_clock(time_in_sek):
     while time_passed <= time_in_sek:
         clock.tick(60)
         time_passed += 1
+
+
+def minimap_display(world):
+    # getting pictures
+    background_image = get_minimap_background_image()
+    room_image = get_minimap_room_image()
+    current_room_image = get_minimap_current_room_image()
+    door_open = get_minimap_door_open_image()
+    door_grey = get_minimap_door_grey_image()
+    door_blue = get_minimap_door_blue_image()
+    door_green = get_minimap_door_green_image()
+    door_yellow = get_minimap_door_yellow_image()
+
+    # drawing background
+    screen.blit(background_image, minimap_background_start_point)
+
+    # drawing all rooms
+    for x in range(0, world.size[0]):
+        for y in range(0, world.size[1]):
+            if world.rooms[x][y] is not None and world.rooms[x][y].visited:
+                room_position = [
+                    minimap_room_drawing_start_point[0] + x * (minimap_room_size[0] - minimap_room_frame_thickness),
+                    minimap_room_drawing_start_point[1] + y * (minimap_room_size[1] - minimap_room_frame_thickness)]
+                screen.blit(room_image, room_position)
+
+    # drawing current room
+    room_position = [minimap_room_drawing_start_point[0] + world.curr_room_pos[0] * (
+            minimap_room_size[0] - minimap_room_frame_thickness),
+                     minimap_room_drawing_start_point[1] + world.curr_room_pos[1] * (
+                             minimap_room_size[1] - minimap_room_frame_thickness)]
+    screen.blit(current_room_image, room_position)
+
+    # drawing doors
+    for x in range(0, world.size[0]):
+        for y in range(0, world.size[1]):
+            room = world.rooms[x][y]
+
+            if room is not None and room.visited:
+                if room.doors.sprites():
+                    for door in room.doors.sprites():
+                        door_image = door_open
+
+                        door_position = [
+                            minimap_room_drawing_start_point[0] + x * (
+                                        minimap_room_size[0] - minimap_room_frame_thickness),
+                            minimap_room_drawing_start_point[1] + y * (
+                                        minimap_room_size[1] - minimap_room_frame_thickness)]
+
+                        if door.color:
+                            if door.color == "grey":
+                                door_image = door_grey
+                            elif door.color == "blue":
+                                door_image = door_blue
+                            elif door.color == "green":
+                                door_image = door_green
+                            elif door.color == "yellow":
+                                door_image = door_yellow
+
+                        if door.side_of_room == "top":
+                            door_position = [door_position[0] + minimap_top_door_diff[0],
+                                             door_position[1] + minimap_top_door_diff[1]]
+                        elif door.side_of_room == "bottom":
+                            door_position = [door_position[0] + minimap_bottom_door_diff[0],
+                                             door_position[1] + minimap_bottom_door_diff[1]]
+                        elif door.side_of_room == "left":
+                            door_position = [door_position[0] + minimap_left_door_diff[0],
+                                             door_position[1] + minimap_left_door_diff[1]]
+                            door_image = pygame.transform.rotate(door_image, 90)
+                        elif door.side_of_room == "right":
+                            door_position = [door_position[0] + minimap_right_door_diff[0],
+                                             door_position[1] + minimap_right_door_diff[1]]
+                            door_image = pygame.transform.rotate(door_image, 90)
+
+                        screen.blit(door_image, door_position)
 
 
 def health_display(character):
@@ -112,9 +188,10 @@ def money_display(character):
     screen.blit(money_number, [money_start_point[0] + 30, money_start_point[1] - 5])
 
 
-def display_stats_bar(character):
+def display_stats_bar(character, world):
     bg_image = get_stats_bar_image()
     screen.blit(bg_image, [square_screen_width, 0])
+    minimap_display(world)
     health_display(character)
     mana_display(character)
     level_display(character)

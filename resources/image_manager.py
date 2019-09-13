@@ -63,6 +63,15 @@ attack_not_ready_image = pygame.image.load("../resources/images_and_animations/a
 coin_point_image = pygame.image.load("../resources/images_and_animations/coin_point.png")
 exp_point_image = pygame.image.load("../resources/images_and_animations/exp_point.png")
 
+# minimap
+minimap_background = pygame.image.load("../resources/images_and_animations/minimap/minimap_background.png")
+minimap_room = pygame.image.load("../resources/images_and_animations/minimap/minimap_room.png")
+minimap_current_room = pygame.image.load("../resources/images_and_animations/minimap/minimap_current_room.png")
+minimap_door_open = pygame.image.load("../resources/images_and_animations/minimap/minimap_door_open.png")
+minimap_door_grey = pygame.image.load("../resources/images_and_animations/minimap/minimap_door_grey.png")
+minimap_door_blue = pygame.image.load("../resources/images_and_animations/minimap/minimap_door_blue.png")
+minimap_door_green = pygame.image.load("../resources/images_and_animations/minimap/minimap_door_green.png")
+minimap_door_yellow = pygame.image.load("../resources/images_and_animations/minimap/minimap_door_yellow.png")
 
 
 def get_attack_ready_image():
@@ -186,3 +195,33 @@ def get_exp_point_image():
     return exp_point_image
 
 
+def get_minimap_background_image():
+    return minimap_background
+
+
+def get_minimap_room_image():
+    return minimap_room
+
+
+def get_minimap_current_room_image():
+    return minimap_current_room
+
+
+def get_minimap_door_open_image():
+    return minimap_door_open
+
+
+def get_minimap_door_grey_image():
+    return minimap_door_grey
+
+
+def get_minimap_door_blue_image():
+    return minimap_door_blue
+
+
+def get_minimap_door_green_image():
+    return minimap_door_green
+
+
+def get_minimap_door_yellow_image():
+    return minimap_door_yellow
