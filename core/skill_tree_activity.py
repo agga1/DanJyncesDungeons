@@ -2,7 +2,7 @@ import pygame
 
 from management_and_config.configurations import *
 from management_and_config.display_functions import display_skill_tree_stats_bar
-from resources.image_manager import get_upgrade_stat_image
+from resources.image_manager import get_upgrade_stat_image, get_sword_skill_image, get_bought_sword_skill_image
 
 
 def add_upgrade_stat_buttons():
@@ -29,6 +29,14 @@ def add_upgrade_stat_buttons():
     return button_attack_damage, button_attack_speed, button_critical_attack, button_health, button_mana
 
 
+def display_skill_tree(character):  # in display_functions? (i'd rather not bc its used only here)
+    # TODO get from character if skill is active and display proper image
+    # sword_skill_image = get_bought_sword_skill_image() if character.sword_skill else get_sword_skill_image()
+    # sword_skill_rect = get_sword_skill_image().get_rect()
+    # screen.blit(sword_skill_image, [100, 100])
+    pass
+
+
 def skill_tree_run(character):
     upgrade_stat_buttons = add_upgrade_stat_buttons()
 
@@ -36,6 +44,7 @@ def skill_tree_run(character):
         # drawing
         screen.fill(BROWN)
         display_skill_tree_stats_bar(character)
+        display_skill_tree(character)
 
         # return to game
         for e in pygame.event.get():

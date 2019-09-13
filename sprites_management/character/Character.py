@@ -29,6 +29,8 @@ class Character(pygame.sprite.Sprite):
         self._attack_speed = stats["attack_speed"]
         self._critical_attack_chance = stats["critical_attack_chance"]
 
+        # skills active TODO: get from db active skills (for now: sword skill)
+
         # health
         self._max_health = start_health
         self._health = stats["health"]
@@ -65,6 +67,7 @@ class Character(pygame.sprite.Sprite):
         self._immune = False
         self._stop_stun_time = 0
         self._stop_immunity_time = 0
+
 
     # ----- MOVEMENT -----
     def set_velocity(self, direction):
