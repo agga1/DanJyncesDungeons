@@ -10,8 +10,8 @@ del_image = pygame.image.load("../resources/images_and_animations/menu/delete_bu
 stats_bar_image = pygame.image.load("../resources/images_and_animations/stats_bar.png")
 
 # skills
-sword_skill = pygame.image.load("../resources/images_and_animations/skills/sword_skill.png")
-sword_skill_bought = pygame.image.load("../resources/images_and_animations/skills/sword_skill_bought.png")
+sword_skill = pygame.image.load("../resources/images_and_animations/skills/skill_sword.png")
+sword_skill_bought = pygame.image.load("../resources/images_and_animations/skills/skill_sword_bought.png")
 
 # upgrade stat
 upgrade_stat_image = pygame.image.load("../resources/images_and_animations/plus.png")

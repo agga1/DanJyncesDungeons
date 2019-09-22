@@ -53,7 +53,7 @@ class Character(pygame.sprite.Sprite):
         self._level = stats["lvl"]
         self._to_next_level_exp = calculate_to_next_level_exp(self._level)
 
-        self._skill_points = 5 #stats["skill_points"]
+        self._skill_points = stats["skill_points"]
 
         # checking if character is moving
         self._key_clicked = {"top": False, "bottom": False, "left": False, "right": False}
