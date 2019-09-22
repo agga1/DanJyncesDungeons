@@ -11,7 +11,7 @@ stats_bar_image = pygame.image.load("../resources/images_and_animations/stats_ba
 
 # skills
 sword_skill = pygame.image.load("../resources/images_and_animations/skills/sword_skill.png")
-sword_skill_bought = pygame.image.load("../resources/images_and_animations/skills/sword_skill.png")
+sword_skill_bought = pygame.image.load("../resources/images_and_animations/skills/sword_skill_bought.png")
 
 # upgrade stat
 upgrade_stat_image = pygame.image.load("../resources/images_and_animations/plus.png")

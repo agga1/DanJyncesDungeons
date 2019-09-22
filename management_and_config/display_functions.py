@@ -5,7 +5,8 @@ from resources.image_manager import get_heart_image, get_coin_image, get_attack_
     get_attack_not_ready_image, get_stats_bar_image, get_upgrade_stat_image, get_key_grey_image, get_key_blue_image, \
     get_key_green_image, get_key_yellow_image, get_minimap_background_image, get_minimap_room_image, \
     get_minimap_current_room_image, get_minimap_door_open_image, get_minimap_door_grey_image, \
-    get_minimap_door_blue_image, get_minimap_door_green_image, get_minimap_door_yellow_image
+    get_minimap_door_blue_image, get_minimap_door_green_image, get_minimap_door_yellow_image, get_sword_skill_image, \
+    get_bought_sword_skill_image
 
 
 def show_popup(text_string):
@@ -34,6 +35,7 @@ def freeze_clock(time_in_sek):
         time_passed += 1
 
 
+# ----- GAME SCREEN -----
 def minimap_display(world):
     # getting pictures
     background_image = get_minimap_background_image()
@@ -76,9 +78,9 @@ def minimap_display(world):
 
                         door_position = [
                             minimap_room_drawing_start_point[0] + x * (
-                                        minimap_room_size[0] - minimap_room_frame_thickness),
+                                    minimap_room_size[0] - minimap_room_frame_thickness),
                             minimap_room_drawing_start_point[1] + y * (
-                                        minimap_room_size[1] - minimap_room_frame_thickness)]
+                                    minimap_room_size[1] - minimap_room_frame_thickness)]
 
                         if door.color:
                             if door.color == "grey":
@@ -199,6 +201,19 @@ def display_stats_bar(character, world):
     money_display(character)
 
 
+def attack_ready_display(ready):
+    attack_ready_image = get_attack_ready_image() if ready else get_attack_not_ready_image()
+    screen.blit(attack_ready_image, attack_ready_coord)
+
+
+# ----- SKILL TREE SCREEN -----
+def display_skill_tree(character):
+    sword_skill_image = get_bought_sword_skill_image() if character.get_skill_activated(
+        "sword") > 0 else get_sword_skill_image()
+
+    screen.blit(sword_skill_image, st_skill_sword_start_point)
+
+
 def display_skill_tree_stats_bar(character):
     # bar color
     bg_image = get_stats_bar_image()
@@ -263,8 +278,3 @@ def display_skill_tree_stats_bar(character):
             screen.blit(plus_image, st_critical_attack_chance_plus_start_point)
         screen.blit(plus_image, st_health_plus_start_point)
         screen.blit(plus_image, st_mana_plus_start_point)
-
-
-def attack_ready_display(ready):
-    attack_ready_image = get_attack_ready_image() if ready else get_attack_not_ready_image()
-    screen.blit(attack_ready_image, attack_ready_coord)

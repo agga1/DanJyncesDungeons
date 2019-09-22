@@ -30,6 +30,9 @@ class Character(pygame.sprite.Sprite):
         self._critical_attack_chance = stats["critical_attack_chance"]
 
         # skills active TODO: get from db active skills (for now: sword skill)
+        # TODO: make unique (funny?) names for skills
+        self._skills = {"sword": 0}
+        self._skills_max_lvl = {"sword": 1}
 
         # health
         self._max_health = start_health
@@ -50,7 +53,7 @@ class Character(pygame.sprite.Sprite):
         self._level = stats["lvl"]
         self._to_next_level_exp = calculate_to_next_level_exp(self._level)
 
-        self._skill_points = stats["skill_points"]
+        self._skill_points = 5 #stats["skill_points"]
 
         # checking if character is moving
         self._key_clicked = {"top": False, "bottom": False, "left": False, "right": False}
@@ -67,7 +70,6 @@ class Character(pygame.sprite.Sprite):
         self._immune = False
         self._stop_stun_time = 0
         self._stop_immunity_time = 0
-
 
     # ----- MOVEMENT -----
     def set_velocity(self, direction):
@@ -202,6 +204,13 @@ class Character(pygame.sprite.Sprite):
         if time == self._stop_immunity_time:
             self._immune = False
 
+    # ----- SKILLS -----
+    def buy_skill(self, skill_name):
+        if self._skills[skill_name] is not None:
+            if self._skills[skill_name] < self._skills_max_lvl[skill_name]:
+                self._skills[skill_name] += 1
+                self._skill_points -= 1
+
     # ----- DROP & ITEMS -----
     def add_experience(self, amount):
         self._exp += amount
@@ -277,6 +286,12 @@ class Character(pygame.sprite.Sprite):
 
     def get_position_center(self):
         return self.rect.center
+
+    def get_skill_activated(self, skill_name):
+        if self._skills[skill_name] > 0:
+            return True
+        else:
+            return False
 
     @property
     def attack_damage(self):

@@ -164,6 +164,7 @@ money_start_point = [610, 560]
 
 
 # ----- SKILL TREE DISPLAY -----
+# skill tree bar
 st_level_text_center = [700, 70]
 
 st_experience_bar_start_point = [620, 120]
@@ -188,6 +189,10 @@ st_health_plus_start_point = [778, 470]
 
 st_mana_text_start_point = [left_margin, 520]
 st_mana_plus_start_point = [778, 520]
+
+# skill tree skills
+st_skill_sword_start_point = [100, 100]
+
 
 # ----- UPGRADING STATS -----
 upgrade_attack_damage = 1
