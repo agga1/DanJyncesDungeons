@@ -41,7 +41,9 @@ def save_character(character, db, memory_slot = -1):
     db.update_attack_damage(character.attack_damage)
     db.update_attack_speed(character.attack_speed)
     db.update_critical_attack_chance(character.critical_attack_chance)
-
+    # inventory
+    db.update_sword(character.inventory["sword"])
+    db.update_health_potion(character.inventory["health_potion"])
 
 def load_character(db, memory_slot=-1):
     character_rest_image = get_character_rest_image()
@@ -59,7 +61,16 @@ def load_character(db, memory_slot=-1):
         "attack_speed": db.get_attack_speed(),
         "critical_attack_chance": db.get_critical_attack_chance(),
     }
-    return Character(character_start_point, character_rest_image, character_walk_images, character_attack_image, stats)
+
+    inventory = {
+        "sword": db.get_sword(),
+        "health_potion": db.get_health_potion(),
+    }
+
+    skills = {
+        "sword_skill": db.get_sword_skill(),
+    }
+    return Character(character_start_point, character_rest_image, character_walk_images, character_attack_image, stats, skills, inventory)
 
 
 def save_curr_room(curr_room, db):

@@ -34,12 +34,13 @@ def add_upgrade_skill_buttons():
     button_skill_sword.center = [st_skill_sword_start_point[0] + button_skill_sword.width / 2,
                                  st_skill_sword_start_point[1] + button_skill_sword.height / 2]
 
-    return button_skill_sword,
+    buttons = {"sword_skill": button_skill_sword, }
+    return buttons
 
 
 def skill_tree_run(character):
     upgrade_stat_buttons = add_upgrade_stat_buttons()
-    upgrade_skill_buttons = add_upgrade_skill_buttons()
+    upgrade_skill_buttons = add_upgrade_skill_buttons() # dictionary of buttons
 
     while True:
         # drawing
@@ -70,7 +71,8 @@ def skill_tree_run(character):
                     character.upgrade_stat_health()
                 elif upgrade_stat_buttons[4].collidepoint(e.pos):
                     character.upgrade_stat_mana()
-                elif upgrade_skill_buttons[0].collidepoint(e.pos):
-                    character.buy_skill("sword")
+                for key, button in upgrade_skill_buttons.items():
+                    if upgrade_skill_buttons[key].collidepoint(e.pos):
+                        character.buy_skill(key)
 
         pygame.display.flip()

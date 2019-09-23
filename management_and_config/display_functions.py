@@ -204,7 +204,7 @@ def attack_ready_display(ready):
 # ----- SKILL TREE SCREEN -----
 def display_skill_tree(character):
     sword_skill_image = get_bought_sword_skill_image() if character.get_skill_activated(
-        "sword") > 0 else get_sword_skill_image()
+        "sword_skill") > 0 else get_sword_skill_image()
 
     screen.blit(sword_skill_image, st_skill_sword_start_point)
 

@@ -11,8 +11,7 @@ def inventory_run(character):
     inventory_bar = get_inventory_equip_bar_image()
     screen.blit(inventory_bg, [0, 0])
     screen.blit(inventory_bar, [600, 0])
-    inv_content = character.inventory
-    buttons = display_items(inv_content)
+    buttons = display_items(character.inventory)  # buttons: sword, health_potion
 
     pygame.display.flip()
 
@@ -29,12 +28,12 @@ def inventory_run(character):
 
                 if e.key == pygame.K_k:
                     return "skill tree"
-
+            # ev. for key, button in buttons: if collidept -> button_action(character, key)
             if e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
-                if buttons["sword"].collidepoint(e.pos):
-                    print("clicked sword") # TODO equip sword 
-                if buttons["health_potion"].collidepoint(e.pos):
-                    print("clicked health") # TODO increase health, decrease potion quantity
-
+                for key, button in buttons.items():
+                    if buttons[key].collidepoint(e.pos):
+                        character.use(key)
+                        screen.blit(inventory_bg, [0, 0])
+                        buttons = display_items(character.inventory)
 
         pygame.display.flip()

@@ -3,7 +3,7 @@ from management_and_config.configurations import *
 
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self, start_point, staying_image, movement_animation, attack_image, stats, *groups):
+    def __init__(self, start_point, staying_image, movement_animation, attack_image, stats, skills, inventory, *groups):
         super().__init__(*groups)
 
         # image
@@ -30,12 +30,12 @@ class Character(pygame.sprite.Sprite):
         self._critical_attack_chance = stats["critical_attack_chance"]
 
         # inventory TODO: get inv from db
-        self._inventory = {"sword": 3, "health_potion": 1}
+        self._inventory = inventory
 
         # skills active TODO: get from db active skills (for now: sword skill)
         # TODO: make unique (funny?) names for skills
-        self._skills = {"sword": 0}
-        self._skills_max_lvl = {"sword": 1}
+        self._skills = skills
+        self._skills_max_lvl = {"sword_skill": 1}
 
         # health
         self._max_health = start_health
@@ -214,6 +214,13 @@ class Character(pygame.sprite.Sprite):
                 self._skills[skill_name] += 1
                 self._skill_points -= 1
 
+    # ----- INVENTORY USE & EQUIPMENT ----
+    def use(self, item_name):
+        if item_name == "sword":
+            pass  # TODO equip sword
+        elif item_name == "health_potion":
+            self.use_health_potion()
+
     # ----- DROP & ITEMS -----
     def add_experience(self, amount):
         self._exp += amount
@@ -295,6 +302,10 @@ class Character(pygame.sprite.Sprite):
             return True
         else:
             return False
+
+    def use_health_potion(self):
+        self._inventory["health_potion"] -= 1
+        self._health = min(self._health+5, self._max_health)
 
     @property
     def attack_damage(self):

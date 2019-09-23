@@ -18,6 +18,9 @@ columns = ["id", "INTEGER PRIMARY KEY",  # list of columns along with data type
            "experience", "INTEGER",
            "lvl", "INTEGER",
            "inventory", "TEXT",
+           # inventory
+           "sword", "INTEGER",
+           "health_potion", "INTEGER",
            # skills(stats) upgrades
            "skill_points", "INTEGER",
            "attack_damage", "INTEGER",
@@ -37,10 +40,13 @@ start_values = {"money": 0,  # keys must be the same as column names!
                 "mana": 0,
                 "experience": 0,
                 "lvl": start_lvl,
-                "skill_points": 0,
+                "skill_points": 5,
                 "attack_damage": character_start_attack_damage,
                 "attack_speed": character_start_attack_speed,
                 "critical_attack_chance": character_start_critical_attack_chance,
+                # inventory
+                "sword": 1,
+                "health_potion": 2,
                 # skills
                 "sword_skill": 0,
                 "active_enemies": "",
@@ -138,7 +144,17 @@ class MyDatabase:
     def update_critical_attack_chance(self, value, row_id=-1):
         self.update_column("critical_attack_chance", value, row_id)
 
+    # inventory
+    def update_sword(self, value, row_id=-1):
+        self.update_column("sword", value, row_id)
+
+    def update_health_potion(self, value, row_id=-1):
+        self.update_column("health_potion", value, row_id)
+
     # TODO skills setters n getters
+    def update_sword_skill(self, value, row_id=-1):
+        self.update_column("sword_skill", value, row_id)
+
     def update_mana(self, value, row_id=-1):
         self.update_column("mana", value, row_id)
 
@@ -183,6 +199,17 @@ class MyDatabase:
 
     def get_critical_attack_chance(self, row_id=-1):
         return self.get_column("critical_attack_chance", row_id)
+
+    # inventory
+    def get_sword(self, row_id=-1):
+        return self.get_column("sword", row_id)
+
+    def get_health_potion(self, row_id=-1):
+        return self.get_column("health_potion", row_id)
+
+    # skills
+    def get_sword_skill(self, row_id=-1):
+        return self.get_column("sword_skill", row_id)
 
     def get_curr_room(self, row_id=-1):
         return self.get_column("curr_room", row_id)
