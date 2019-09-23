@@ -113,6 +113,7 @@ class World:
 
         # start room
         self._curr_room = self._rooms[self._curr_room_pos[0]][self._curr_room_pos[1]]
+        self._curr_room.visit()
 
     def check_room(self, main_character):
         # checking if we are changing room
@@ -159,6 +160,24 @@ class World:
 
         # setting position of the character
         main_character.set_position(direction, self._curr_room.size)
+
+        # visiting room
+        self._curr_room.visit()
+
+    @property
+    def size(self):
+        """ size of the room (number of rooms in both directions) """
+        return self._size
+
+    @property
+    def rooms(self):
+        """ 2d array with all rooms in the world """
+        return self._rooms
+
+    @property
+    def curr_room_pos(self):
+        """ current room (position in 2d array of rooms in the current world) """
+        return self._curr_room_pos
 
     @property
     def curr_room(self):

@@ -18,6 +18,9 @@ class Room:
         for enemy in room_enemies:
             self._enemies_on_start.append(enemy.id)
 
+        # minimap
+        self._visited = False
+
         # walls group
         self._walls = pygame.sprite.Group()
         sprites_management.sprites_manager.add_walls(self._walls, room_size, extract_doors_sides(doors_config))
@@ -81,6 +84,9 @@ class Room:
     def drop_display(self):
         self._drop.draw(screen)
 
+    def visit(self):
+        self._visited = True
+
     def kill_enemy(self, enemy, time):
         sprites_management.sprites_manager.add_drop(self._drop, enemy, time)
         self._enemies.remove(enemy)
@@ -111,6 +117,11 @@ class Room:
     def size(self):
         """ size of the room """
         return self._size
+
+    @property
+    def visited(self):
+        """ if the room has been visited """
+        return self._visited
 
     @property
     def walls(self):

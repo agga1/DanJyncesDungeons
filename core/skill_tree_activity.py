@@ -1,7 +1,7 @@
 import pygame
 
 from management_and_config.configurations import *
-from management_and_config.display_functions import display_skill_tree_stats_bar
+from management_and_config.display_functions import display_skill_tree_stats_bar, display_skill_tree
 from resources.image_manager import get_upgrade_stat_image, get_sword_skill_image, get_bought_sword_skill_image
 
 
@@ -29,24 +29,25 @@ def add_upgrade_stat_buttons():
     return button_attack_damage, button_attack_speed, button_critical_attack, button_health, button_mana
 
 
-def display_skill_tree(character):  # in display_functions? (i'd rather not bc its used only here)
-    # TODO get from character if skill is active and display proper image
-    # sword_skill_image = get_bought_sword_skill_image() if character.sword_skill else get_sword_skill_image()
-    # sword_skill_rect = get_sword_skill_image().get_rect()
-    # screen.blit(sword_skill_image, [100, 100])
-    pass
+def add_upgrade_skill_buttons():
+    button_skill_sword = get_sword_skill_image().get_rect()
+    button_skill_sword.center = [st_skill_sword_start_point[0] + button_skill_sword.width / 2,
+                                 st_skill_sword_start_point[1] + button_skill_sword.height / 2]
+
+    return button_skill_sword,
 
 
 def skill_tree_run(character):
     upgrade_stat_buttons = add_upgrade_stat_buttons()
+    upgrade_skill_buttons = add_upgrade_skill_buttons()
 
     while True:
         # drawing
         screen.fill(BROWN)
-        display_skill_tree_stats_bar(character)
         display_skill_tree(character)
+        display_skill_tree_stats_bar(character)
 
-        # return to game
+        # keys
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 exit(1)
@@ -69,5 +70,7 @@ def skill_tree_run(character):
                     character.upgrade_stat_health()
                 elif upgrade_stat_buttons[4].collidepoint(e.pos):
                     character.upgrade_stat_mana()
+                elif upgrade_skill_buttons[0].collidepoint(e.pos):
+                    character.buy_skill("sword")
 
         pygame.display.flip()
