@@ -18,11 +18,13 @@ columns = ["id", "INTEGER PRIMARY KEY",  # list of columns along with data type
            "experience", "INTEGER",
            "lvl", "INTEGER",
            "inventory", "TEXT",
-           # skills upgrades
+           # skills(stats) upgrades
            "skill_points", "INTEGER",
            "attack_damage", "INTEGER",
            "attack_speed", "REAL",
            "critical_attack_chance", "REAL",
+           # bought skills
+           "sword_skill", "INTEGER",
            # room&world state
            "active_enemies", "TEXT",
            "curr_room", "TEXT",
@@ -39,6 +41,8 @@ start_values = {"money": 0,  # keys must be the same as column names!
                 "attack_damage": character_start_attack_damage,
                 "attack_speed": character_start_attack_speed,
                 "critical_attack_chance": character_start_critical_attack_chance,
+                # skills
+                "sword_skill": 0,
                 "active_enemies": "",
                 "inventory": "",
                 "curr_room": None,   # needs to be updated in world during first startup
@@ -133,6 +137,10 @@ class MyDatabase:
 
     def update_critical_attack_chance(self, value, row_id=-1):
         self.update_column("critical_attack_chance", value, row_id)
+
+    # TODO skills setters n getters
+    def update_mana(self, value, row_id=-1):
+        self.update_column("mana", value, row_id)
 
     def update_curr_room(self, value, row_id=-1):
         self.update_column("curr_room", value, row_id)
