@@ -43,7 +43,7 @@ def add_walls(walls, room_size, room_type):
             walls.add(Wall([550, 50 + 50 * i], wall_image))
 
 
-def add_doors(doors, room_size, doors_config):
+def add_doors(doors, room_size, doors_config, start_id):
     open_door_image = get_open_door_image()  # to pass a rotated image of open door to Door class
 
     for door_config in doors_config:
@@ -65,25 +65,28 @@ def add_doors(doors, room_size, doors_config):
             door_color = "yellow"
 
         if door[0] == "top":
-            doors.add(Door("top", [50 * (room_size[0] / 2 - 1), 0], door_image, open_door_image, door_color))
+            doors.append(Door("top", [50 * (room_size[0] / 2 - 1), 0], door_image, open_door_image, door_color, start_id))
 
         elif door[0] == "bottom":
             door_image_rotated = pygame.transform.rotate(door_image, 180)
             open_door_image_rotated = pygame.transform.rotate(open_door_image, 180)
-            doors.add(Door("bottom", [50 * (room_size[0] / 2 - 1), 50 * (room_size[1] - 1)], door_image_rotated,
-                           open_door_image_rotated, door_color))
+            doors.append(Door("bottom", [50 * (room_size[0] / 2 - 1), 50 * (room_size[1] - 1)], door_image_rotated,
+                           open_door_image_rotated, door_color, start_id))
 
         elif door[0] == "left":
             door_image_rotated = pygame.transform.rotate(door_image, 90)
             open_door_image_rotated = pygame.transform.rotate(open_door_image, 90)
-            doors.add(
-                Door("left", [0, 50 * (room_size[1] / 2 - 1)], door_image_rotated, open_door_image_rotated, door_color))
+            doors.append(
+                Door("left", [0, 50 * (room_size[1] / 2 - 1)], door_image_rotated, open_door_image_rotated, door_color, start_id))
 
         elif door[0] == "right":
             door_image_rotated = pygame.transform.rotate(door_image, 270)
             open_door_image_rotated = pygame.transform.rotate(open_door_image, 270)
-            doors.add(Door("right", [50 * (room_size[0] - 1), 50 * (room_size[1] / 2 - 1)], door_image_rotated,
-                           open_door_image_rotated, door_color))
+            doors.append(Door("right", [50 * (room_size[0] - 1), 50 * (room_size[1] / 2 - 1)], door_image_rotated,
+                           open_door_image_rotated, door_color, start_id))
+        start_id += 1
+
+    return start_id
 
 
 def add_enemies(enemies_group, enemies_list):
@@ -91,6 +94,11 @@ def add_enemies(enemies_group, enemies_list):
         for enemy in enemies_list:
             enemies_group.add(enemy)
 
+
+def add_doors_room(doors_group, doors):
+    if doors:
+        for door in doors:
+            doors_group.add(door)
 
 def add_drop(drop_group, enemy, time):
     # variables connected with fixed drop (money, exp)

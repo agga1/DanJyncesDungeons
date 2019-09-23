@@ -5,6 +5,7 @@ from management_and_config.object_save import *
 from worlds_management.Room import Room
 from sprites_management.sprites_manager import create_enemy
 from management_and_config.configurations import *
+import sprites_management.sprites_manager
 
 
 def extract_room_position(room):  # example: "room_1_12.txt", we need pos_x = 1 and pos_y = 12
@@ -41,13 +42,15 @@ class World:
             for j in range(0, self._size[0]):
                 if int(curr_line[j]) == 1:  # no room == 0, start room == 1, other rooms == 2
                     self._start_room_pos = [j, i]
+
         world_file.close()
 
         # active_enemies (array read from db w/ values enemy_id: 0/1 (0- enemy dead),
         self._db = db
         # active_enemies (array read from db w/ values enemy_id: 0/1 (0- enemy dead) = load_active_enemies(db)
         self._active_enemies = load_active_enemies(db)
-
+        # doors in all rooms
+        # TODO self._all_doors = load_doors(db)
         # start room
         self._curr_room_pos = load_curr_room(db)  # position of the room in world map
         if self._curr_room_pos is None:  # when new game opens, curr_room in db is not initialized!
@@ -59,7 +62,7 @@ class World:
     def load_world(self):  # called when starting game or changing world
         rooms = os.listdir(self._path)
         enemy_id = 0  # to give every enemy unique id
-
+        doors_id = 0
         # reading rooms' configuration files
         for room in rooms:
             if room != "world.txt":
@@ -109,7 +112,10 @@ class World:
 
                 room_file.close()
 
-                self._rooms[position[0]][position[1]] = Room(room_size, doors_config, enemies)  # adding room
+                doors = []
+                # TODO
+                doors_id = sprites_management.sprites_manager.add_doors(doors, room_size, doors_config, doors_id)
+                self._rooms[position[0]][position[1]] = Room(room_size, doors_config, enemies, doors)  # adding room
 
         # start room
         self._curr_room = self._rooms[self._curr_room_pos[0]][self._curr_room_pos[1]]

@@ -32,6 +32,7 @@ columns = ["id", "INTEGER PRIMARY KEY",  # list of columns along with data type
            "active_enemies", "TEXT",
            "curr_room", "TEXT",
            "curr_world", "INTEGER",
+           "doors", "TEXT",
            # general game state
            "last_saved", "TIMESTAMP",
            "if_new", "INTEGER"]
@@ -49,7 +50,9 @@ start_values = {"money": 0,  # keys must be the same as column names!
                 "health_potion": 2,
                 # skills
                 "sword_skill": 0,
+                # room & world
                 "active_enemies": "",
+                "doors": "",
                 "inventory": "",
                 "curr_room": None,   # needs to be updated in world during first startup
                 "curr_world": None,  # same (or should be 1?)

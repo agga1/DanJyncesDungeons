@@ -9,10 +9,9 @@ pygame.init()
 
 
 class Room:
-    def __init__(self, room_size, doors_config, room_enemies):
+    def __init__(self, room_size, doors_config, room_enemies, doors):
         # specification of the room
         self._size = room_size
-        self._doors_config = doors_config
 
         self._enemies_on_start = []
         for enemy in room_enemies:
@@ -27,7 +26,7 @@ class Room:
 
         # doors group
         self._doors = pygame.sprite.Group()
-        sprites_management.sprites_manager.add_doors(self._doors, room_size, doors_config)
+        sprites_management.sprites_manager.add_doors_room(self._doors, doors)
 
         # enemies group
         self._enemies = pygame.sprite.Group()
@@ -112,6 +111,7 @@ class Room:
                     character.keys[door.color] > 0:
                 character.use_key(door.color)
                 door.open()
+
 
     @property
     def size(self):

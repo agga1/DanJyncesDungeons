@@ -2,8 +2,10 @@ import pygame
 
 
 class Door(pygame.sprite.Sprite):
-    def __init__(self, side_of_room, position, image, open_image, color, *groups):
+    def __init__(self, side_of_room, position, image, open_image, color, door_id=0, *groups):
         super().__init__(*groups)
+
+        self._id = door_id
 
         self.image = image
         self._open_image = open_image
@@ -42,3 +44,7 @@ class Door(pygame.sprite.Sprite):
     def closed(self):
         """ true if the door is still closed """
         return self._closed
+
+    @property
+    def id(self):
+        return self._id
