@@ -17,7 +17,14 @@ sword_skill_bought = pygame.image.load("../resources/images_and_animations/skill
 upgrade_stat_image = pygame.image.load("../resources/images_and_animations/plus.png")
 
 # inventory
-inventory_image = pygame.image.load("../resources/images_and_animations/inventory.png")
+inventory_bg = pygame.image.load("../resources/images_and_animations/inv_bg.png")
+inventory_equip_bar = pygame.image.load("../resources/images_and_animations/inv_equip_bar.png")
+potion_red = pygame.image.load("../resources/images_and_animations/potions/potion_red.png")
+potion_green = pygame.image.load("../resources/images_and_animations/potions/potion_green.png")
+potion_blue = pygame.image.load("../resources/images_and_animations/potions/potion_blue.png")
+
+
+sword = pygame.image.load("../resources/images_and_animations/inventory/sword.png")
 
 # terrain
 terrain_image = pygame.image.load("../resources/images_and_animations/terrain.png")
@@ -82,12 +89,33 @@ def get_attack_not_ready_image():
     return attack_not_ready_image
 
 
-def get_inventory_image():
-    return inventory_image
+def get_inventory_bg_image():
+    return inventory_bg
+
+
+def get_inventory_equip_bar_image():
+    return inventory_equip_bar
 
 
 def get_stats_bar_image():
     return stats_bar_image
+
+
+# inventory
+def get_sword_image():
+    return sword
+
+
+def get_potion_red_image():
+    return potion_red
+
+
+def get_potion_blue_image():
+    return potion_blue
+
+
+def get_potion_green_image():
+    return potion_green
 
 
 # skills

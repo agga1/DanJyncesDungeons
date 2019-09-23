@@ -1,13 +1,19 @@
 import pygame
 
 from management_and_config.configurations import *
-from resources.image_manager import get_inventory_image
+from management_and_config.display_functions import display_items
+from resources.image_manager import get_inventory_bg_image, get_inventory_equip_bar_image
 
 
 def inventory_run(character):
 
-    inventory_image = get_inventory_image()
-    screen.blit(inventory_image, [0, 0])
+    inventory_bg = get_inventory_bg_image()
+    inventory_bar = get_inventory_equip_bar_image()
+    screen.blit(inventory_bg, [0, 0])
+    screen.blit(inventory_bar, [600, 0])
+    inv_content = character.inventory
+    buttons = display_items(inv_content)
+
     pygame.display.flip()
 
     while True:
@@ -23,3 +29,12 @@ def inventory_run(character):
 
                 if e.key == pygame.K_k:
                     return "skill tree"
+
+            if e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
+                if buttons["sword"].collidepoint(e.pos):
+                    print("clicked sword") # TODO equip sword 
+                if buttons["health_potion"].collidepoint(e.pos):
+                    print("clicked health") # TODO increase health, decrease potion quantity
+
+
+        pygame.display.flip()

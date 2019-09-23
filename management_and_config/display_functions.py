@@ -1,12 +1,7 @@
 """Contains universally used gui features like pop-ups, frame freeze"""
 
 from management_and_config.configurations import *
-from resources.image_manager import get_heart_image, get_coin_image, get_attack_ready_image, \
-    get_attack_not_ready_image, get_stats_bar_image, get_upgrade_stat_image, get_key_grey_image, get_key_blue_image, \
-    get_key_green_image, get_key_yellow_image, get_minimap_background_image, get_minimap_room_image, \
-    get_minimap_current_room_image, get_minimap_door_open_image, get_minimap_door_grey_image, \
-    get_minimap_door_blue_image, get_minimap_door_green_image, get_minimap_door_yellow_image, get_sword_skill_image, \
-    get_bought_sword_skill_image
+from resources.image_manager import *
 
 
 def show_popup(text_string):
@@ -278,3 +273,38 @@ def display_skill_tree_stats_bar(character):
             screen.blit(plus_image, st_critical_attack_chance_plus_start_point)
         screen.blit(plus_image, st_health_plus_start_point)
         screen.blit(plus_image, st_mana_plus_start_point)
+
+
+def display_items(items):
+    """ receives dict with quantity of each item, returns dictionary of buttons """
+    buttons = {}
+    id = 0  # which consecutive item it is
+
+    # sword TODO same for every item in the game
+    nr = items["sword"]
+    image = get_sword_image()
+    if nr > 0:
+        item_rect = image.get_rect()
+        item_rect.center = get_item_coord(id)
+        screen.blit(image, item_rect)
+        display_quantity(item_rect, nr)
+        buttons["sword"] = item_rect
+        id += 1
+
+    # health potion TODO same for every item in the game
+    nr = items["health_potion"]
+    image = get_potion_red_image()
+    if nr > 0:
+        item_rect = image.get_rect()
+        item_rect.center = get_item_coord(id)
+        screen.blit(image, item_rect)
+        display_quantity(item_rect, nr)
+        buttons["health_potion"] = item_rect
+        id += 1
+
+    return buttons
+
+
+def display_quantity(item_rect, nr):
+    quantity = quantity_font.render(str(nr), True, YELLOW)
+    screen.blit(quantity, item_rect)  # .width, .height

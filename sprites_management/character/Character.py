@@ -29,6 +29,9 @@ class Character(pygame.sprite.Sprite):
         self._attack_speed = stats["attack_speed"]
         self._critical_attack_chance = stats["critical_attack_chance"]
 
+        # inventory TODO: get inv from db
+        self._inventory = {"sword": 3, "health_potion": 1}
+
         # skills active TODO: get from db active skills (for now: sword skill)
         # TODO: make unique (funny?) names for skills
         self._skills = {"sword": 0}
@@ -382,6 +385,11 @@ class Character(pygame.sprite.Sprite):
     def skill_points(self):
         """ amount of skill points ready to be spent on new skills or stats improvement """
         return self._skill_points
+
+    @property
+    def inventory(self):
+        """ directory of items owned by character ( "sword": nr_of_owned_swords )"""
+        return self._inventory
 
     @money.setter
     def money(self, money):
