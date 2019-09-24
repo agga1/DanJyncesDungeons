@@ -50,7 +50,7 @@ class World:
         # active_enemies (array read from db w/ values enemy_id: 0/1 (0- enemy dead) = load_active_enemies(db)
         self._active_enemies = load_active_enemies(db)
         # doors in all rooms
-        # TODO self._all_doors = load_doors(db)
+        self._open_doors = load_doors(db)
         # start room
         self._curr_room_pos = load_curr_room(db)  # position of the room in world map
         if self._curr_room_pos is None:  # when new game opens, curr_room in db is not initialized!
@@ -114,7 +114,9 @@ class World:
 
                 doors = []
                 # TODO
-                doors_id = sprites_management.sprites_manager.add_doors(doors, room_size, doors_config, doors_id)
+                doors_id = sprites_management.sprites_manager.add_doors(doors, room_size, doors_config, doors_id, self._open_doors)
+                while len(self._open_doors) < doors_id:  # the first time open doors is empty, have to be filled with 0)
+                    self._open_doors.append(0)
                 self._rooms[position[0]][position[1]] = Room(room_size, doors_config, enemies, doors)  # adding room
 
         # start room
@@ -141,6 +143,8 @@ class World:
         save_active_enemies(self._active_enemies, self._db)
         save_character(main_character, self._db)
         save_curr_room(self._curr_room_pos, self._db)
+        self._open_doors = self.curr_room.update_doors(self._open_doors)
+        save_doors(self._open_doors, self._db)
 
         # changing curr_room_pos variable
         if direction == "top":

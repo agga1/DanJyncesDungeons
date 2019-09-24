@@ -27,6 +27,20 @@ def load_active_enemies(db):
     return active_enemies
 
 
+def load_doors(db):
+    doors_str = db.get_doors()  # looks like string 1101101
+    doors = []
+    for c in doors_str:
+        doors.append(int(c))
+    return doors
+
+
+def save_doors(open_doors, db):
+    doors_str = ''.join(map(str, open_doors))  # looks like string 11011101
+    db.update_doors(doors_str)
+    pass
+
+
 def save_character(character, db, memory_slot = -1):
     # saving info
     db.update_date()

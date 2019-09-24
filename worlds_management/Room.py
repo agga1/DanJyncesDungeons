@@ -102,6 +102,11 @@ class Room:
 
         return active_enemies
 
+    def update_doors(self, open_doors):
+        for door in self._doors:
+            open_doors[door.id] = 0 if door.closed else 1
+        return open_doors
+
     def open_door(self, character):
         for door in self._doors.sprites():
             door_pos = door.get_position_center()
@@ -111,7 +116,6 @@ class Room:
                     character.keys[door.color] > 0:
                 character.use_key(door.color)
                 door.open()
-
 
     @property
     def size(self):

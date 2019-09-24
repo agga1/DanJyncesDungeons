@@ -43,7 +43,7 @@ def add_walls(walls, room_size, room_type):
             walls.add(Wall([550, 50 + 50 * i], wall_image))
 
 
-def add_doors(doors, room_size, doors_config, start_id):
+def add_doors(doors, room_size, doors_config, start_id, open_doors):
     open_door_image = get_open_door_image()  # to pass a rotated image of open door to Door class
 
     for door_config in doors_config:
@@ -51,7 +51,9 @@ def add_doors(doors, room_size, doors_config, start_id):
         door_image = get_open_door_image()
         door_color = None
 
-        if door[1] == "blue":
+        if len(open_doors) > start_id and open_doors[start_id] == 1:  # doors were previously opened
+            door_color = None
+        elif door[1] == "blue":
             door_image = get_door_closed_blue_image()
             door_color = "blue"
         elif door[1] == "green":

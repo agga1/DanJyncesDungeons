@@ -161,6 +161,10 @@ class MyDatabase:
     def update_mana(self, value, row_id=-1):
         self.update_column("mana", value, row_id)
 
+    # room & world
+    def update_doors(self, value, row_id=-1):
+        self.update_column("doors", value, row_id)
+
     def update_curr_room(self, value, row_id=-1):
         self.update_column("curr_room", value, row_id)
 
@@ -216,6 +220,10 @@ class MyDatabase:
 
     def get_curr_room(self, row_id=-1):
         return self.get_column("curr_room", row_id)
+
+    # room & world
+    def get_doors(self, row_id=-1):
+        return self.get_column("doors", row_id)
 
     def get_curr_world(self, row_id=-1):
         return self.get_column("curr_world", row_id)
