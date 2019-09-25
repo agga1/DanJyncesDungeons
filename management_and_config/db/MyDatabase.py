@@ -19,6 +19,7 @@ columns = ["id", "INTEGER PRIMARY KEY",  # list of columns along with data type
            "lvl", "INTEGER",
            "inventory", "TEXT",
            # inventory
+           "keys", "TEXT"
            "sword", "INTEGER",
            "health_potion", "INTEGER",
            # skills(stats) upgrades
@@ -29,10 +30,10 @@ columns = ["id", "INTEGER PRIMARY KEY",  # list of columns along with data type
            # bought skills
            "sword_skill", "INTEGER",
            # room&world state
-           "active_enemies", "TEXT",
+           "active_enemies", "TEXT",  # string 00101, 0-dead, 1-alive
            "curr_room", "TEXT",
            "curr_world", "INTEGER",
-           "doors", "TEXT",
+           "doors", "TEXT",  # string 00101, 0-closed, 1-open
            # general game state
            "last_saved", "TIMESTAMP",
            "if_new", "INTEGER"]

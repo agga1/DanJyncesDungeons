@@ -28,6 +28,7 @@ def load_active_enemies(db):
 
 
 def load_doors(db):
+    """ returns list of ints 0 - closed, 1- open"""
     doors_str = db.get_doors()  # looks like string 1101101
     doors = []
     for c in doors_str:
