@@ -9,7 +9,6 @@ db_path = os.path.abspath('../data/stats_db')  # path to database
 table_name = "stats"  # name of the table storing all the data
 
 # TODO world save (prepared but not used)
-# TODO add column, getters and updaters (S: items in inv, skills opened/closed doors)
 columns = ["id", "INTEGER PRIMARY KEY",  # list of columns along with data type
            # character stats
            "money", "INTEGER",
@@ -19,7 +18,7 @@ columns = ["id", "INTEGER PRIMARY KEY",  # list of columns along with data type
            "lvl", "INTEGER",
            "inventory", "TEXT",
            # inventory
-           "keys", "TEXT",  # color_name nr_of ...
+           "keys", "TEXT",
            "sword", "INTEGER",
            "health_potion", "INTEGER",
            # skills(stats) upgrades
@@ -46,7 +45,7 @@ start_values = {  # character stats
                 # inventory
                 "sword": 1,
                 "health_potion": 2,
-                "keys": """{"grey": 0, "blue": 0, "green": 0, "yellow": 0}""",
+                "keys": """{"grey": 0, "blue": 0, "green": 0, "yellow": 0}""",  # jsoned dictionary
                 # skills
                 "skill_points": 5,
                 "attack_damage": character_start_attack_damage,
@@ -58,7 +57,7 @@ start_values = {  # character stats
                 "active_enemies": "[]",  # jsoned list of ints, 0 - dead, 1 - alive
                 "doors": "[]",  # jsoned list of ints, 0 - closed, 1 - opened
                 "inventory": "",
-                "curr_room": None,   # needs to be updated in world during first startup
+                "curr_room": None,   # jsoned list [2,5] (1st time exception)
                 "curr_world": None,  # same (or should be 1?)
                 # general
                 "last_saved": datetime.now(tz=None),
@@ -97,11 +96,9 @@ reset_row += ''' WHERE id = '''
 
 class MyDatabase:
     def __init__(self):
-        print(values)
         self.db = sqlite3.connect(db_path)
         self.cursor = self.db.cursor()
         self.cursor.execute(create_table)
-        print(reset_row)
         self.db.commit()
         self.cursor.execute("SELECT COUNT(*) FROM " + table_name)
         rows = self.cursor.fetchone()
@@ -116,7 +113,6 @@ class MyDatabase:
         self.row_id = row_id
 
     def new_row(self):  # create new row with new game instance, and automatically set row_id
-        print('evoked insert')
         self.cursor.execute(insert_into, values)
         self.db.commit()
         return self.cursor.lastrowid
