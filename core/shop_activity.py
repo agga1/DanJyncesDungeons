@@ -29,6 +29,9 @@ def shop_run(character):  # TODO add exit button
 
                 if e.key == pygame.K_k:
                     return "skill tree"
+
+                if e.key == pygame.K_e:
+                    return "game"
             # ev. for key, button in buttons: if collidept -> button_action(character, key)
             if e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
                 for key, button in buttons.items():
