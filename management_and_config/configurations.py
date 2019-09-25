@@ -25,6 +25,7 @@ font_size_enemy_health = 15
 
 money_font = pygame.font.Font(description_font, font_size_money)
 quantity_font = pygame.font.Font(description_font, 12)
+price_font = pygame.font.Font(main_font, 15)
 level_font = pygame.font.Font(description_font, font_size_level)
 st_exp_font = pygame.font.Font(description_font, font_size_st_exp)
 skill_points_font = pygame.font.Font(description_font, font_size_st_skill_points)
@@ -134,13 +135,21 @@ minimap_bottom_door_diff = [10, 25]
 minimap_left_door_diff = [-2, 10]
 minimap_right_door_diff = [25, 10]
 
-# ------ INVENTORY --------------
 
-def get_item_coord(id):
+# ------ INVENTORY & SHOP --------------
+def get_item_coord_inv(id):
     top_left = [75, 75]
     next = 75
     x = top_left[0] + next*(id % 7)
     y = top_left[1] + next*(id//7)
+    return [x, y]
+
+
+def get_item_coord_shop(id):
+    top_left = [660, 125]
+    next = 75
+    x = top_left[0] + next*(id % 2)
+    y = top_left[1] + next*(id//2)
     return [x, y]
 
 # ----- STATS DISPLAY -----

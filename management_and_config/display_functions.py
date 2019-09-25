@@ -275,32 +275,46 @@ def display_skill_tree_stats_bar(character):
         screen.blit(plus_image, st_mana_plus_start_point)
 
 
-def display_items(items):
-    """ receives dict with quantity of each item, returns dictionary of buttons """
+def display_shop_items(items, money):  # TODO or infinite supply?
+    """ receives dict with price of each item, returns dictionary of buttons shaped for the column 200 X 600 """
     buttons = {}
     id = 0  # which consecutive item it is
 
-    # sword TODO same for every item in the game
-    nr = items["sword"]
-    image = get_sword_image()
-    if nr > 0:
+    for key, item_price in items.items():
+        image = get_image(key)
         item_rect = image.get_rect()
-        item_rect.center = get_item_coord(id)
+        item_rect.center = get_item_coord_shop(id)
         screen.blit(image, item_rect)
-        display_quantity(item_rect, nr)
-        buttons["sword"] = item_rect
+        display_price(item_rect, item_price, money >= item_price)
+        buttons[key] = item_rect
         id += 1
 
-    # health potion TODO same for every item in the game
-    nr = items["health_potion"]
-    image = get_potion_red_image()
-    if nr > 0:
-        item_rect = image.get_rect()
-        item_rect.center = get_item_coord(id)
-        screen.blit(image, item_rect)
-        display_quantity(item_rect, nr)
-        buttons["health_potion"] = item_rect
-        id += 1
+    return buttons
+
+
+def get_image(key):
+    """ fetches images for inventory items based on the key """
+    if key == "sword":
+        return get_sword_image()
+    if key == "health_potion":
+        return get_potion_red_image()
+    return None
+
+
+def display_inventory_items(items):
+    """ receives dict with quantity of each item, returns dictionary of buttons shaped for square 600 X 600"""
+    buttons = {}
+    id = 0  # which consecutive item it is
+
+    for key, item_quantity in items.items():
+        image = get_image(key)
+        if item_quantity > 0:
+            item_rect = image.get_rect()
+            item_rect.center = get_item_coord_inv(id)
+            screen.blit(image, item_rect)
+            display_quantity(item_rect, item_quantity)
+            buttons[key] = item_rect
+            id += 1
 
     return buttons
 
@@ -308,3 +322,9 @@ def display_items(items):
 def display_quantity(item_rect, nr):
     quantity = quantity_font.render(str(nr), True, YELLOW)
     screen.blit(quantity, item_rect)  # .width, .height
+
+
+def display_price(item_rect, nr, can_afford):
+    colour = YELLOW if can_afford else RED
+    price = price_font.render(str(nr), True, colour)
+    screen.blit(price, item_rect)  # .width, .height

@@ -35,8 +35,8 @@ class Room:
         # dropped items group
         self._drop = pygame.sprite.Group()
 
-        self._shop = shop  # TODO : shop as a sprite? currently none (change enter_shop afterwards also)
-        # shop.inventory attr: names of products available for purchase
+        # self._shop = shop # TODO : shop is a dict of items with prices (or None if its not a shop)
+        self._shop = {"sword": 20, "health_potion": 2}  # TODO get from a file? configurations? (ex. shop1 = {...} shop2 =
 
     def draw_room(self):
         screen.fill(WHITE)
@@ -124,12 +124,9 @@ class Room:
 
     def enter_shop(self, character):  # TODO edit
         if self._shop is not None:
-            shop_pos = self._shop.get_position_center()
-            character_pos = character.get_position_center()
-            if (character_pos[0] - shop_pos[0]) ** 2 + (
-                    character_pos[1] - shop_pos[1]) ** 2 < distance_to_open_shop ** 2:
-                return True  # TODO returns None
-        return True  # TODO returns shop.inventory
+            # check if is near the building
+            return True
+        return False
 
 
     @property
@@ -161,3 +158,8 @@ class Room:
     def dropped_items(self):
         """ items dropped in the room (sprite group of drops) """
         return self._drop
+
+    @property
+    def shop(self):
+        """ dictionary of shop inventory: "item_name": price """
+        return self._shop

@@ -221,6 +221,11 @@ class Character(pygame.sprite.Sprite):
         elif item_name == "health_potion":
             self.use_health_potion()
 
+    def buy(self, item_name, item_price=0):
+        if self._money - item_price >= 0:
+            self._money -= item_price
+            self._inventory[item_name] += 1
+
     # ----- DROP & ITEMS -----
     def add_experience(self, amount):
         self._exp += amount

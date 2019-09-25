@@ -41,7 +41,7 @@ def game_run(db, memory_slot):
                     elif curr_display == "skill tree":
                         curr_display = skill_tree_run(main_character)
                     elif curr_display == "shop":
-                        curr_display = shop_run(main_character)
+                        curr_display = shop_run(main_character, worlds_manager.curr_world.curr_room.shop)
 
                 # stopping character movement to avoid bugs
                 main_character.set_key_clicked("top", False)
@@ -90,7 +90,7 @@ def game_run(db, memory_slot):
                     # open door or enter shop
                     if e.key == pygame.K_e:
                         if not worlds_manager.curr_world.curr_room.open_door(main_character):
-                            if worlds_manager.curr_world.curr_room.enter_shop(main_character):
+                            if worlds_manager.curr_world.curr_room.enter_shop(main_character): # check if is shop and if enters
                                 curr_display = "shop"
 
                 # movement (saving information about keys stop being pressed)
