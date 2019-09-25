@@ -47,11 +47,11 @@ start_values = {  # character stats
                 # equipment
                 "equipment": """{"weapon": "", "armor": ""}""",
                 # inventory
-                "sword": 1,
-                "health_potion": 2,
+                "sword": 0,
+                "health_potion": 0,
                 "keys": """{"grey": 0, "blue": 0, "green": 0, "yellow": 0}""",  # jsoned dictionary
                 # skills
-                "skill_points": 5,
+                "skill_points": 0,
                 "attack_damage": character_start_attack_damage,
                 "attack_speed": character_start_attack_speed,
                 "critical_attack_chance": character_start_critical_attack_chance,

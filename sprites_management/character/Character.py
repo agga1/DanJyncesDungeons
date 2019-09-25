@@ -225,7 +225,7 @@ class Character(pygame.sprite.Sprite):
             if self._equipment["weapon"] is not "":
                 self._inventory[self._equipment["weapon"]] += 1
             self._equipment["weapon"] = "sword"
-            # self._bonus_damage = 3 TODO
+            # self._bonus_damage = 3 TODO what bonus?
         elif item_name == "health_potion":
             # TODO health potion hardcoded
             self._inventory["health_potion"] -= 1

@@ -5,14 +5,13 @@ from management_and_config.display_functions import display_inventory_items, dis
 from resources.image_manager import get_inventory_bg_image, get_shop_bar
 
 
-# TODO add buying logic (refresh display after purchase, add items to shop bar)
 def shop_run(character, shop_inventory=None):
 
-    shop_inventory = shop_inventory  # TODO remove !! "item": price
+    shop_inventory = shop_inventory  # prices currently hardcoded in Room
     inventory_bg = get_inventory_bg_image()
     shop_bar = get_shop_bar()
     screen.blit(inventory_bg, [0, 0])
-    screen.blit(shop_bar, [600, 0]) # TODO hardcoded 600
+    screen.blit(shop_bar, [600, 0])  # TODO hardcoded 600
     inv_buttons = display_inventory_items(character.inventory)  # buttons: sword, health_potion
     shop_buttons = display_shop_items(shop_inventory, character.money)
     pygame.display.flip()
