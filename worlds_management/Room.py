@@ -121,14 +121,14 @@ class Room:
                 return True
         return False
 
-    def enter_shop(self, character):
+    def enter_shop(self, character):  # TODO edit
         if self._shop is not None:
             shop_pos = self._shop.get_position_center()
             character_pos = character.get_position_center()
             if (character_pos[0] - shop_pos[0]) ** 2 + (
                     character_pos[1] - shop_pos[1]) ** 2 < distance_to_open_shop ** 2:
                 return True
-        return False
+        return True  # only for testing !
 
 
     @property

@@ -3,6 +3,7 @@ from worlds_management.WorldsManager import WorldsManager
 from management_and_config.object_save import *
 from core.inventory_activity import inventory_run
 from core.skill_tree_activity import skill_tree_run
+from core.shop_activity import shop_run
 
 
 def game_run(db, memory_slot):
@@ -39,6 +40,8 @@ def game_run(db, memory_slot):
                         curr_display = inventory_run(main_character)
                     elif curr_display == "skill tree":
                         curr_display = skill_tree_run(main_character)
+                    elif curr_display == "shop":
+                        curr_display = shop_run(main_character)
 
                 # stopping character movement to avoid bugs
                 main_character.set_key_clicked("top", False)
@@ -88,7 +91,7 @@ def game_run(db, memory_slot):
                     if e.key == pygame.K_e:
                         if not worlds_manager.curr_world.curr_room.open_door(main_character):
                             if worlds_manager.curr_world.curr_room.enter_shop(main_character):
-                                print("enter shop")
+                                curr_display = "shop"
 
                 # movement (saving information about keys stop being pressed)
                 if e.type == pygame.KEYUP:
