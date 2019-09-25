@@ -9,7 +9,7 @@ pygame.init()
 
 
 class Room:
-    def __init__(self, room_size, doors_config, room_enemies, doors):
+    def __init__(self, room_size, doors_config, room_enemies, doors, shop=None):
         # specification of the room
         self._size = room_size
 
@@ -34,6 +34,8 @@ class Room:
 
         # dropped items group
         self._drop = pygame.sprite.Group()
+
+        self._shop = shop  # TODO : shop as a sprite? currently none (change enter_shop afterwards also)
 
     def draw_room(self):
         screen.fill(WHITE)
@@ -116,6 +118,18 @@ class Room:
                     character.keys[door.color] > 0:
                 character.use_key(door.color)
                 door.open()
+                return True
+        return False
+
+    def enter_shop(self, character):
+        if self._shop is not None:
+            shop_pos = self._shop.get_position_center()
+            character_pos = character.get_position_center()
+            if (character_pos[0] - shop_pos[0]) ** 2 + (
+                    character_pos[1] - shop_pos[1]) ** 2 < distance_to_open_shop ** 2:
+                return True
+        return False
+
 
     @property
     def size(self):
