@@ -3,7 +3,7 @@ from management_and_config.configurations import *
 
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self, start_point, staying_image, movement_animation, attack_image, stats, skills, inventory, *groups):
+    def __init__(self, start_point, staying_image, movement_animation, attack_image, stats, skills, inventory, keys, *groups):
         super().__init__(*groups)
 
         # image
@@ -46,7 +46,7 @@ class Character(pygame.sprite.Sprite):
         self._mana = stats["mana"]
 
         # keys
-        self._keys = {"grey": 0, "blue": 0, "green": 0, "yellow": 0}
+        self._keys = keys
 
         # money
         self._money = stats["money"]

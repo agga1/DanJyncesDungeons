@@ -4,6 +4,7 @@ Eventually separate columns for each world could be made and all states would be
 
 import os
 import pickle
+import json
 
 from management_and_config.configurations import *
 from management_and_config.display_functions import show_popup, freeze_clock
@@ -13,6 +14,7 @@ from sprites_management.character.Character import Character
 location = os.path.abspath('../data/config.character')
 
 
+# sprites------------------------------------------------------------
 def save_active_enemies(active_enemies, db):
     active_enemies_str = ''.join(map(str, active_enemies))  # looks like string 11011101
     db.update_active_enemies(active_enemies_str)
@@ -25,21 +27,6 @@ def load_active_enemies(db):
     for c in act_en_str:
         active_enemies.append(int(c))
     return active_enemies
-
-
-def load_doors(db):
-    """ returns list of ints 0 - closed, 1- open"""
-    doors_str = db.get_doors()  # looks like string 1101101
-    doors = []
-    for c in doors_str:
-        doors.append(int(c))
-    return doors
-
-
-def save_doors(open_doors, db):
-    doors_str = ''.join(map(str, open_doors))  # looks like string 11011101
-    db.update_doors(doors_str)
-    pass
 
 
 def save_character(character, db, memory_slot = -1):
@@ -59,6 +46,9 @@ def save_character(character, db, memory_slot = -1):
     # inventory
     db.update_sword(character.inventory["sword"])
     db.update_health_potion(character.inventory["health_potion"])
+    # inventory - keys
+    save_keys(character.keys, db)
+
 
 def load_character(db, memory_slot=-1):
     character_rest_image = get_character_rest_image()
@@ -85,7 +75,25 @@ def load_character(db, memory_slot=-1):
     skills = {
         "sword_skill": db.get_sword_skill(),
     }
-    return Character(character_start_point, character_rest_image, character_walk_images, character_attack_image, stats, skills, inventory)
+    # inventory - keys
+    keys = load_keys(db)
+    return Character(character_start_point, character_rest_image, character_walk_images, character_attack_image, stats, skills, inventory, keys)
+
+
+# room state---------------------------------------------------------------
+def load_doors(db):
+    """ returns list of ints 0 - closed, 1- open"""
+    doors_str = db.get_doors()  # looks like string 1101101
+    doors = []
+    for c in doors_str:
+        doors.append(int(c))
+    return doors
+
+
+def save_doors(open_doors, db):
+    doors_str = ''.join(map(str, open_doors))  # looks like string 11011101
+    db.update_doors(doors_str)
+    pass
 
 
 def save_curr_room(curr_room, db):
@@ -118,3 +126,13 @@ def get_character():
         print(character)
         return character
 
+
+# helper functions
+def save_keys(keys_dict, db):
+    keys = json.dumps(keys_dict)
+    db.update_keys(keys)
+
+
+def load_keys(db):
+    keys_dict = json.loads(db.get_keys())
+    return keys_dict
