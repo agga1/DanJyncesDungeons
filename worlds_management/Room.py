@@ -36,6 +36,7 @@ class Room:
         self._drop = pygame.sprite.Group()
 
         self._shop = shop  # TODO : shop as a sprite? currently none (change enter_shop afterwards also)
+        # shop.inventory attr: names of products available for purchase
 
     def draw_room(self):
         screen.fill(WHITE)
@@ -127,8 +128,8 @@ class Room:
             character_pos = character.get_position_center()
             if (character_pos[0] - shop_pos[0]) ** 2 + (
                     character_pos[1] - shop_pos[1]) ** 2 < distance_to_open_shop ** 2:
-                return True
-        return True  # only for testing !
+                return True  # TODO returns None
+        return True  # TODO returns shop.inventory
 
 
     @property

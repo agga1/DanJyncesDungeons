@@ -6,14 +6,14 @@ from resources.image_manager import get_inventory_bg_image, get_shop_bar
 
 
 # TODO add buying logic (refresh display after purchase, add items to shop bar)
-def shop_run(character):  # TODO add exit button
+def shop_run(character, shop_inventory=None):
 
     inventory_bg = get_inventory_bg_image()
     shop_bar = get_shop_bar()
     screen.blit(inventory_bg, [0, 0])
     screen.blit(shop_bar, [600, 0])
-    buttons = display_items(character.inventory)  # buttons: sword, health_potion
-
+    inv_buttons = display_items(character.inventory)  # buttons: sword, health_potion
+    # TODO shop_buttons = display_products(shop_inventory)
     pygame.display.flip()
 
     while True:
@@ -34,10 +34,10 @@ def shop_run(character):  # TODO add exit button
                     return "game"
             # ev. for key, button in buttons: if collidept -> button_action(character, key)
             if e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
-                for key, button in buttons.items():
-                    if buttons[key].collidepoint(e.pos):
+                for key, button in inv_buttons.items():
+                    if inv_buttons[key].collidepoint(e.pos):
                         character.use(key)
                         screen.blit(inventory_bg, [0, 0])
-                        buttons = display_items(character.inventory)
+                        inv_buttons = display_items(character.inventory)
 
         pygame.display.flip()
