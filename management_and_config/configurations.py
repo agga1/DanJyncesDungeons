@@ -137,6 +137,10 @@ minimap_right_door_diff = [25, 10]
 
 
 # ------ INVENTORY & SHOP --------------
+weapon_coord = [600+100, 210]
+armor_coord = [600+100, 410]
+
+
 def get_item_coord_inv(id):
     top_left = [75, 75]
     next = 75

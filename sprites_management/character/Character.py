@@ -3,7 +3,7 @@ from management_and_config.configurations import *
 
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self, start_point, staying_image, movement_animation, attack_image, stats, skills, inventory, keys, *groups):
+    def __init__(self, start_point, staying_image, movement_animation, attack_image, stats, skills, inventory, equipment, keys, *groups):
         super().__init__(*groups)
 
         # image
@@ -31,6 +31,9 @@ class Character(pygame.sprite.Sprite):
 
         # inventory TODO: get inv from db
         self._inventory = inventory
+
+        # equipped inventory TODO get from db and save to db
+        self._equipment = equipment
 
         # skills active TODO: get from db active skills (for now: sword skill)
         # TODO: make unique (funny?) names for skills
@@ -217,14 +220,26 @@ class Character(pygame.sprite.Sprite):
     # ----- INVENTORY USE & EQUIPMENT ----
     def use(self, item_name):
         if item_name == "sword":
-            pass  # TODO equip sword
+            # TODO equip sword hardcoded
+            self._inventory["sword"] -= 1
+            if self._equipment["weapon"] is not "":
+                self._inventory[self._equipment["weapon"]] += 1
+            self._equipment["weapon"] = "sword"
+            # self._bonus_damage = 3 TODO
         elif item_name == "health_potion":
-            self.use_health_potion()
+            # TODO health potion hardcoded
+            self._inventory["health_potion"] -= 1
+            self._health = min(self._health + 5, self._max_health)
 
     def buy(self, item_name, item_price=0):
         if self._money - item_price >= 0:
             self._money -= item_price
             self._inventory[item_name] += 1
+
+    def unequip(self, part):
+        if self._equipment[part] is not "":
+            self._inventory[self._equipment[part]] += 1
+        self._equipment[part] = ""
 
     # ----- DROP & ITEMS -----
     def add_experience(self, amount):
@@ -307,10 +322,6 @@ class Character(pygame.sprite.Sprite):
             return True
         else:
             return False
-
-    def use_health_potion(self):
-        self._inventory["health_potion"] -= 1
-        self._health = min(self._health+5, self._max_health)
 
     @property
     def attack_damage(self):
@@ -406,6 +417,11 @@ class Character(pygame.sprite.Sprite):
     def inventory(self):
         """ directory of items owned by character ( "sword": nr_of_owned_swords )"""
         return self._inventory
+
+    @property
+    def equipment(self):
+        """ dir {"weapon": "", "armor: ""} """
+        return self._equipment
 
     @money.setter
     def money(self, money):

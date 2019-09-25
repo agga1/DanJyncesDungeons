@@ -44,6 +44,8 @@ def save_character(character, db, memory_slot = -1):
     # inventory - keys
     save_keys(character.keys, db)
 
+    save_equipment(character.equipment, db)
+
 
 def load_character(db, memory_slot=-1):
     character_rest_image = get_character_rest_image()
@@ -72,7 +74,9 @@ def load_character(db, memory_slot=-1):
     }
     # inventory - keys
     keys = load_keys(db)
-    return Character(character_start_point, character_rest_image, character_walk_images, character_attack_image, stats, skills, inventory, keys)
+    equipment = load_equipment(db)
+    return Character(character_start_point, character_rest_image, character_walk_images, character_attack_image,
+                     stats, skills, inventory, equipment, keys)
 
 
 # room state---------------------------------------------------------------
@@ -111,3 +115,13 @@ def save_keys(keys_dict, db):
 def load_keys(db):
     keys_dict = json.loads(db.get_keys())
     return keys_dict
+
+
+def save_equipment(equip_dict, db):
+    equipment = json.dumps(equip_dict)
+    db.update_equipment(equipment)
+
+
+def load_equipment(db):
+    equip_dict = json.loads(db.get_equipment())
+    return equip_dict

@@ -319,6 +319,27 @@ def display_inventory_items(items):
     return buttons
 
 
+def display_equipment(equipment):
+    """ receives dict with quantity of each item, returns dictionary of buttons shaped for square 600 X 600"""
+    buttons = {}
+
+    if equipment["weapon"] is not "":
+        weapon = get_image(equipment["weapon"])
+        item_rect = weapon.get_rect()
+        item_rect.center = weapon_coord
+        screen.blit(weapon, item_rect)
+        buttons["weapon"] = item_rect
+
+    if equipment["armor"] is not "":
+        armor = get_image(equipment["armor"])
+        item_rect = armor.get_rect()
+        item_rect.center = armor_coord
+        screen.blit(armor, item_rect)
+        buttons["armor"] = item_rect
+
+    return buttons
+
+
 def display_quantity(item_rect, nr):
     quantity = quantity_font.render(str(nr), True, YELLOW)
     screen.blit(quantity, item_rect)  # .width, .height

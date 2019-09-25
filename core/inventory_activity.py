@@ -1,18 +1,18 @@
 import pygame
 
 from management_and_config.configurations import *
-from management_and_config.display_functions import display_inventory_items
+from management_and_config.display_functions import display_inventory_items, display_equipment
 from resources.image_manager import get_inventory_bg_image, get_inventory_equip_bar_image
 
 
-def inventory_run(character):
+def inventory_run(character): # TODO hardcoded 600
 
     inventory_bg = get_inventory_bg_image()
     inventory_bar = get_inventory_equip_bar_image()
     screen.blit(inventory_bg, [0, 0])
     screen.blit(inventory_bar, [600, 0])
     buttons = display_inventory_items(character.inventory)  # buttons: sword, health_potion
-
+    equip_buttons = display_equipment(character.equipment)
     pygame.display.flip()
 
     while True:
@@ -34,6 +34,15 @@ def inventory_run(character):
                     if buttons[key].collidepoint(e.pos):
                         character.use(key)
                         screen.blit(inventory_bg, [0, 0])
+                        screen.blit(inventory_bar, [600, 0])
                         buttons = display_inventory_items(character.inventory)
-
+                        equip_buttons = display_equipment(character.equipment)
+                        break
+                for key, button in equip_buttons.items():
+                    if equip_buttons[key].collidepoint(e.pos):
+                        character.unequip(key)
+                        screen.blit(inventory_bg, [0, 0])
+                        screen.blit(inventory_bar, [600, 0])
+                        buttons = display_inventory_items(character.inventory)
+                        equip_buttons = display_equipment(character.equipment)
         pygame.display.flip()

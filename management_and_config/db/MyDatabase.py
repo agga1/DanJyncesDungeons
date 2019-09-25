@@ -17,6 +17,8 @@ columns = ["id", "INTEGER PRIMARY KEY",  # list of columns along with data type
            "experience", "INTEGER",
            "lvl", "INTEGER",
            "inventory", "TEXT",
+           # equipment of inventory
+           "equipment", "TEXT",
            # inventory
            "keys", "TEXT",
            "sword", "INTEGER",
@@ -42,6 +44,8 @@ start_values = {  # character stats
                 "mana": 0,
                 "experience": 0,
                 "lvl": start_lvl,
+                # equipment
+                "equipment": """{"weapon": "", "armor": ""}""",
                 # inventory
                 "sword": 1,
                 "health_potion": 2,
@@ -150,6 +154,10 @@ class MyDatabase:
     def update_mana(self, value, row_id=-1):
         self.update_column("mana", value, row_id)
 
+    # equipment
+    def update_equipment(self, value, row_id=-1):
+        self.update_column("equipment", value, row_id)
+
     # inventory
     def update_sword(self, value, row_id=-1):
         self.update_column("sword", value, row_id)
@@ -213,6 +221,10 @@ class MyDatabase:
 
     def get_mana(self, row_id=-1):
         return self.get_column("mana", row_id)
+
+    # equipment
+    def get_equipment(self, row_id=-1):
+        return self.get_column("equipment", row_id)
 
     # inventory
     def get_sword(self, row_id=-1):
