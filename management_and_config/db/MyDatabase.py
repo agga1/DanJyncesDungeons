@@ -30,10 +30,10 @@ columns = ["id", "INTEGER PRIMARY KEY",  # list of columns along with data type
            # bought skills
            "sword_skill", "INTEGER",
            # room&world state
-           "active_enemies", "TEXT",  # string 00101, 0-dead, 1-alive
+           "active_enemies", "TEXT",
            "curr_room", "TEXT",
            "curr_world", "INTEGER",
-           "doors", "TEXT",  # string 00101, 0-closed, 1-open
+           "doors", "TEXT",
            # general game state
            "last_saved", "TIMESTAMP",
            "if_new", "INTEGER"]
@@ -55,8 +55,8 @@ start_values = {  # character stats
                 # bought skills
                 "sword_skill": 0,
                 # room & world
-                "active_enemies": "",
-                "doors": "",
+                "active_enemies": "[]",  # jsoned list of ints, 0 - dead, 1 - alive
+                "doors": "[]",  # jsoned list of ints, 0 - closed, 1 - opened
                 "inventory": "",
                 "curr_room": None,   # needs to be updated in world during first startup
                 "curr_world": None,  # same (or should be 1?)

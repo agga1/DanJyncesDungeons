@@ -16,17 +16,12 @@ location = os.path.abspath('../data/config.character')
 
 # sprites------------------------------------------------------------
 def save_active_enemies(active_enemies, db):
-    active_enemies_str = ''.join(map(str, active_enemies))  # looks like string 11011101
-    db.update_active_enemies(active_enemies_str)
+    db.update_active_enemies(json.dumps(active_enemies))
     pass
 
 
 def load_active_enemies(db):
-    act_en_str = db.get_active_enemies()  # looks like 1101101
-    active_enemies = []
-    for c in act_en_str:
-        active_enemies.append(int(c))
-    return active_enemies
+    return json.loads(db.get_active_enemies())
 
 
 def save_character(character, db, memory_slot = -1):
@@ -83,30 +78,20 @@ def load_character(db, memory_slot=-1):
 # room state---------------------------------------------------------------
 def load_doors(db):
     """ returns list of ints 0 - closed, 1- open"""
-    doors_str = db.get_doors()  # looks like string 1101101
-    doors = []
-    for c in doors_str:
-        doors.append(int(c))
-    return doors
+    return json.loads(db.get_doors())
 
 
 def save_doors(open_doors, db):
-    doors_str = ''.join(map(str, open_doors))  # looks like string 11011101
-    db.update_doors(doors_str)
+    db.update_doors(json.dumps(open_doors))
     pass
 
 
 def save_curr_room(curr_room, db):
-    room_str = ', '.join(map(str, curr_room))  # looks like string 5, 2
-    db.update_curr_room(room_str)
+    db.update_curr_room(json.dumps(curr_room))
 
 
 def load_curr_room(db):
-    curr_room_str = db.get_curr_room()
-    if curr_room_str is None:
-        return None
-    curr_room = [int(s) for s in curr_room_str.split(',')]
-    return curr_room
+    return None if db.get_curr_room() is None else json.loads(db.get_curr_room())
 
 
 def save_curr_world(curr_world, db):
@@ -115,16 +100,6 @@ def save_curr_world(curr_world, db):
 
 def load_curr_world(db):
     pass
-
-
-def get_character():
-    with open(location, 'rb') as config_character_file:
-        # Step 3
-        character = pickle.load(config_character_file)
-
-        # After config_dictionary is read from file
-        print(character)
-        return character
 
 
 # helper functions
