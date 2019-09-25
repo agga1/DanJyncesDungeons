@@ -221,6 +221,8 @@ class Character(pygame.sprite.Sprite):
     def use(self, item_name):
         if item_name == "sword":
             # TODO equip sword hardcoded
+            if self._skills["sword_skill"] == 0:
+                return
             self._inventory["sword"] -= 1
             if self._equipment["weapon"] is not "":
                 self._inventory[self._equipment["weapon"]] += 1
