@@ -1,3 +1,4 @@
+from management_and_config.display_functions import show_popup
 from sprites_management.sprites_functions import *
 from management_and_config.configurations import *
 
@@ -222,6 +223,7 @@ class Character(pygame.sprite.Sprite):
         if item_name == "sword":
             # TODO equip sword hardcoded
             if self._skills["sword_skill"] == 0:
+                show_popup("your character isn't able to carry sword!", 1.3)
                 return
             self._inventory["sword"] -= 1
             if self._equipment["weapon"] is not "":

@@ -4,8 +4,8 @@ from management_and_config.configurations import *
 from resources.image_manager import *
 
 
-def show_popup(text_string):
-    font = pygame.font.Font(main_font, font_size_info)
+def show_popup(text_string, time_in_sek=None):
+    font = pygame.font.Font(description_font, font_size_info)
     text = font.render(text_string, True, BLACK)
     text_rect = text.get_rect()
     text_rect.center = (screen_width / 2, screen_height / 2)
@@ -19,6 +19,8 @@ def show_popup(text_string):
     pygame.draw.rect(screen, WHITE, bg_rect)
     screen.blit(text, text_rect)
     pygame.display.flip()
+    if time_in_sek is not None:
+        freeze_clock(time_in_sek)
 
 
 def freeze_clock(time_in_sek):
